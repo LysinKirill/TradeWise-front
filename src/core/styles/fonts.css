@@ -1,0 +1,94 @@
+@font-face {
+  font-family: 'Gilroy';
+  src: url('../assets/fonts/gilroy/Gilroy-Regular.eot');
+  src: local('Gilroy Medium'), local('Gilroy-Medium'),
+    url('../assets/fonts/gilroy/Gilroy-Regular.eot?#iefix') format('embedded-opentype'),
+    url('../assets/fonts/gilroy/Gilroy-Regular.woff2') format('woff2'),
+    url('../assets/fonts/gilroy/Gilroy-Regular.woff') format('woff'),
+    url('../assets/fonts/gilroy/Gilroy-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('../assets/fonts/gilroy/Gilroy-Medium.eot');
+  src: local('Gilroy Medium'), local('Gilroy-Medium'),
+    url('../assets/fonts/gilroy/Gilroy-Medium.eot?#iefix') format('embedded-opentype'),
+    url('../assets/fonts/gilroy/Gilroy-Medium.woff2') format('woff2'),
+    url('../assets/fonts/gilroy/Gilroy-Medium.woff') format('woff'),
+    url('../assets/fonts/gilroy/Gilroy-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('../assets/fonts/gilroy/Gilroy-Semibold.eot');
+  src: local('Gilroy Semibold'), local('Gilroy-Semibold'),
+    url('../assets/fonts/gilroy/Gilroy-Semibold.eot?#iefix') format('embedded-opentype'),
+    url('../assets/fonts/gilroy/Gilroy-Semibold.woff2') format('woff2'),
+    url('../assets/fonts/gilroy/Gilroy-Semibold.woff') format('woff'),
+    url('../assets/fonts/gilroy/Gilroy-Semibold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Golos';
+  src: url('../assets/fonts/golos/Golos-Text_Regular.ttf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Golos';
+  src: url('../assets/fonts/golos/Golos-Text_Medium.ttf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Golos';
+  src: url('../assets/fonts/golos/Golos-Text_DemiBold.ttf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'dinpro';
+  src: url('../assets/fonts/dinpro/DINPro-Bold.otf') format('opentype');
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'dinpro';
+  src: url('../assets/fonts/dinpro/DINPro-Regular.otf') format('opentype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'dinpro';
+  src: url('../assets/fonts/dinpro/DINPro-Medium.otf') format('opentype');
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'dinpro';
+  src: url('../assets/fonts/dinpro/DINPro-CondLight.otf') format('opentype');
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+}
