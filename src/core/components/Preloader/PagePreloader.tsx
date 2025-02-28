@@ -1,5 +1,5 @@
-import { useScrollLock } from '@core/hooks/useScrollLock';
-import { SpinnerAnimate } from '@core/ui/Icons';
+import { useScrollLock } from '../../hooks/useScrollLock';
+import { SpinnerAnimate } from '../../ui/Icons';
 
 import * as UI from './Preloader.styles';
 import { IPagePreloaderProps } from './types';

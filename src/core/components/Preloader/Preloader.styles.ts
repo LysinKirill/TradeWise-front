@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components';
 
-import { colors } from '@core/constants/colors';
-import { Z_INDEX_PRELOADER } from '@core/constants/styles';
-import { hexToRGB, omitProps } from '@core/utils/styles';
+import { colors } from '../../constants/colors';
+import { Z_INDEX_PRELOADER } from '../../constants/styles';
+import { hexToRGB, omitProps } from '../../utils/styles';
 
 import { IPreloaderStylesProps, IPagePreloaderStylesProps } from './types';
 

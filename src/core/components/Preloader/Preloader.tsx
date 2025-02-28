@@ -1,4 +1,4 @@
-import { SpinnerAnimate } from '@core/ui/Icons';
+import { SpinnerAnimate } from '../../ui/Icons';
 
 import * as UI from './Preloader.styles';
 import { IPreloaderProps } from './types';

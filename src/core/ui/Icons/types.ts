@@ -1,7 +1,7 @@
 import { SVGAttributes } from 'react';
 import { FlattenSimpleInterpolation } from 'styled-components';
 
-import { TColors } from '@core/constants/colors';
+import { TColors } from '../../constants/colors';
 
 export interface IStyledSvgProps {
   /**

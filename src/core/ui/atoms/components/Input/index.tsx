@@ -1,5 +1,5 @@
-import { colors } from '@core/constants/colors';
-import { Check } from '@core/ui/Icons';
+import { colors } from '../../../../constants/colors';
+import { Check } from '../../../Icons';
 
 import * as UI from './styles';
 

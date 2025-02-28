@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { colors } from '@core/constants/colors';
+import { colors } from '../../../../constants/colors';
 
 export const PageInput = styled.input`
   border: none;

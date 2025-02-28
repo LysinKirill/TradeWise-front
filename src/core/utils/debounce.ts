@@ -1,5 +1,5 @@
 const debounce = (callback: (...args: any) => void, ms: number) => {
-  let timerId: NodeJS.Timeout;
+  let timerId: ReturnType<typeof setTimeout>;
 
   return (...args: any) => {
     if (timerId) {

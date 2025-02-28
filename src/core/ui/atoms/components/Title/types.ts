@@ -1,4 +1,4 @@
-import { IPropsWithChildren } from '@core/utils/types';
+import { IPropsWithChildren } from '../../../../utils/types';
 
 export type TTitleStyleProps = {
   settings?: {

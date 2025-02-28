@@ -6,7 +6,7 @@ export const Title = (props: TTitleProps) => {
 
   return (
     <UI.Container {...settings}>
-      {children}
+      {children as React.ReactNode}
     </UI.Container>
   );
 };
