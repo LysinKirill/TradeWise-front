@@ -30,7 +30,7 @@ export default class ErrorBoundary extends React.Component<IErrorBoundaryProps, 
 
     if (hasError) {
       return (
-        <h2>Что-то пошло не так.</h2>
+        <h2>Something went wrong...</h2>
       );
     }
 

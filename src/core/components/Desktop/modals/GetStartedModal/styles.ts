@@ -12,6 +12,9 @@ export const ModalOverlay = styled.div`
   align-items: center;
 `;
 
+export const Title = styled.h1`
+`;
+
 export const ModalContent = styled.div`
   background: white;
   padding: 20px;

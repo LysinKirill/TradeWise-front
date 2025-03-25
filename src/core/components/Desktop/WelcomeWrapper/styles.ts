@@ -1,26 +1,66 @@
 import styled from "styled-components";
+import { colors } from "../../../constants/colors";
 
 export const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: #0d0d0d;
   color: #fff;
   min-height: 100vh;
-  padding: 40px;
+  height: 70vh;
+  padding: 0px;
 `;
 
 export const Header = styled.header`
+  max-width: 100vw;
   width: 100%;
+  
+  position: fixed; 
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0; 
+    left: 0;
+    width: 100%;
+    height: 1px; 
+    background: #fff;
+    opacity: 0.2; 
+  }
+`;
+
+export const HeaderContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 0px 10px 0px 10px;
 `;
 
 export const Logo = styled.h1`
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;
+
+export const LogoIcon = styled.img`
+  width: 32px;
+  height: 32px;
+  margin-right: 10px;
+  border-radius: 16px;
+`;
+
+export const NavLinks = styled.nav`
+  display: flex;
+  gap: 20px;
+`;
+
+export const NavLink = styled.a`
+  color: #fff;
+  text-decoration: none;
+  font-size: 1rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 export const NavIcons = styled.div`
@@ -36,77 +76,72 @@ export const IconButton = styled.button`
   cursor: pointer;
 `;
 
-// Hero Section
+export const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const Title = styled.h1`
+  color: #fff;
+  font-size: 100px;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0), 0 0 20px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.4); 
+`;
+
 export const HeroSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-top: 40px;
+  margin-top: 25vh;
 `;
 
 export const HeroContent = styled.div`
-  max-width: 600px;
+  max-width: 2000px;
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
 `;
 
 export const Subtitle = styled.p`
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   margin: 10px 0;
   opacity: 0.8;
 `;
 
 export const ButtonGroup = styled.div`
   display: flex;
-  gap: 15px;
-  margin-top: 20px;
+  justify-content: center;
+  gap: 1vw;
 `;
 
 export const PrimaryButton = styled.button`
+  width: 15vw;
   padding: 12px 24px;
-  background: #7b2cf5;
+  background: ${colors.purpleButton};
   color: white;
   border-radius: 8px;
   border: none;
   cursor: pointer;
   font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 0 transparent;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px ${colors.purpleButton};
+    z-index: 1;
+  }
 `;
 
 export const SecondaryButton = styled(PrimaryButton)`
-  background: #333;
+  background: ${colors.darkPurpleButton};
+  &:hover {
+    box-shadow: 0 0 15px ${colors.darkPurpleButton};
+  }
 `;
 
-// Auth Section
-export const AuthSection = styled.div`
-  text-align: center;
-  margin-top: 40px;
-`;
-
-export const SignInPrompt = styled.p`
-  font-size: 1rem;
-  margin-bottom: 5px;
-`;
-
-export const SignInButton = styled.button`
-  padding: 10px 20px;
-  background: #222;
-  color: white;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-`;
-
-export const NewUserPrompt = styled.p`
-  margin-top: 20px;
-  font-size: 1rem;
-`;
-
-export const CreateAccountButton = styled(PrimaryButton)`
-  margin-top: 10px;
-  width: 100%;
-`;
-
-// Feature Cards
 export const FeatureCards = styled.div`
   display: flex;
   gap: 20px;

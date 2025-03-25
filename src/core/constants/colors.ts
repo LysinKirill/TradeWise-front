@@ -1,4 +1,7 @@
 export type TColors =
+  | 'darkPurpleButton'
+  | 'purpleButton'
+  | 'backgroundBlack'
   | 'inherit'
   | 'accentGreen'
   | 'red'
@@ -35,4 +38,7 @@ export const colors: Record<TColors, string> = {
   darkHover: '#1c1b28c2',
   lightHover: '#e6e6e6',
   transperent: 'transparent',
+  backgroundBlack: '#141217',
+  purpleButton: '#801AE5',
+  darkPurpleButton: '#302938',
 };

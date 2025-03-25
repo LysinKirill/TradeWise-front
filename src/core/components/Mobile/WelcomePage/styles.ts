@@ -7,6 +7,9 @@ export const Container = styled.div`
   padding: 20px;
 `;
 
+export const Title = styled.h1`
+`;
+
 export const Description = styled.p`
   font-size: 1em;
   margin: 10px 0;
