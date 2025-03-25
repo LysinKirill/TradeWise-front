@@ -2,10 +2,9 @@ import styled from "styled-components";
 import { colors } from "../../../constants/colors";
 
 export const Container = styled.div`
-  background: ${colors.backgroundBlack};
   color: #fff;
   min-height: 100vh;
-  height: 110vh;
+  height: 70vh;
   padding: 0px;
 `;
 
@@ -13,7 +12,7 @@ export const Header = styled.header`
   max-width: 100vw;
   width: 100%;
   
-  position: relative; 
+  position: fixed; 
 
   &::after {
     content: '';
@@ -35,7 +34,7 @@ export const HeaderContent = styled.div`
 `;
 
 export const Logo = styled.h1`
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -46,7 +45,9 @@ export const LogoIcon = styled.img`
   width: 32px;
   height: 32px;
   margin-right: 10px;
+  border-radius: 16px;
 `;
+
 export const NavLinks = styled.nav`
   display: flex;
   gap: 20px;
@@ -56,6 +57,7 @@ export const NavLink = styled.a`
   color: #fff;
   text-decoration: none;
   font-size: 1rem;
+
   &:hover {
     text-decoration: underline;
   }
@@ -82,7 +84,7 @@ export const ContentContainer = styled.div`
 
 export const Title = styled.h1`
   color: #fff;
-  font-size: 50px;
+  font-size: 100px;
   text-shadow: 0 0 10px rgba(255, 255, 255, 0), 0 0 20px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.4); 
 `;
 
@@ -91,15 +93,18 @@ export const HeroSection = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-top: 40px;
+  margin-top: 25vh;
 `;
 
 export const HeroContent = styled.div`
-  max-width: 600px;
+  max-width: 2000px;
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
 `;
 
 export const Subtitle = styled.p`
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   margin: 10px 0;
   opacity: 0.8;
 `;
@@ -107,8 +112,7 @@ export const Subtitle = styled.p`
 export const ButtonGroup = styled.div`
   display: flex;
   justify-content: center;
-  gap: 15px;
-  margin-top: 20px;
+  gap: 1vw;
 `;
 
 export const PrimaryButton = styled.button`
@@ -121,10 +125,21 @@ export const PrimaryButton = styled.button`
   cursor: pointer;
   font-size: 1rem;
   font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 0 transparent;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px ${colors.purpleButton};
+    z-index: 1;
+  }
 `;
 
 export const SecondaryButton = styled(PrimaryButton)`
   background: ${colors.darkPurpleButton};
+  &:hover {
+    box-shadow: 0 0 15px ${colors.darkPurpleButton};
+  }
 `;
 
 export const FeatureCards = styled.div`

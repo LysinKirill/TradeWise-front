@@ -15,14 +15,9 @@ export const DesktopWelcome = ({ onGetStartedClick }: DesktopWelcomeProps) => {
             <UI.LogoIcon src={Logo} />
             TradeWise
           </UI.Logo>
-          
-          <UI.NavIcons>
-            <UI.IconButton></UI.IconButton>
-            <UI.IconButton>🌍</UI.IconButton>
-            <UI.IconButton>⚙️</UI.IconButton>
-          </UI.NavIcons>
         </UI.HeaderContent>
       </UI.Header>
+      
       <UI.ContentContainer>
         <UI.HeroSection>
           <UI.HeroContent>
@@ -39,23 +34,6 @@ export const DesktopWelcome = ({ onGetStartedClick }: DesktopWelcomeProps) => {
             </UI.ButtonGroup>
           </UI.HeroContent>
         </UI.HeroSection>
-
-        <UI.FeatureCards>
-          <UI.Card>
-            <UI.CardIcon>⚡</UI.CardIcon>
-            <UI.CardTitle>Developers</UI.CardTitle>
-            <UI.CardDescription>
-              Build and trade using our powerful APIs
-            </UI.CardDescription>
-          </UI.Card>
-          <UI.Card>
-            <UI.CardIcon>📊</UI.CardIcon>
-            <UI.CardTitle>Traders</UI.CardTitle>
-            <UI.CardDescription>
-              Trade using our beautiful web interface
-            </UI.CardDescription>
-          </UI.Card>
-        </UI.FeatureCards>
       </UI.ContentContainer>
     </UI.Container>
   );
