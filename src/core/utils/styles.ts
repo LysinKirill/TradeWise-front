@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 export const omitProps = <Props extends object>(props: Array<keyof Props>) => (
   prop: any,
   defaultValidatorFn: (prop: any) => boolean,
@@ -8,7 +10,7 @@ export const omitProps = <Props extends object>(props: Array<keyof Props>) => (
 const toHex = (value: string) => parseInt(`0x${value}`, 16);
 
 export const hexToRGB = (color: string, opacity: number = 1) => {
-  // @ts-ignore
+  // @ts-expect-error
   const [, red1, red2, green1, green2, blue1, blue2] = color;
 
   const red = toHex(`${red1}${red2}`);

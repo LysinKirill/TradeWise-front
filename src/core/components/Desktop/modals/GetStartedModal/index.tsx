@@ -1,5 +1,4 @@
 import * as UI from './styles';
-import { Title } from '../../../../ui/atoms';
 
 interface GetStartedModalProps {
   onClose: () => void;
@@ -10,7 +9,7 @@ const GetStartedModal = ({ onClose }: GetStartedModalProps) => {
     <UI.ModalOverlay>
       <UI.ModalContent>
         <UI.CloseButton onClick={onClose}>×</UI.CloseButton>
-        <Title>Get Started with TradeWise</Title>
+        <UI.Title>Get Started with TradeWise</UI.Title>
         <UI.Description>
           Create an account to start using TradeWise and take advantage of all our features.
         </UI.Description>

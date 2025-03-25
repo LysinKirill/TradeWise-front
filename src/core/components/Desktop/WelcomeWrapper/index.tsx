@@ -1,6 +1,6 @@
 import * as UI from "./styles";
 import Logo from "../../../assets/images/Logo.png";
-import { Settings } from "../../../ui/Icons";
+
 
 interface DesktopWelcomeProps {
   onGetStartedClick: () => void;
@@ -17,7 +17,7 @@ export const DesktopWelcome = ({ onGetStartedClick }: DesktopWelcomeProps) => {
           </UI.Logo>
           
           <UI.NavIcons>
-            <UI.IconButton><Settings/></UI.IconButton>
+            <UI.IconButton></UI.IconButton>
             <UI.IconButton>🌍</UI.IconButton>
             <UI.IconButton>⚙️</UI.IconButton>
           </UI.NavIcons>

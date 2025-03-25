@@ -1,10 +1,10 @@
 import * as UI from "./styles";
-import { Title } from "../../../ui/atoms";
+
 
 export const MobileWelcome = () => {
   return (
     <UI.Container>
-      <Title>Welcome to TradeWise</Title>
+      <UI.Title>Welcome to TradeWise</UI.Title>
       <UI.Description>
         Your one-stop solution for all trading needs.
       </UI.Description>
