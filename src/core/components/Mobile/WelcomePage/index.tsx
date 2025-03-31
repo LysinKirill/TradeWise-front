@@ -1,7 +1,7 @@
 import * as UI from "./styles";
 
-
 export const MobileWelcome = () => {
+  
   return (
     <UI.Container>
       <UI.Title>Welcome to TradeWise</UI.Title>

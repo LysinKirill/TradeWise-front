@@ -105,25 +105,25 @@ export const HeroContent = styled.div`
 
 export const Subtitle = styled.p`
   font-size: 1.5rem;
-  margin: 10px 0;
+  margin: 20px 0;
   opacity: 0.8;
 `;
 
 export const ButtonGroup = styled.div`
   display: flex;
   justify-content: center;
-  gap: 1vw;
+  gap: 5vw;
 `;
 
 export const PrimaryButton = styled.button`
-  width: 15vw;
+  width: 20vw;
   padding: 12px 24px;
   background: ${colors.purpleButton};
   color: white;
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: bold;
   transition: all 0.3s ease;
   box-shadow: 0 0 0 transparent;

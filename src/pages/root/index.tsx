@@ -1,6 +1,6 @@
 import * as UI from './styles';
 import { useMediaQuery } from '../../core/hooks/useMediaQuery';
-import { MobileWelcome } from '../../core/components/Mobile/WelcomePage/MobileWelcome';
+import { MobileWelcome } from '../../core/components/Mobile/WelcomePage';
 import DesktopWrapper from '../../core/components/Desktop';
 
 const Root = () => {

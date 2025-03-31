@@ -1,12 +1,8 @@
 import * as UI from "./styles";
 import Logo from "../../../assets/images/Logo.png";
+import { IDesktopWelcomeProps } from "./types";
 
-
-interface DesktopWelcomeProps {
-  onGetStartedClick: () => void;
-}
-
-export const DesktopWelcome = ({ onGetStartedClick }: DesktopWelcomeProps) => {
+export const DesktopWelcome = ({ onGetStartedClick }: IDesktopWelcomeProps) => {
   return (
     <UI.Container>
       <UI.Header>
