@@ -17,16 +17,12 @@ export interface IThunkState {
 }
 
 export interface IModalState {
-  profile: {
-    isOpen: boolean,
-    sid: string,
-  };
-  incident: {
+  getStarted: {
     isOpen: boolean,
   };
-  addIncident: boolean;
-  changeIncident: boolean;
-  inProgress: boolean;
+  registration: {
+    isOpen: boolean,
+  };
 }
 
 export interface INotificationState {

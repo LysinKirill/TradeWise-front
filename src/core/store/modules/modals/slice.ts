@@ -3,90 +3,47 @@ import { createSlice } from '@reduxjs/toolkit';
 import { IModalState } from '../../types';
 
 const initialState: IModalState = {
-  profile: {
-    isOpen: false,
-    sid: '',
-  },
-  incident: {
+  getStarted: {
     isOpen: false,
   },
-  addIncident: false,
-  changeIncident: false,
-  inProgress: false,
+  registration: {
+    isOpen: false,
+  },
 };
 
 export const modalSlice = createSlice({
   name: 'modals',
   initialState,
   reducers: {
-    openProfileModal(state, { payload }) {
+    openGetStartedModal(state) {
       return {
         ...state,
-        profile: {
-          isOpen: true,
-          sid: payload,
+        getStarted: {
+          isOpen: true,  
         },
       };
     },
-    closeProfileModal(state) {
+    closeGetStartedModal(state) {
       return {
         ...state,
-        profile: {
-          isOpen: false,
-          sid: '',
+        getStarted: {
+          isOpen: false, 
         },
       };
     },
-    openAddIncidentModal(state) {
+    openRegistrationModal(state) {
       return {
         ...state,
-        addIncident: true,
-      };
-    },
-    closeAddIncidentModal(state) {
-      return {
-        ...state,
-        addIncident: false,
-      };
-    },
-    openInProgressModal(state) {
-      return {
-        ...state,
-        inProgress: true,
-      };
-    },
-    closeInProgressModal(state) {
-      return {
-        ...state,
-        inProgress: false,
-      };
-    },
-    openChangeIncidentModal(state) {
-      return {
-        ...state,
-        changeIncident: true,
-      };
-    },
-    closeChangeIncidentModal(state) {
-      return {
-        ...state,
-        changeIncident: false,
-      };
-    },
-    openIncidentInfoModal(state) {
-      return {
-        ...state,
-        incident: {
-          isOpen: true,
+        registration: {
+          isOpen: true,  
         },
       };
     },
-    closeIncidentInfoModal(state) {
+    closeRegistrationModal(state) {
       return {
         ...state,
-        incident: {
-          isOpen: false,
-          id: '',
+        registration: {
+          isOpen: false, 
         },
       };
     },
@@ -94,16 +51,10 @@ export const modalSlice = createSlice({
 });
 
 export const { 
-  openProfileModal, 
-  closeProfileModal,
-  openAddIncidentModal, 
-  closeAddIncidentModal, 
-  openChangeIncidentModal, 
-  closeChangeIncidentModal,
-  openIncidentInfoModal,
-  closeIncidentInfoModal,
-  openInProgressModal,
-  closeInProgressModal,
+  openGetStartedModal, 
+  closeGetStartedModal,
+  openRegistrationModal,
+  closeRegistrationModal,
 } = modalSlice.actions;
 
 export default modalSlice.reducer;

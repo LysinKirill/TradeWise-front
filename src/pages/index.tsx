@@ -4,7 +4,6 @@ import { Route, Routes } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 import { ROUTES } from '../core/constants/routes';
 
-
 const Root = lazy(() => import('./root'));
 
 const Routing = () => (

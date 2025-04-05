@@ -1,12 +1,11 @@
 import * as UI from './styles';
 import { useMediaQuery } from '../../core/hooks/useMediaQuery';
 import { MobileWelcome } from '../../core/components/Mobile/WelcomePage';
-import DesktopWrapper from '../../core/components/Desktop';
+import DesktopWrapper from '../../core/components/DesktopWrapper';
 
 const Root = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   
-
   return (
     <UI.Container>
       {isMobile ? (
