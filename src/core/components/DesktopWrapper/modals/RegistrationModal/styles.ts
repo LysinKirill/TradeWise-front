@@ -1,172 +1,132 @@
-import styled from 'styled-components';
+import { styled } from '@mui/material/styles';
+import { Box, Typography, Button, TextField, Select } from '@mui/material';
 
-export const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10000;
-`;
+// Dark theme colors
+const colors = {
+  backgroundPaper: '#1E1E1E',
+  backgroundDefault: '#121212',
+  primaryMain: '#90caf9',
+  primaryDark: '#42a5f5',
+  textPrimary: '#FFFFFF',
+  textSecondary: '#b3b3b3',
+  divider: '#424242',
+};
 
-export const ModalContent = styled.div`
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 1000px;
-  height: 70%;
-  max-height: 900px;
-  position: relative;
-  overflow: auto;
-`;
+export const DarkModal = styled(Box)({
+  backgroundColor: colors.backgroundPaper,
+  borderRadius: '16px',
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '80vw',
+  display: 'flex',
+  overflow: 'hidden',
+  boxShadow: '0px 11px 15px -7px rgba(0,0,0,0.2), 0px 24px 38px 3px rgba(0,0,0,0.14), 0px 9px 46px 8px rgba(0,0,0,0.12)',
+});
 
-export const CloseButton = styled.button`
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #666;
-`;
+export const ImageContainer = styled(Box)({
+  flex: 1,
+  position: 'relative',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+});
 
-export const InnerContentWrapper = styled.div`
-  padding: 1rem;
-`;
+export const StyledImage = styled('img')({
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover'
+});
 
-export const Title = styled.h2`
-  font-size: 1.5rem;
-  color: #333;
-  margin-bottom: 1rem;
-  text-align: center;
-`;
+export const WelcomeOverlay = styled(Box)({
+  position: 'absolute',
+  width: '33.4vw',
+  height: '80vh',
+  bottom: 0,
+  left: 0,
+  right: 0,
+  padding: '32px',
+  backgroundColor: 'rgba(0, 0, 0, 0.6)',
+});
 
-export const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-`;
+export const FormWrapper = styled(Box)({
+  flex: 1,
+  padding: '32px', // theme.spacing(4) = 32px
+  backgroundColor: colors.backgroundDefault,
+});
 
-export const FormGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-`;
-
-export const SectionTitle = styled.h3`
-  font-size: 1.1rem;
-  color: #444;
-  margin-bottom: 0.5rem;
-`;
-
-export const InputLabel = styled.label`
-  font-weight: 600;
-  color: #555;
-  font-size: 0.9rem;
-`;
-
-export const TextInput = styled.input`
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
-
-  &::placeholder {
-    color: #999;
+export const formStyles = {
+  title: {
+    mb: 4,
+    color: '#FFFFFF',
+  },
+  textField: {
+    mb: 3,
+    color: '#FFFFFF',
+    '& .MuiOutlinedInput-root': {
+      borderRadius: '8px',
+      backgroundColor: colors.backgroundPaper,
+      
+    }
+  },
+  select: {
+    mb: 3,
+    '& .MuiOutlinedInput-root': {
+      borderRadius: '8px',
+      backgroundColor: colors.backgroundPaper,
+    }
+  },
+  buttonGroup: {
+    display: 'flex',
+    gap: 2,
+    mt: 4
+  },
+  primaryButton: {
+    py: 1.5,
+    borderRadius: '8px',
+    backgroundColor: colors.primaryMain,
+    '&:hover': {
+      backgroundColor: colors.primaryDark,
+    }
+  },
+  secondaryButton: {
+    py: 1.5,
+    borderRadius: '8px',
+    borderColor: colors.divider,
+    color: colors.textPrimary,
+    '&:hover': {
+      borderColor: colors.textSecondary,
+    }
+  },
+  signInButton: {
+    color: colors.primaryMain,
+    textTransform: 'none',
+    '&:hover': {
+      color: colors.primaryDark,
+      background: 'none'
+    }
+  },
+  existingAccountText: {
+    mt: 3,
+    textAlign: 'center',
+    color: '#FFFFFF',
   }
-`;
+};
 
-export const PhoneInputGroup = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem;
-`;
-
-export const RadioGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-`;
-
-export const RadioLabel = styled.label`
-  
-`;
-
-export const RadioOption = styled.label`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-  color: #666;
-
-  input[type="radio"] {
-    margin: 0;
+export const welcomeStyles = {
+  title: {
+    color: 'white',
+    gutterBottom: true
+  },
+  subtitle: {
+    color: 'rgba(255,255,255,0.8)'
   }
-`;
+};
 
-export const SelectInput = styled.select`
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
-  background: white;
-  color: #333;
-`;
-
-export const ButtonGroup = styled.div`
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-`;
-
-export const PrimaryButton = styled.button`
-  padding: 0.75rem 1.5rem;
-  background: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  flex: 1;
-
-  &:hover {
-    background: #1d4ed8;
-  }
-`;
-
-export const SecondaryButton = styled.button`
-  padding: 0.75rem 1.5rem;
-  background: #f3f4f6;
-  color: #333;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  flex: 1;
-
-  &:hover {
-    background: #e5e7eb;
-  }
-`;
-
-export const ExistingAccountText = styled.p`
-  text-align: center;
-  margin-top: 1.5rem;
-  color: #666;
-  font-size: 0.9rem;
-`;
-
-export const SignInLink = styled.a`
-  color: #2563eb;
-  cursor: pointer;
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
+export const closeButtonStyles = {
+  position: 'absolute',
+  right: 8,
+  top: 8,
+  color: colors.textSecondary,
+  zIndex: 1,
+};

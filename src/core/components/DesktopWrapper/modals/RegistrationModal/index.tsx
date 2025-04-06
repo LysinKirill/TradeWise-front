@@ -1,15 +1,33 @@
 import { useTypedDispatch } from './../../../../store';
-import { selectGetStartedModalState, selectRegistrationModalState } from './../../../../store/modules/modals/selectors';
-import { closeGetStartedModal, closeRegistrationModal } from './../../../../store/modules/modals/slice';
+import { selectRegistrationModalState } from './../../../../store/modules/modals/selectors';
+import { closeRegistrationModal } from './../../../../store/modules/modals/slice';
 import { useSelector } from 'react-redux';
-import * as UI from './styles';
-
+import { 
+  Modal,
+  Box, 
+  IconButton,
+  Typography,
+  TextField,
+  Select,
+  MenuItem,
+  Button
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import background from './../../../../assets/images/background.png';
+import { 
+  DarkModal,
+  ImageContainer,
+  StyledImage,
+  WelcomeOverlay,
+  FormWrapper,
+  formStyles,
+  welcomeStyles,
+  closeButtonStyles
+} from './styles';
 
 export const RegistrationForm = () => {
   const dispatch = useTypedDispatch();
   const { isOpen } = useSelector(selectRegistrationModalState);
-
-  if (!isOpen) return null;
 
   const handleClose = () => {
     dispatch(closeRegistrationModal());
@@ -18,61 +36,93 @@ export const RegistrationForm = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission logic
-    onClose();
+    handleClose();
   };
 
   return (
-    <UI.ModalOverlay>
-      <UI.ModalContent>
-        <UI.CloseButton onClick={handleClose}>×</UI.CloseButton>
-        <UI.InnerContentWrapper>
-          <UI.Title>Registration</UI.Title>
-          
-          <UI.Form onSubmit={handleSubmit}>
-            <UI.FormGroup>
-              <UI.SectionTitle>Full Name</UI.SectionTitle>
-              <UI.InputLabel>Please enter your Email</UI.InputLabel>
-              <UI.TextInput type="email" placeholder="Email" required />
-              
-              <UI.PhoneInputGroup>
-                <UI.TextInput type="tel" placeholder="Phone number" required />
-              </UI.PhoneInputGroup>
-            </UI.FormGroup>
+    <Modal open={isOpen} onClose={handleClose}>
+      <DarkModal>
+        <IconButton 
+          onClick={handleClose}
+          sx={closeButtonStyles}
+        >
+          <CloseIcon />
+        </IconButton>
 
-            <UI.FormGroup>
-              <UI.SectionTitle>Country</UI.SectionTitle>
-              <UI.InputLabel>Please enter your Password</UI.InputLabel>
-              <UI.TextInput type="password" placeholder="Password" required />
-              
-              
-            </UI.FormGroup>
+        <ImageContainer>
+          <StyledImage src={background} alt="Profile preview" />
+          <WelcomeOverlay>
+            <Typography variant="h4" {...welcomeStyles.title}>
+              Welcome to Our Platform
+            </Typography>
+            <Typography variant="body1" {...welcomeStyles.subtitle}>
+              Join our community and start your journey with us today
+            </Typography>
+          </WelcomeOverlay>
+        </ImageContainer>
 
-            <UI.FormGroup>
-              <UI.SectionTitle>Position you are applying for</UI.SectionTitle>
-              <UI.InputLabel>Please enter your Confirm password</UI.InputLabel>
-              <UI.TextInput type="password" placeholder="Confirm Password" required />
-              
-              <UI.SelectInput required>
-                <option value="">Select your Order</option>
-                {['Order 1', 'Order 2', 'Prefer not to say'].map((order) => (
-                  <option key={order} value={order.toLowerCase().replace(' ', '-')}>
-                    {order}
-                  </option>
-                ))}
-              </UI.SelectInput>
-            </UI.FormGroup>
+        <FormWrapper>
+          <Typography variant="h4" sx={formStyles.title}>
+            Registration
+          </Typography>
 
-            <UI.ButtonGroup>
-              <UI.PrimaryButton type="submit">Complete Registration</UI.PrimaryButton>
-              <UI.SecondaryButton onClick={handleClose}>Cancel</UI.SecondaryButton>
-            </UI.ButtonGroup>
-          </UI.Form>
+          <form onSubmit={handleSubmit}>
+            <TextField
+              fullWidth
+              label="Email"
+              type="email"
+              required
+              sx={formStyles.textField}
+              variant="outlined"
+            />
 
-          <UI.ExistingAccountText>
-            Already have an account? <UI.SignInLink >Sign in</UI.SignInLink>
-          </UI.ExistingAccountText>
-        </UI.InnerContentWrapper>
-      </UI.ModalContent>
-    </UI.ModalOverlay>
+            <TextField
+              fullWidth
+              label="Password"
+              type="password"
+              required
+              sx={formStyles.textField}
+            />
+
+            <TextField
+              fullWidth
+              label="Confirm Password"
+              type="password"
+              required
+              sx={formStyles.textField}
+            />
+
+            <Box sx={formStyles.buttonGroup}>
+              <Button
+                fullWidth
+                type="submit"
+                variant="contained"
+                sx={formStyles.primaryButton}
+              >
+                Complete Registration
+              </Button>
+              <Button
+                fullWidth
+                variant="outlined"
+                onClick={handleClose}
+                sx={formStyles.secondaryButton}
+              >
+                Cancel
+              </Button>
+            </Box>
+
+            <Typography sx={formStyles.existingAccountText}>
+              Already have an account?{' '}
+              <Button 
+                component="span"
+                sx={formStyles.signInButton}
+              >
+                Sign in
+              </Button>
+            </Typography>
+          </form>
+        </FormWrapper>
+      </DarkModal>
+    </Modal>
   );
 };

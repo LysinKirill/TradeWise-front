@@ -12,6 +12,7 @@ import { isDevelopment } from "../src/core/utils/env";
 import Routing from "./pages";
 import { store } from "./../src/core/store";
 import { Provider } from "react-redux";
+import { HeroUIProvider } from "@heroui/react";
 
 ReactDOM.render(
   <StrictMode>

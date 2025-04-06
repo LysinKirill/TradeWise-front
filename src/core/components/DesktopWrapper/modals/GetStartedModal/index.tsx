@@ -16,6 +16,7 @@ const GetStartedModal = () => {
 
   const handleOpenRegistrationModal = () => {
       dispatch(openRegistrationModal());
+      dispatch(closeGetStartedModal());
     };
 
   return (

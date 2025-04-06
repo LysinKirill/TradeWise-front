@@ -2,6 +2,24 @@ import styled from 'styled-components';
 
 import { colors } from '../../constants/colors';
 
+import { createTheme } from '@mui/material/styles';
+
+export const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    background: {
+      default: '#121212',
+      paper: '#1E1E1E',
+    },
+    primary: {
+      main: '#90caf9',
+    },
+  },
+  shape: {
+    borderRadius: 8,
+  },
+});
+
 export const Layout = styled.div`
   * {
     font-family: 'DIN Pro', sans-serif;
