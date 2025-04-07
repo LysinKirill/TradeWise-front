@@ -1,7 +1,7 @@
 import * as UI from "./styles";
 import Logo from "../../../assets/images/Logo.png";
 import { useTypedDispatch } from "../../../store";
-import { openGetStartedModal } from "../../../store/modules/modals/slice";
+import { openAuthModal, openGetStartedModal } from "../../../store/modules/modals/slice";
 
 export const DesktopWelcome = () => {
   const dispatch = useTypedDispatch();
@@ -9,6 +9,11 @@ export const DesktopWelcome = () => {
   const handleOpenGetStartedModal = () => {
     dispatch(openGetStartedModal());
   };
+
+  const handleOpenAuthModal = () => {
+    dispatch(openAuthModal());
+  };
+
   return (
     <UI.Container>
       <UI.Header>
@@ -29,7 +34,7 @@ export const DesktopWelcome = () => {
               developers and traders.
             </UI.Subtitle>
             <UI.ButtonGroup>
-              <UI.PrimaryButton>Sign in</UI.PrimaryButton>
+              <UI.PrimaryButton onClick={handleOpenAuthModal}>Sign in</UI.PrimaryButton>
               <UI.SecondaryButton onClick={handleOpenGetStartedModal}>
                 Get started
               </UI.SecondaryButton>

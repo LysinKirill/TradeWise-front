@@ -65,7 +65,7 @@ export const WelcomeContent = styled.div`
 
 export const WelcomeTitle = styled.h2`
   font-size: 5rem;
-  margin-bottom: 1.5rem;
+  
   line-height: 1.2;
   font-weight: 700;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -104,7 +104,7 @@ export const Title = styled.h2`
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  //gap: 1rem;
 `;
 
 export const ButtonGroup = styled.div`
@@ -174,7 +174,7 @@ export const formStyles = {
     color: '#FFFFFF',
   },
   textField: {
-    mb: 3,
+    mb: 0.5,
     '& .MuiOutlinedInput-root': {
       borderRadius: '8px',
       backgroundColor: colors.backgroundPaper,

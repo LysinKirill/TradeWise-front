@@ -61,11 +61,11 @@ export const WelcomeOverlay = styled.div`
 export const WelcomeContent = styled.div`
   max-width: 600px;
   color: white;
+  
 `;
 
 export const WelcomeTitle = styled.h2`
   font-size: 7rem;
-  margin-bottom: 1.5rem;
   line-height: 1.5;
   font-weight: 700;
   margin-left: 2vw;
