@@ -1,6 +1,6 @@
 import { useTypedDispatch } from './../../../../store';
-import { selectRegistrationModalState } from './../../../../store/modules/modals/selectors';
-import { closeRegistrationModal, openAuthModal } from './../../../../store/modules/modals/slice';
+import { selectAuthModalState } from './../../../../store/modules/modals/selectors';
+import { closeAuthModal, closeRegistrationModal, openRegistrationModal } from './../../../../store/modules/modals/slice';
 import { useSelector } from 'react-redux';
 import background from './../../../../assets/images/background.png'
 import * as UI from './styles';
@@ -8,9 +8,9 @@ import { Box, Button, TextField, Typography } from '@mui/material';
 import { formStyles } from './styles';
 
 
-export const RegistrationForm = () => {
+export const AuthModal = () => {
   const dispatch = useTypedDispatch();
-  const { isOpen } = useSelector(selectRegistrationModalState);
+  const { isOpen } = useSelector(selectAuthModalState);
 
   if (!isOpen) return null;
 
@@ -23,9 +23,9 @@ export const RegistrationForm = () => {
     // Handle form submission logic
   };
 
-  const handleOpenAuthModal = () => {
-    dispatch(openAuthModal());
-    dispatch(closeRegistrationModal());
+  const handleOpenRegistrationModal = () => {
+    dispatch(openRegistrationModal())
+    dispatch(closeAuthModal());
   };
 
   return (
@@ -37,15 +37,15 @@ export const RegistrationForm = () => {
             <UI.ImagePreview src={background} alt="Profile preview" />
             <UI.WelcomeOverlay>
               <UI.WelcomeContent>
-                <UI.WelcomeTitle>Welcome to Our Platform</UI.WelcomeTitle>
+                <UI.WelcomeTitle>Welcome Back!</UI.WelcomeTitle>
                 <UI.WelcomeSubtitle>
-                  Join our community and start your journey with us today
+                 
                 </UI.WelcomeSubtitle>
               </UI.WelcomeContent>
             </UI.WelcomeOverlay>
           </UI.ImageContainer>
           <UI.FormWrapper>
-            <UI.Title>Registration</UI.Title>
+            <UI.Title>Sign in</UI.Title>
 
             <UI.Form onSubmit={handleSubmit}>
               <TextField
@@ -59,24 +59,7 @@ export const RegistrationForm = () => {
 
               <TextField
                 fullWidth
-                label="Full name"
-                type="Full name"
-                required
-                sx={formStyles.textField}
-                variant="outlined"
-              />
-
-              <TextField
-                fullWidth
                 label="Password"
-                type="password"
-                required
-                sx={formStyles.textField}
-              />
-
-              <TextField
-                fullWidth
-                label="Confirm Password"
                 type="password"
                 required
                 sx={formStyles.textField}
@@ -89,7 +72,7 @@ export const RegistrationForm = () => {
                   variant="contained"
                   sx={formStyles.primaryButton}
                 >
-                  Complete Registration
+                  Submit
                 </Button>
                 <Button
                   fullWidth
@@ -103,13 +86,13 @@ export const RegistrationForm = () => {
             </UI.Form>
 
             <Typography sx={formStyles.existingAccountText}>
-              Already have an account?{' '}
+              Do not have an account?{' '}
               <Button
                 component="span"
-                onClick={handleOpenAuthModal}
+                onClick={handleOpenRegistrationModal}
                 sx={formStyles.signInButton}
               >
-                Sign in
+                Sign up
               </Button>
             </Typography>
 

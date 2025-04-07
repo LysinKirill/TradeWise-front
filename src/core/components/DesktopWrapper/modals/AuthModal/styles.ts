@@ -55,7 +55,7 @@ export const WelcomeOverlay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
+  //text-align: center;
 `;
 
 export const WelcomeContent = styled.div`
@@ -64,10 +64,11 @@ export const WelcomeContent = styled.div`
 `;
 
 export const WelcomeTitle = styled.h2`
-  font-size: 5rem;
+  font-size: 7rem;
   margin-bottom: 1.5rem;
-  line-height: 1.2;
+  line-height: 1.5;
   font-weight: 700;
+  margin-left: 2vw;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 `;
 
@@ -91,6 +92,7 @@ export const FormWrapper = styled.div`
   justify-content: center;
   width: 100%;
   max-width: 90vw;
+  
 `;
 
 export const Title = styled.h2`
@@ -102,6 +104,7 @@ export const Title = styled.h2`
 `;
 
 export const Form = styled.form`
+  width: 25vw;
   display: flex;
   flex-direction: column;
   gap: 1rem;

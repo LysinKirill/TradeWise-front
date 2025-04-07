@@ -8,6 +8,7 @@ import { IPropsWithChildren } from '../../utils/types';
 import GetStartedModal from '../DesktopWrapper/modals/GetStartedModal';
 import { RegistrationForm } from '../DesktopWrapper/modals/RegistrationModal';
 import { ThemeProvider } from 'styled-components';
+import { AuthModal } from '../DesktopWrapper/modals/AuthModal';
 
 const Layout = (props: IPropsWithChildren) => {
   const { children } = props;
@@ -18,6 +19,7 @@ const Layout = (props: IPropsWithChildren) => {
       <UI.Layout>
         <GetStartedModal/>
         <RegistrationForm/>
+        <AuthModal/>
         <UI.Container>
           <UI.Header>
           </UI.Header>

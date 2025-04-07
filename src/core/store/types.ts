@@ -23,6 +23,9 @@ export interface IModalState {
   registration: {
     isOpen: boolean,
   };
+  auth: {
+    isOpen: boolean,
+  };
 }
 
 export interface INotificationState {

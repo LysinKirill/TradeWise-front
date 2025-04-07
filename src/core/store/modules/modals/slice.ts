@@ -9,6 +9,9 @@ const initialState: IModalState = {
   registration: {
     isOpen: false,
   },
+  auth: {
+    isOpen: false,
+  },
 };
 
 export const modalSlice = createSlice({
@@ -47,6 +50,22 @@ export const modalSlice = createSlice({
         },
       };
     },
+    openAuthModal(state) {
+      return {
+        ...state,
+        auth: {
+          isOpen: true,  
+        },
+      };
+    },
+    closeAuthModal(state) {
+      return {
+        ...state,
+        auth: {
+          isOpen: false, 
+        },
+      };
+    },
   },
 });
 
@@ -55,6 +74,8 @@ export const {
   closeGetStartedModal,
   openRegistrationModal,
   closeRegistrationModal,
+  openAuthModal,
+  closeAuthModal,
 } = modalSlice.actions;
 
 export default modalSlice.reducer;
