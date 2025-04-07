@@ -1,10 +1,11 @@
-import http from '@core/services/axios';
+import { IUserRegistrationData } from './../../components/DesktopWrapper/modals/RegistrationModal/types';
+import http from './../../services/axios';
 
-export const checkPassword = async (passwordData: string) => {
+export const registerUser = async (userData: IUserRegistrationData) => {
     try {
-      const dataToSend = {
+      /*const dataToSend = {
         password: passwordData,
-      };
+      };*/
   
       const response = await http.post(
         `${process.env.BACKEND_URL}/api/v1/int/check_password`, 

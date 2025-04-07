@@ -10,15 +10,20 @@ import ErrorBoundary from "../src/core/components/ErrorBoundary";
 import Layout from "../src/core/components/Layout";
 import { isDevelopment } from "../src/core/utils/env";
 import Routing from "./pages";
+import { store } from "./../src/core/store";
+import { Provider } from "react-redux";
+import { HeroUIProvider } from "@heroui/react";
 
 ReactDOM.render(
   <StrictMode>
     <ErrorBoundary>
       <StyleSheetManager enableVendorPrefixes={isDevelopment()}>
         <BrowserRouter>
-          <Layout>
-            <Routing />
-          </Layout>
+          <Provider store={store}>
+            <Layout>
+              <Routing />
+            </Layout>
+          </Provider>
         </BrowserRouter>
       </StyleSheetManager>
     </ErrorBoundary>

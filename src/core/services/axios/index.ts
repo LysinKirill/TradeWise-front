@@ -26,6 +26,22 @@ class Http implements IAxios {
       },
     });
     this.requests = {};
+
+    this.http.interceptors.request.use(
+      (config) => {
+        //const token = keycloak.token;
+       // if (token) {
+         // config.headers.Authorization = `Bearer ${token}`;
+       // }
+
+       //WRITE LOGIC FOR ADDING TOKEN, ADD AUTH PROVIDER 
+
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      },
+    );
   }
 
   private async request<T>(requestConfig: TRequestConfig): Promise<AxiosResponse<T>> {

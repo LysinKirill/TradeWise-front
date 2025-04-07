@@ -1,8 +1,19 @@
 import * as UI from "./styles";
 import Logo from "../../../assets/images/Logo.png";
-import { IDesktopWelcomeProps } from "./types";
+import { useTypedDispatch } from "../../../store";
+import { openAuthModal, openGetStartedModal } from "../../../store/modules/modals/slice";
 
-export const DesktopWelcome = ({ onGetStartedClick }: IDesktopWelcomeProps) => {
+export const DesktopWelcome = () => {
+  const dispatch = useTypedDispatch();
+
+  const handleOpenGetStartedModal = () => {
+    dispatch(openGetStartedModal());
+  };
+
+  const handleOpenAuthModal = () => {
+    dispatch(openAuthModal());
+  };
+
   return (
     <UI.Container>
       <UI.Header>
@@ -23,8 +34,8 @@ export const DesktopWelcome = ({ onGetStartedClick }: IDesktopWelcomeProps) => {
               developers and traders.
             </UI.Subtitle>
             <UI.ButtonGroup>
-              <UI.PrimaryButton>Sign in</UI.PrimaryButton>
-              <UI.SecondaryButton onClick={onGetStartedClick}>
+              <UI.PrimaryButton onClick={handleOpenAuthModal}>Sign in</UI.PrimaryButton>
+              <UI.SecondaryButton onClick={handleOpenGetStartedModal}>
                 Get started
               </UI.SecondaryButton>
             </UI.ButtonGroup>

@@ -6,12 +6,12 @@ export const Container = styled.div`
   min-height: 100vh;
   height: 70vh;
   padding: 0px;
+  
 `;
 
 export const Header = styled.header`
   max-width: 100vw;
   width: 100%;
-  
   position: fixed; 
 
   &::after {
