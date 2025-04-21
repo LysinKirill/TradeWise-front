@@ -1,22 +1,16 @@
 import * as UI from './styles';
-import { useMediaQuery } from '../../core/hooks/useMediaQuery';
-import { MobileWelcome } from '../../core/components/Mobile/WelcomePage';
-import DesktopWrapper from '../../core/components/DesktopWrapper';
+import { useMediaQuery } from '@shared/hooks/useMediaQuery';
+import { WelcomeWrapper } from '../welcome';
+
 
 const Root = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   
   return (
     <UI.Container>
-      {isMobile ? (
-        <UI.MobileWrapper>
-          <MobileWelcome /> 
-        </UI.MobileWrapper>
-      ) : (
-        <UI.DesktopWrapper>
-          <DesktopWrapper />
-        </UI.DesktopWrapper>
-      )}
+        <UI.Wrapper>
+          <WelcomeWrapper isMobile={isMobile}/>
+        </UI.Wrapper>
     </UI.Container>
   );
 };
