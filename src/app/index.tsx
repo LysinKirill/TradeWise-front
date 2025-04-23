@@ -12,19 +12,22 @@ import { Provider } from "react-redux";
 import { store } from "./store";
 import Routing from "../pages";
 import { isDevelopment } from "../shared/utils/env";
+import { AppThemeProvider } from "@app/providers/AppThemeProvider";
 
 
 ReactDOM.render(
   <StrictMode>
     <ErrorBoundary>
       <StyleSheetManager enableVendorPrefixes={isDevelopment()}>
-        <AuthProvider>
-          <BrowserRouter>
-            <Provider store={store}>
+        <AppThemeProvider>
+          <AuthProvider>
+            <BrowserRouter>
+              <Provider store={store}>
                 <Routing />
-            </Provider>
-          </BrowserRouter>
-        </AuthProvider>
+              </Provider>
+            </BrowserRouter>
+          </AuthProvider>
+        </AppThemeProvider>
       </StyleSheetManager>
     </ErrorBoundary>
   </StrictMode>,
