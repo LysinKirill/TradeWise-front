@@ -4,10 +4,6 @@ export const Container = styled.div`
   //height: 100vh;
 `;
 
-export const MobileWrapper = styled.div`
+export const Wrapper = styled.div`
   // Mobile specific styles
-`;
-
-export const DesktopWrapper = styled.div`
-  // Desktop specific styles
 `;

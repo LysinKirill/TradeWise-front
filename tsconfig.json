@@ -13,7 +13,7 @@
     "target": "es5",
     "removeComments": true,
     "noEmit": true,
-    "isolatedModules": false,
+    "isolatedModules": true, //change if you make local build 
     "strict": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
@@ -34,7 +34,9 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "*.d.ts",
-    "*.spec.tsx"
+    "*.spec.tsx",
+    "./*.ts",
+    "./*.tsx",
   ],
   "exclude": [
     "node_modules",
