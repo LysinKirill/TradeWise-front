@@ -1,6 +1,7 @@
+
+import { IUserAuthData } from "@/shared/ui/components/Modals/AuthModal/types";
 import { IUserRegistrationData } from "@/shared/ui/components/Modals/RegistrationModal/types";
 import http from "../axios-client";
-import { IUserAuthData } from "@/shared/ui/components/Modals/AuthModal/types";
 
 export const registerUser = async (userData: IUserRegistrationData) => {
     try {
