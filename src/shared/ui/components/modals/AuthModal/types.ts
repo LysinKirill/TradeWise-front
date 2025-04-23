@@ -1,7 +1,4 @@
-export interface IUserAuthData {
-  email: string;
-  password: string;
-}
+import { IUserAuthData } from "@/features/auth/types";
 
 export type TFormFieldConfig = {
   name: keyof IUserAuthData;
