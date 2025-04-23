@@ -9,9 +9,14 @@ import { IUserAuthData } from './types';
 import { closeAuthModal, openRegistrationModal } from '@/app/store/modules/modals/slice';
 import { authFormFields } from './constants';
 import { authUser } from '@/shared/api/users';
+import { ROUTES } from '@/shared/constants/routes';
+import { useAuth } from '@/app/providers/AuthProvider';
+import { useNavigate } from 'react-router-dom';
 
 export const AuthModal = () => {
   const dispatch = useTypedDispatch();
+  const navigate = useNavigate();
+  const { login } = useAuth();
   const { isOpen } = useSelector(selectAuthModalState);
   const [formData, setFormData] = useState<IUserAuthData>({
     email: '',
@@ -78,12 +83,19 @@ export const AuthModal = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    //if (!validateForm()) return;
 
     setIsSubmitting(true);
     try {
-      await authUser(formData);
+      const userData = await authUser(formData);
       dispatch(closeAuthModal());
+      
+      login({
+        email: userData.email,
+        fullName: userData.fullName
+      });
+
+      navigate(ROUTES.DASHBOARD);
       // Optional: Add success handling or redirect
     } catch (error) {
       console.error('Login error:', error);

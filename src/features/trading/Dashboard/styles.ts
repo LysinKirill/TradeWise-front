@@ -1,4 +1,3 @@
-// styles.ts
 import styled from "styled-components";
 import { TableCell as MuiTableCell, TableRow as MuiTableRow, } from "@mui/material";
 

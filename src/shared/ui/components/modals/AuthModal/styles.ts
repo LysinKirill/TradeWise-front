@@ -1,5 +1,4 @@
-//import { colors } from './../../../../constants/colors';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const ModalOverlay = styled.div`
   position: fixed;
@@ -12,6 +11,11 @@ export const ModalOverlay = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 10000;
+
+  ${({ theme }) => theme.isMobile && css`
+    align-items: flex-end;
+    background: rgba(0, 0, 0, 0.8);
+  `}
 `;
 
 export const ModalContent = styled.div`
@@ -23,6 +27,13 @@ export const ModalContent = styled.div`
   height: 90%;
   max-height: 1000px;
   position: relative;
+
+  ${({ theme }) => theme.isMobile && css`
+    width: 100%;
+    height: 95vh;
+    max-height: none;
+    border-radius: 24px 24px 0 0;
+  `}
 `;
 
 export const CloseButton = styled.button`
@@ -34,15 +45,31 @@ export const CloseButton = styled.button`
   font-size: 1.5rem;
   cursor: pointer;
   color: #666;
+
+  ${({ theme }) => theme.isMobile && css`
+    top: 0.8rem;
+    right: 0.8rem;
+    font-size: 2rem;
+    color: white;
+  `}
 `;
 
 export const ImagePreview = styled.img`
   height: 90vh;
   object-fit: cover;
+  border-radius: 16px;
+
+  ${({ theme }) => theme.isMobile && css`
+    height: 40vh;
+  `}
 `;
 
 export const ImageContainer = styled.div`
   position: relative;
+
+  ${({ theme }) => theme.isMobile && css`
+    display: none;
+  `}
 `;
 
 export const WelcomeOverlay = styled.div`
@@ -55,7 +82,7 @@ export const WelcomeOverlay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  //text-align: center;
+  
 `;
 
 export const WelcomeContent = styled.div`
@@ -70,6 +97,12 @@ export const WelcomeTitle = styled.h2`
   font-weight: 700;
   margin-left: 2vw;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+
+  ${({ theme }) => theme.isMobile && css`
+    font-size: 2.5rem;
+    line-height: 1.3;
+    margin-left: 0;
+  `}
 `;
 
 export const WelcomeSubtitle = styled.p`
@@ -83,6 +116,13 @@ export const WelcomeSubtitle = styled.p`
 export const InnerContentWrapper = styled.div`
   padding: 0rem;
   display: flex;
+  gap: 5rem;
+
+  ${({ theme }) => theme.isMobile && css`
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  `}
 `;
 
 export const FormWrapper = styled.div`
@@ -91,28 +131,41 @@ export const FormWrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 90vw;
-  
+  max-width: 30vw;
+
+  ${({ theme }) => theme.isMobile && css`
+    max-width: 100%;
+    padding: 1rem;
+    justify-content: flex-start;
+  `}
 `;
 
 export const Title = styled.h2`
   font-size: 2.5rem;
   color: white;
-  margin-bottom: 1.5;
+  margin-bottom: 2rem;
   text-align: center;
   text-shadow: 0 0 10px rgba(255, 255, 255, 0), 0 0 20px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.4); 
+
+  ${({ theme }) => theme.isMobile && css`
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  `}
 `;
 
 export const Form = styled.form`
   width: 25vw;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+
+  ${({ theme }) => theme.isMobile && css`
+    width: 100%;
+    padding: 0 1rem;
+  `}
 `;
 
 export const ButtonGroup = styled.div`
   display: flex;
-  //gap: 1rem;
   margin-top: 1rem;
 `;
 

@@ -1,5 +1,6 @@
-import { IUserRegistrationData } from "@/shared/ui/components/modals/RegistrationModal/types";
+import { IUserRegistrationData } from "@/shared/ui/components/Modals/RegistrationModal/types";
 import http from "../axios-client";
+import { IUserAuthData } from "@/shared/ui/components/Modals/AuthModal/types";
 
 export const registerUser = async (userData: IUserRegistrationData) => {
     try {
@@ -16,10 +17,10 @@ export const registerUser = async (userData: IUserRegistrationData) => {
     }
 };
 
-export const authUser = async (userData: IUserRegistrationData) => {
+export const authUser = async (userData: IUserAuthData) => {
   try {
     const response = await http.post(
-      `/api/v1/register`, 
+      `/api/v1/login`, 
       userData,   
     );
     

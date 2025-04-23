@@ -1,4 +1,4 @@
-import { TFormFieldConfig } from "./types";
+import { TFormFieldConfig } from './types';
 
 export const authFormFields: TFormFieldConfig[] = [
   {

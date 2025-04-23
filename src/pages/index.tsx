@@ -4,9 +4,9 @@ import { ROUTES } from '../shared/constants/routes';
 import Layout from '../shared/ui/components/Layout';
 import { Loading } from '../shared/ui/components/Loading';
 import { WelcomeWrapper } from './welcome';
+import { ProtectedRoute } from '../features/auth/routes/ProtectedRoute';
+import { PublicRoute } from '../features/auth/routes/PublicRoute';
 
-// Lazy load all page components
-const Root = lazy(() => import('./root'));
 const Dashboard = lazy(() => import('./dashboard'));
 const Strategies = lazy(() => import('./strategies'));
 const Research = lazy(() => import('./research'));
@@ -20,10 +20,13 @@ const Routing = () => (
   <Suspense fallback={<Loading />}>
     <Routes>
       <Route element={<Layout />}>
-        <Route index path={ROUTES.ROOT} element={<Root />} />
+       {/* Public routes */}
+       <Route element={<PublicRoute />}>
+          <Route index path={ROUTES.ROOT} element={<WelcomeWrapper />} />
+        </Route>
 
-        {/* Authenticated routes */}
-        <Route element={<WelcomeWrapper isMobile={false} />}>
+        {/* Protected routes */}
+        <Route element={<ProtectedRoute  />}>
           <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
           <Route path={ROUTES.STRATEGIES} element={<Strategies />} />
           <Route path={ROUTES.RESEARCH} element={<Research />} />
@@ -35,6 +38,7 @@ const Routing = () => (
         {/* Other routes */}
         <Route path={ROUTES.PROFILE} element={<Profile />} />
         <Route path={ROUTES.SETTINGS} element={<Settings />} />
+
         <Route path="*" element={<Navigate to={ROUTES.ROOT} />} />
       </Route>
     </Routes>
@@ -42,3 +46,4 @@ const Routing = () => (
 );
 
 export default Routing;
+

@@ -4,11 +4,12 @@ import { Loading } from '../Loading';
 
 import * as UI from './Layout.styles';
 
-import GetStartedModal from '../modals/GetStartedModal';
-import { RegistrationForm } from '../modals/RegistrationModal';
+import GetStartedModal from '../Modals/GetStartedModal';
+import { RegistrationForm } from '../Modals/RegistrationModal';
 import { ThemeProvider } from 'styled-components';
-import { AuthModal } from '../modals/AuthModal';
+import { AuthModal } from '../Modals/AuthModal';
 import { Outlet } from 'react-router-dom';
+import Header from '../Header';
 
 const Layout = () => {
 
@@ -20,8 +21,7 @@ const Layout = () => {
           <RegistrationForm />
           <AuthModal />
           <UI.Container>
-            <UI.Header>
-            </UI.Header>
+            <Header />
             <UI.Wrapper>
               <Outlet />
             </UI.Wrapper>

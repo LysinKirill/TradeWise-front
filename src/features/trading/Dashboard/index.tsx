@@ -1,4 +1,4 @@
-import { useAuth } from "../../../app/providers/AuthProvider";
+import { useAuth } from "@app/providers/AuthProvider";
 import * as UI from './styles';
 
 export const Dashboard = () => {
