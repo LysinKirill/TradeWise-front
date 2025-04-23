@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { ManifestOptions, VitePWA } from "vite-plugin-pwa";
+import path from 'path';
 
 const manifest: Partial<ManifestOptions> | false = {
   theme_color: "#8936FF",
@@ -51,4 +52,22 @@ export default defineConfig({
       manifest: manifest,
     }),
   ],
+  resolve: {
+    alias: {
+      // Base aliases
+      '@': path.resolve(__dirname, './src'),
+      '@app': path.resolve(__dirname, './src/app'),
+      '@features': path.resolve(__dirname, './src/features'),
+      '@shared': path.resolve(__dirname, './src/shared'),
+      '@pages': path.resolve(__dirname, './src/pages'),
+      '@assets': path.resolve(__dirname, './src/assets'),
+      
+      // Detailed aliases
+      '@ui': path.resolve(__dirname, './src/shared/ui'),
+      '@constants': path.resolve(__dirname, './src/shared/constants'),
+      '@hooks': path.resolve(__dirname, './src/shared/hooks'),
+      '@services': path.resolve(__dirname, './src/shared/api'),
+      '@store': path.resolve(__dirname, './src/app/store'),
+    }
+  }
 });

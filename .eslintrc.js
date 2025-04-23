@@ -295,6 +295,21 @@ module.exports = {
       },
     ],
   },
+  settings: {
+    react: {
+      version: 'detect',
+    },
+    'import/resolver': {
+      alias: {
+        map: [
+          ["@", "./src"],
+          ["@features", "./src/features"],
+          ["@shared", "./src/shared"]
+        ],
+        extensions: [".ts", ".tsx", ".js", ".jsx"]
+      }
+    }
+  },
 
   overrides: [],
 };

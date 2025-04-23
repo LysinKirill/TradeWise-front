@@ -1,0 +1,33 @@
+import { IUserRegistrationData } from "@/shared/ui/components/Modals/RegistrationModal/types";
+import http from "../axios-client";
+import { IUserAuthData } from "@/shared/ui/components/Modals/AuthModal/types";
+
+export const registerUser = async (userData: IUserRegistrationData) => {
+    try {
+      const response = await http.post(
+        `/api/v1/register`, 
+        userData,   
+      );
+      
+      return response;
+    } catch (error) {
+      console.error(error);
+      
+      return error.response;
+    }
+};
+
+export const authUser = async (userData: IUserAuthData) => {
+  try {
+    const response = await http.post(
+      `/api/v1/login`, 
+      userData,   
+    );
+    
+    return response;
+  } catch (error) {
+    console.error(error);
+    
+    return error.response;
+  }
+};
