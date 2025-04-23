@@ -5,13 +5,13 @@ import { Box, Button, TextField, Typography } from '@mui/material';
 import { useTypedDispatch } from '@/app/store';
 import { selectAuthModalState } from '@/app/store/modules/modals/selectors';
 import { useState } from 'react';
-import { IUserAuthData } from './types';
 import { closeAuthModal, openRegistrationModal } from '@/app/store/modules/modals/slice';
 import { authFormFields } from './constants';
 import { authUser } from '@/shared/api/users';
 import { ROUTES } from '@/shared/constants/routes';
 import { useAuth } from '@/app/providers/AuthProvider';
 import { useNavigate } from 'react-router-dom';
+import { IUserAuthData } from '@/features/auth/types';
 
 export const AuthModal = () => {
   const dispatch = useTypedDispatch();
@@ -67,18 +67,18 @@ export const AuthModal = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev: IUserAuthData) => ({ ...prev, [name]: value }));
     
     if (errors[name]) {
       const error = validateField(name, value);
-      setErrors(prev => ({ ...prev, [name]: error }));
+      setErrors((prev: Record<string, string>) => ({ ...prev, [name]: error }));
     }
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const error = validateField(name, value);
-    setErrors(prev => ({ ...prev, [name]: error }));
+    setErrors((prev: Record<string, string>) => ({ ...prev, [name]: error }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

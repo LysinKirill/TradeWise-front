@@ -8,10 +8,10 @@ import { useSelector } from 'react-redux';
 import { formFields } from './constants';
 import * as UI from './styles';
 import { Box, Button, TextField, Typography } from '@mui/material';
-import { IUserRegistrationData } from './types';
 import background from '@assets/images/background.png';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/app/providers/AuthProvider';
+import { IUserRegistrationData } from '@/features/auth/types';
 
 export const RegistrationForm = () => {
   const dispatch = useTypedDispatch();
@@ -74,18 +74,18 @@ export const RegistrationForm = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev: IUserRegistrationData) => ({ ...prev, [name]: value }));
 
     if (errors[name]) {
       const error = validateField(name, value);
-      setErrors(prev => ({ ...prev, [name]: error }));
+      setErrors((prev: Record<string, string>) => ({ ...prev, [name]: error }));
     }
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const error = validateField(name, value);
-    setErrors(prev => ({ ...prev, [name]: error }));
+    setErrors((prev: Record<string, string>) => ({ ...prev, [name]: error }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
