@@ -76,7 +76,7 @@ export const LogoIcon = styled.img`
 export const HeaderRight = styled.div`
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 0.5rem;
 
   ${({ theme }) => theme.isMobile && css`
     gap: 0.8rem;
@@ -132,4 +132,82 @@ export const LogoutIcon = styled.span`
   height: 20px;
   background: url(${logoutIcon}) center/contain no-repeat;
   filter: brightness(0) invert(1);
+`;
+
+export const MenuButton = styled.button`
+  background: none;
+  border: none;
+  color: white;
+  padding: 0.5rem;
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+`;
+
+export const HamburgerIcon = styled.span`
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: white;
+  position: relative;
+  
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 2px;
+    background: white;
+    left: 0;
+  }
+  
+  &::before { top: -6px; }
+  &::after { bottom: -6px; }
+`;
+
+export const MobileSidebar = styled.div<{ $isOpen: boolean }>`
+  position: fixed;
+  top: 0;
+  left: ${({ $isOpen }) => ($isOpen ? '0' : '-100%')};
+  width: 80%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(10px);
+  z-index: 1100;
+  transition: left 0.3s ease;
+  padding: 1rem;
+`;
+
+export const SidebarContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`;
+
+export const SidebarHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+`;
+
+export const UserInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
+export const CloseButton = styled.button`
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+`;
+
+export const SidebarFooter = styled.div`
+  margin-top: auto;
+  padding-top: 2rem;
 `;

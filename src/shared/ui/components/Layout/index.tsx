@@ -10,8 +10,11 @@ import Header from '../Header';
 import { AuthModal } from '@shared/ui/components/Modals/AuthModal';
 import GetStartedModal from '@shared/ui/components/Modals/GetStartedModal';
 import { RegistrationForm } from '@shared/ui/components/Modals/RegistrationModal';
+import MobileBottomNav from '../Navigation/components/MobileBottomNav';
+import { useMediaQuery } from '@/shared/hooks/useMediaQuery';
 
 const Layout = () => {
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <Suspense fallback={<Loading />}>
@@ -22,9 +25,10 @@ const Layout = () => {
           <AuthModal />
           <UI.Container>
             <Header />
-            <UI.Wrapper>
+            <UI.Wrapper isMobile={isMobile}>
               <Outlet />
             </UI.Wrapper>
+            {isMobile && <MobileBottomNav />}
           </UI.Container>
         </UI.Layout>
       </ThemeProvider>

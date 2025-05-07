@@ -42,3 +42,39 @@ export const colors: Record<TColors, string> = {
   purpleButton: '#801AE5',
   darkPurpleButton: '#302938',
 };
+
+export const chartColors = {
+  primary: '#90caf9',  // Light blue
+  secondary: '#64b5f6', // Medium blue
+  tertiary: '#42a5f5',  // Darker blue
+  accent: '#2196f3',    // Deep blue
+  positive: '#4caf50',  // Green for gains
+  negative: '#f44336',  // Red for losses
+  neutral: '#9e9e9e',   // Grey for neutral
+  background: '#1e1e1e', // Chart background
+  textPrimary: '#ffffff',
+  textSecondary: '#b3b3b3'
+};
+
+export const COLORS = [
+  chartColors.primary,
+  chartColors.secondary,
+  chartColors.tertiary,
+  chartColors.accent,
+  '#7e57c2',  // Purple
+  '#ffa726',  // Orange
+  '#26a69a',  // Teal
+  '#ec407a'   // Pink
+];
+
+export const centerLabelGradient = `linear-gradient(
+  135deg,
+  ${chartColors.primary} 0%,
+  ${chartColors.secondary} 100%
+)`;
+
+export const statusColors = {
+  positive: chartColors.positive,
+  negative: chartColors.negative,
+  neutral: chartColors.neutral
+};
