@@ -1,7 +1,12 @@
+// src/features/dashboard/index.tsx
 import { useAuth } from "@app/providers/AuthProvider";
+import { StatsCard } from './components/StatsCard';
+import { PortfolioChart } from './components/PortfolioChart';
+import { TradingTable } from './components/TradingTable';
+import { mockStats, mockPortfolioData, mockTrades } from './mocks';
 import * as UI from './styles';
 
-export const Dashboard = () => {
+const Dashboard = () => {
   const { user } = useAuth();
 
   return (
@@ -12,18 +17,9 @@ export const Dashboard = () => {
       </UI.DashboardHeader>
 
       <UI.StatsContainer>
-        <UI.StatCard>
-          <UI.StatLabel>Total balance</UI.StatLabel>
-          <UI.StatValue>$5,739.40</UI.StatValue>
-        </UI.StatCard>
-        <UI.StatCard>
-          <UI.StatLabel>Today's P/L</UI.StatLabel>
-          <UI.StatValue >+$1,129.40</UI.StatValue>
-        </UI.StatCard>
-        <UI.StatCard>
-          <UI.StatLabel>Active strategies</UI.StatLabel>
-          <UI.StatValue>15</UI.StatValue>
-        </UI.StatCard>
+        <StatsCard title="Total balance" value={`$${mockStats.balance.toLocaleString()}`} />
+        <StatsCard title="Today's P/L" value={`$${mockStats.dailyPL.toLocaleString()}`} />
+        <StatsCard title="Active strategies" value={mockStats.strategies} />
       </UI.StatsContainer>
 
       <UI.MainContent>
@@ -31,7 +27,7 @@ export const Dashboard = () => {
           <UI.SearchInput placeholder="Search for algo by name" />
           <UI.Section>
             <UI.SectionTitle>Portfolio distribution</UI.SectionTitle>
-            {/* Add chart component here */}
+            <PortfolioChart data={mockPortfolioData} />
           </UI.Section>
           <UI.Section>
             <UI.SectionTitle>Strategy</UI.SectionTitle>
@@ -42,30 +38,7 @@ export const Dashboard = () => {
         <UI.RightPanel>
           <UI.Section>
             <UI.SectionTitle>Long Trade performance</UI.SectionTitle>
-            <UI.Table>
-              <UI.TableHeader>
-                <UI.StyledTableRow>
-                  <UI.TableHeaderCell>Symbol</UI.TableHeaderCell>
-                  <UI.TableHeaderCell>Quantity</UI.TableHeaderCell>
-                  <UI.TableHeaderCell>Price</UI.TableHeaderCell>
-                  <UI.TableHeaderCell>P/L</UI.TableHeaderCell>
-                  <UI.TableHeaderCell>P/L %</UI.TableHeaderCell>
-                  <UI.TableHeaderCell>Time</UI.TableHeaderCell>
-                </UI.StyledTableRow>
-              </UI.TableHeader>
-              <UI.TableBody>
-                {/* Map through trades data */}
-                <UI.StyledTableRow>
-                  <UI.StyledTableCell>BTC/USD</UI.StyledTableCell>
-                  <UI.StyledTableCell>0.5</UI.StyledTableCell>
-                  <UI.StyledTableCell>$30,000</UI.StyledTableCell>
-                  <UI.StyledTableCell >-$1,129.40</UI.StyledTableCell>
-                  <UI.StyledTableCell >-3.76%</UI.StyledTableCell>
-                  <UI.StyledTableCell>2:35 PM</UI.StyledTableCell>
-                </UI.StyledTableRow>
-                {/* Add other rows similarly */}
-              </UI.TableBody>
-            </UI.Table>
+            <TradingTable data={mockTrades} />
           </UI.Section>
         </UI.RightPanel>
       </UI.MainContent>
@@ -80,3 +53,5 @@ export const Dashboard = () => {
     </UI.DashboardContainer>
   );
 };
+
+export default Dashboard;

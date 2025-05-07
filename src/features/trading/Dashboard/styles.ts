@@ -2,14 +2,13 @@ import styled from "styled-components";
 import { TableCell as MuiTableCell, TableRow as MuiTableRow, } from "@mui/material";
 
 export const DashboardContainer = styled.div`
-  padding: 1rem;
-  padding-top: 10rem;
-  width: 95vw;
+  
+  //width: 95vw;
   margin: 0 auto;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  
+  color: #fff;
 `;
 
 export const DashboardHeader = styled.div`
@@ -33,26 +32,6 @@ export const StatsContainer = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
   margin-bottom: 3rem;
-`;
-
-export const StatCard = styled.div`
-  background: ${({ theme }) => theme.cardBackground};
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: ${({ theme }) => theme.cardShadow};
-`;
-
-export const StatLabel = styled.div`
-  font-size: 1rem;
-  color: ${({ theme }) => theme.textSecondary};
-  margin-bottom: 0.5rem;
-`;
-
-export const StatValue = styled.div<{ $positive?: boolean }>`
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: ${({ $positive, theme }) => 
-    $positive ? theme.successColor : $positive === false ? theme.errorColor : theme.textPrimary};
 `;
 
 export const MainContent = styled.div`
@@ -102,34 +81,6 @@ export const SearchInput = styled.input`
     border-color: ${({ theme }) => theme.primaryColor};
   }
 `;
-
-export const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-`;
-
-export const TableHeader = styled.thead`
-  background: ${({ theme }) => theme.tableHeaderBackground};
-`;
-
-export const StyledTableCell = styled(MuiTableCell)<{ $negative?: boolean }>`
-  color: ${({ $negative, theme }) => 
-    $negative ? theme.errorColor : theme.textPrimary} !important;
-  padding: 1rem !important;
-`;
-
-export const StyledTableRow = styled(MuiTableRow)`
-  border-bottom: 1px solid ${({ theme }) => theme.borderColor};
-`;
-
-export const TableHeaderCell = styled(MuiTableCell)`
-  font-weight: 600 !important;
-  color: ${({ theme }) => theme.textPrimary} !important;
-  padding: 1rem !important;
-`;
-
-export const TableBody = styled.tbody``;
 
 export const Footer = styled.footer`
   margin-top: auto;
