@@ -36,7 +36,8 @@ export const Container = styled.main`
 export const Wrapper = styled.div<{ isMobile: boolean }>`
   min-height: 100vh;
   margin: 0 auto;
-  padding: 5rem;
+  //padding: 1rem;
+  padding-top: 5rem;
   
   ${({ theme }) => theme.isMobile && css`
     padding-bottom: 80px;

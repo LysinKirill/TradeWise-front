@@ -13,6 +13,8 @@ import { store } from "./store";
 import Routing from "../pages";
 import { isDevelopment } from "../shared/utils/env";
 import { AppThemeProvider } from "@app/providers/AppThemeProvider";
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 
 ReactDOM.render(
@@ -23,7 +25,9 @@ ReactDOM.render(
           <AuthProvider>
             <BrowserRouter>
               <Provider store={store}>
-                <Routing />
+                <DndProvider backend={HTML5Backend}>
+                  <Routing />
+                </DndProvider>
               </Provider>
             </BrowserRouter>
           </AuthProvider>
