@@ -1,8 +1,6 @@
 import styled from "styled-components";
-import { TableCell as MuiTableCell, TableRow as MuiTableRow, } from "@mui/material";
 
 export const DashboardContainer = styled.div`
-  
   //width: 95vw;
   margin: 0 auto;
   min-height: 100vh;
