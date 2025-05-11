@@ -1,6 +1,6 @@
 // src/features/trading/strategies/hooks/useStrategyBuilder.ts
 import { useState, useEffect } from 'react';
-import { IStrategy, IStrategyNode, IStrategyConnection } from '../types';
+import { IStrategy, IStrategyNode, IStrategyConnection, IConnectionPreset } from '../types';
 
 export const useStrategyBuilder = (initialStrategy?: IStrategy) => {
   const [strategy, setStrategy] = useState<IStrategy>(initialStrategy || {
@@ -43,11 +43,18 @@ export const useStrategyBuilder = (initialStrategy?: IStrategy) => {
     }));
   };
 
-  const handleAddConnection = (connection: IStrategyConnection) => {
-    setStrategy(prev => ({
-      ...prev,
-      connections: [...prev.connections, connection]
-    }));
+  const handleAddConnection = (conn: IStrategyConnection | IConnectionPreset) => {
+    const newConn = 'id' in conn && 'source' in conn && 'target' in conn
+      ? conn
+      : {
+          id: `conn-${Date.now()}`,
+          source: 'source-id', 
+          target: 'target-id',
+          conditions: [],
+          ...conn
+        };
+  
+    updateProperty('connections', [...strategy.connections, newConn]);
   };
 
   const handleValidate = async () => {
@@ -77,8 +84,7 @@ export const useStrategyBuilder = (initialStrategy?: IStrategy) => {
   };
 
   const handleRemoveConnection = (connectionId: string) => {
-    const newConnections = connections.filter(c => c.id !== connectionId);
-    setConnections(newConnections);
+    updateProperty('connections', strategy.connections.filter(c => c.id !== connectionId));
   };
 
   const handleCommitStrategy = async () => {

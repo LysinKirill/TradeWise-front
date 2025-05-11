@@ -36,9 +36,7 @@ const Strategies = () => {
         connections={connections}
         stages={strategy.stages}
         onConnectionsChange={handleConnectionsChange}
-        onNodesChange={function (nodes: IStrategyNode[]): void {
-          throw new Error('Function not implemented.');
-        }} 
+        onNodesChange={handleNodesChange} 
       />
       <ConnectionsPanel
         connections={connections}

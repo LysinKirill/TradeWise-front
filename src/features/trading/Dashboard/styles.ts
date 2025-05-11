@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export const DashboardContainer = styled.div`
-  //width: 95vw;
   margin: 0 auto;
   min-height: 100vh;
   display: flex;

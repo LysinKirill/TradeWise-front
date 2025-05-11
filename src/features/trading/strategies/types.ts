@@ -20,6 +20,7 @@ export interface IConnectionCondition {
 }
 
 export interface IStrategyNode {
+  name: string | undefined;
   id: string;
   type: NodeType;
   label?: string;
@@ -94,6 +95,8 @@ export interface IStrategyNodeProps {
   onConnect: (source: string, target: string) => void;
   onPositionChange: (position: IPosition) => void;
   onRemove?: (nodeId: string) => void;
+  onStartConnect?: (sourceId: string) => void;
+  onCompleteConnect?: (targetId: string) => void;
 }
 
 export interface IConnectionsPanelProps {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useRef, useState } from 'react';
 import * as UI from './styles';
@@ -7,8 +8,8 @@ import { IStrategyNode, IStrategyConnection, StageType, NodeType } from '../../t
 
 interface CanvasAreaProps {
   stages: StageType[];
-  nodes?: IStrategyNode[]; // Делаем опциональным
-  connections?: IStrategyConnection[]; // Делаем опциональным
+  nodes?: IStrategyNode[];
+  connections?: IStrategyConnection[];
   onNodesChange: (nodes: IStrategyNode[]) => void;
   onConnectionsChange: (connections: IStrategyConnection[]) => void;
 }
@@ -22,8 +23,7 @@ export const CanvasArea = ({
 }: CanvasAreaProps) => {
   const canvasRef = useRef<HTMLDivElement>(null);
   const [draggingNode, setDraggingNode] = useState<string | null>(null);
-  const [dropZoneActive, setDropZoneActive] = useState(false);
-
+  const [connectingFrom, setConnectingFrom] = useState<string | null>(null);
 
   const nodesSafe = Array.isArray(nodes) ? nodes : [];
   const connectionsSafe = Array.isArray(connections) ? connections : [];
@@ -43,7 +43,8 @@ export const CanvasArea = ({
 
   const getStageIndex = (x: number) => {
     const stagePositions = calculateStagePositions();
-    return stagePositions.findIndex(pos => x < pos) - 1;
+    const index = stagePositions.findIndex(pos => x < pos);
+    return index === -1 ? stagePositions.length - 1 : Math.max(0, index - 1);
   };
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -54,7 +55,6 @@ export const CanvasArea = ({
     const x = e.clientX - rect.left - 20;
     const y = e.clientY - rect.top - 20;
 
-    // Запрещаем перемещение стартовой ноды
     const draggedNode = nodesSafe.find(n => n.id === draggingNode);
     if (draggedNode?.type === 'start') return;
 
@@ -67,10 +67,9 @@ export const CanvasArea = ({
     e.preventDefault();
     const type = e.dataTransfer.getData('type') as NodeType;
     if (type === 'start') return;
+
     const stagePositions = calculateStagePositions();
     const rect = canvasRef.current?.getBoundingClientRect();
-
-
 
     if (rect) {
       const x = e.clientX - rect.left;
@@ -93,10 +92,10 @@ export const CanvasArea = ({
         label: type === 'start' ? 'Start' : undefined
       };
 
-      onNodesChange([...nodes, newNode]);
+      onNodesChange([...nodesSafe, newNode]);
     }
     setDraggingNode(null);
-  }, [nodes, stages]);
+  }, [nodesSafe, stages]);
 
   const handleConnect = useCallback((sourceId: string, targetId: string) => {
     const newConnection: IStrategyConnection = {
@@ -114,7 +113,6 @@ export const CanvasArea = ({
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
-
       {calculateStagePositions().map((pos, i) => (
         <UI.StageDivider
           key={stagesSafe[i] || `stage-${i}`}
@@ -126,8 +124,23 @@ export const CanvasArea = ({
         <StrategyNode
           key={node.id}
           node={node}
-          onDragStart={() => setDraggingNode(node.id)}
-          onConnect={handleConnect}
+          onPositionChange={(pos) => {
+            onNodesChange(nodesSafe.map(n => n.id === node.id ? { ...n, position: pos } : n));
+          }}
+          onStartConnect={(sourceId) => setConnectingFrom(sourceId)}
+          onCompleteConnect={(targetId) => {
+            if (connectingFrom && connectingFrom !== targetId) {
+              handleConnect(connectingFrom, targetId);
+            }
+            setConnectingFrom(null);
+          }}
+          onRemove={(id) => {
+            onNodesChange(nodesSafe.filter(n => n.id !== id));
+            onConnectionsChange(connectionsSafe.filter(c => c.source !== id && c.target !== id));
+          }}
+          onConnect={function (source: string, target: string): void {
+            throw new Error('Function not implemented.');
+          }}
         />
       ))}
 

@@ -3,14 +3,6 @@ import { IConnectionPreset, IModulePreset } from './types';
 
 export const MODULE_PRESETS: IModulePreset[] = [
   {
-    id: 'start',
-    name: 'Start Node',
-    type: 'start',
-    parameters: {},
-    icon: '🚀',
-    color: colors.purpleButton
-  },
-  {
     id: 'finish',
     name: 'Finish Node',
     type: 'finish',

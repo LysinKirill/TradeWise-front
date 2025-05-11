@@ -6,8 +6,8 @@ export const CanvasContainer = styled.div`
   background: ${colors.backgroundBlack};
   border: 2px dashed ${colors.greyText};
   border-radius: 8px;
-  height: 55vh;
-  width: 75vw;
+  height: 50vh;
+  width: 65vw;
   overflow: hidden;
   transition: border-color 0.2s ease;
   
@@ -34,10 +34,10 @@ export const StageDivider = styled.div`
   }
 `;
 
-export const ConnectionLine = styled.line.attrs(() => ({
-  stroke:  colors.purpleButton,
+export const StyledConnectionLine = styled.line.attrs(() => ({
+  stroke: colors.purpleButton,
 }))`
-  stroke-width: 2px;
+  stroke-width: 10px;
   pointer-events: none;
 `;
 
@@ -79,7 +79,7 @@ export const NodeHeader = styled.div`
 
 export const NodeTitle = styled.h4`
   margin: 0;
-  color: ${colors.white};
+  color: ${colors.darkPurpleButton};
   font-size: 0.8rem;
   pointer-events: none;
 `;

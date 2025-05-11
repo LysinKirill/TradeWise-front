@@ -3,15 +3,15 @@ import { colors } from '@shared/constants/colors';
 
 export const Container = styled.div`
   position: relative;
-  background: ${colors.darkPurpleButton};
-  border-radius: 8px;
+  background: ${colors.backgroundBlack};
+  border-radius: 16px;
   padding: 1.5rem;
-  width: 75vw;
+  width: 65vw;
   overflow-y: auto;
 `;
 
 export const Title = styled.h3`
-  color: ${colors.purpleButton};
+  color: ${colors.white};
   margin: 0 0 1.5rem 0;
   font-size: 1.25rem;
 `;
@@ -28,7 +28,6 @@ export const EmptyState = styled.div`
   padding: 2rem;
 `;
 
-// styles.ts
 export const DeleteZone = styled.div`
   position: absolute;
   bottom: 0;

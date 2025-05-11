@@ -1,60 +1,56 @@
-import { IStrategyNodeProps } from '../../types';
+import React from 'react';
 import * as UI from './styles';
+import { IStrategyNodeProps } from '../../types';
 
-export function StrategyNode({ node, onConnect, onPositionChange, onRemove }: IStrategyNodeProps) {
+export const StrategyNode = ({
+  node,
+  onPositionChange,
+  onRemove,
+  onStartConnect,
+  onCompleteConnect
+}: IStrategyNodeProps) => {
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onStartConnect) onStartConnect(node.id);
+  };
 
-  const handleDrag = (e: React.DragEvent) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    onPositionChange({ x, y });
+  const handleMouseUp = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onCompleteConnect) onCompleteConnect(node.id);
+  };
+
+  const handleDragStart = (e: React.MouseEvent) => {
+    e.preventDefault();
+
+    const onMouseMove = (moveEvent: MouseEvent) => {
+      const parentRect = (e.currentTarget as HTMLElement).parentElement!.getBoundingClientRect();
+      const newX = moveEvent.clientX - parentRect.left - 40;
+      const newY = moveEvent.clientY - parentRect.top - 40;
+      onPositionChange({ x: newX, y: newY });
+    };
+
+    const onMouseUp = () => {
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+    };
+
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
   };
 
   return (
     <UI.StrategyNodeWrapper
       $x={node.position.x}
       $y={node.position.y}
-      data-node-id={node.id}
-      draggable={node.type !== 'start'}
       isStart={node.type === 'start'}
+      onMouseDown={handleDragStart}
     >
-      <UI.NodeCloseButton onClick={() => onRemove?.(node.id)}>
-        ×
-      </UI.NodeCloseButton>
-      <UI.NodeHeader>
-        <UI.NodeTitle>{node.label || node.type}</UI.NodeTitle>
-        <UI.NodeHandle
-          draggable
-          onDragStart={(e) => {
-            e.dataTransfer.setData('source', node.id);
-            e.stopPropagation();
-          }}
-          onDragEnd={(e) => {
-            const target = document.elementFromPoint(e.clientX, e.clientY);
-            if (target?.closest('[data-node-id]')) {
-              const targetId = target.closest('[data-node-id]')?.getAttribute('data-node-id');
-              if (targetId) onConnect(node.id, targetId);
-            }
-          }}
-        />
-      </UI.NodeHeader>
-      <UI.NodeHandle
-        draggable
-        onDragStart={(e) => {
-          e.dataTransfer.setData('source', node.id);
-          e.stopPropagation();
-        }}
-        onDragEnd={(e) => {
-          const targetElement = document.elementFromPoint(e.clientX, e.clientY);
-          const targetNode = targetElement?.closest('[data-node-id]');
-          const targetId = targetNode?.getAttribute('data-node-id');
-
-          if (targetId && targetId !== node.id) {
-            onConnect(node.id, targetId);
-          }
-        }}
-      />
-      {/* Add node content here */}
+      <UI.NodeTitle>{node.name || node.label || node.type}</UI.NodeTitle>
+      <UI.NodeHandle onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} />
+      {onRemove && (
+        <UI.NodeCloseButton onClick={() => onRemove(node.id)}>×</UI.NodeCloseButton>
+      )}
+      {console.log(node)}
     </UI.StrategyNodeWrapper>
   );
-}
+};

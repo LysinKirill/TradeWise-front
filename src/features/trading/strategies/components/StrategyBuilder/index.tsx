@@ -6,25 +6,28 @@ import { StrategyOverview } from '../StrategyOverview';
 import { useStrategyBuilder } from '../../hooks/useStrategyBuilder';
 import { IStrategyBuilderProps } from '../../types';
 import { CONNECTION_PRESETS } from '../../constants';
+import { Toast } from './Toast';
+import { useState } from 'react';
 
-export const StrategyBuilder = ({
-  children,
-}: IStrategyBuilderProps) => {
+export const StrategyBuilder = ({ children }: IStrategyBuilderProps) => {
   const {
     strategy,
     updateProperty,
     handleAddNode,
     handleUpdateNode,
     handleAddConnection,
-    handleCommitStrategy
+    handleCommitStrategy,
+    handleRemoveConnection
   } = useStrategyBuilder();
+
+  const [toast, setToast] = useState<{ type: 'error' | 'success'; message: string } | null>(null);
 
   const handleCommit = async () => {
     try {
       await handleCommitStrategy();
-      alert('Strategy saved!');
-    } catch (error) {
-      alert(`Error: ${error.message}`);
+      setToast({ type: 'success', message: 'Strategy committed successfully!' });
+    } catch (error: any) {
+      setToast({ type: 'error', message: error.message || 'Unknown error during commit.' });
     }
   };
 
@@ -36,32 +39,33 @@ export const StrategyBuilder = ({
             stages={strategy.stages}
             nodes={strategy.nodes}
             connections={strategy.connections}
-            onNodesChange={nodes => updateProperty('nodes', nodes)}
-            onConnectionsChange={conns => updateProperty('connections', conns)}
+            onNodesChange={(nodes) => updateProperty('nodes', nodes)}
+            onConnectionsChange={(conns) => updateProperty('connections', conns)}
           />
           <ModulesPanel onAddNode={handleAddNode} />
+          <UI.CommitSection>
+            <UI.CommitButton onClick={handleCommit}>Commit strategy</UI.CommitButton>
+          </UI.CommitSection>
         </UI.WidePanel>
 
         <UI.SidePanel>
           <StrategyOverview
             strategy={strategy}
             onNameChange={(name: string) => updateProperty('name', name)}
-            onDescriptionChange={(description: string) => updateProperty('description', description)}
-            
+            onDescriptionChange={(desc: string) => updateProperty('description', desc)}
           />
           <ConnectionsPanel
             connections={strategy.connections}
             presets={CONNECTION_PRESETS}
             onAddConnection={handleAddConnection}
+            onRemoveConnection={handleRemoveConnection}
           />
         </UI.SidePanel>
       </UI.Layout>
 
-      <UI.Footer>
-        <UI.CommitButton onClick={handleCommit}>
-          Commit strategy
-        </UI.CommitButton>
-      </UI.Footer>
+      {toast && (
+        <Toast type={toast.type} message={toast.message} onClose={() => setToast(null)} />
+      )}
     </UI.Container>
   );
 };

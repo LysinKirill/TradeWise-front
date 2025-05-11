@@ -8,7 +8,6 @@ enum NavigationTab {
   Research = 'Research',
   Backtesting = 'Backtesting',
   LiveTrading = 'Live Trading',
-  Data = 'Data'
 }
 
 interface NavigationProps {
@@ -23,7 +22,6 @@ export const Navigation = ({ isAuthenticated }: NavigationProps) => {
       case NavigationTab.Research: return ROUTES.RESEARCH;
       case NavigationTab.Backtesting: return ROUTES.BACKTESTING;
       case NavigationTab.LiveTrading: return ROUTES.LIVETRADING;
-      case NavigationTab.Data: return ROUTES.DATA;
       default: return ROUTES.DASHBOARD;
     }
   };

@@ -6,7 +6,6 @@ export const StrategiesContainer = styled.div`
   color: ${colors.white};
   min-height: 100vh;
   width: 95vw;
-  
 `;
 
 export const StrategySection = styled.section`

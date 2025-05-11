@@ -3,19 +3,19 @@ import styled from "styled-components";
 
 export const OverviewContainer = styled.div`
   background: ${colors.darkPurpleButton};
-  border-radius: 8px;
+  border-radius: 16px;
   padding: 1.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 `;
 
 export const Title = styled.h3`
-  color: ${colors.purpleButton};
+  color: ${colors.white};
   margin: 0 0 1.5rem 0;
   font-size: 1.25rem;
 `;
 
 export const InputGroup = styled.div`
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 `;
 
 export const StyledInput = styled.input`

@@ -14,6 +14,7 @@ export const ConnectionsPanel = ({
   const safeConnections = Array.isArray(connections) ? connections : [];
 
 
+  
   return (
     <UI.Container>
       <UI.Header>
@@ -22,7 +23,7 @@ export const ConnectionsPanel = ({
           + New Connection
         </UI.AddButton>
       </UI.Header>
-
+      <UI.Content>
       <UI.PresetsGrid>
         {safePresets.map(preset => (
           <ConnectionCard
@@ -46,6 +47,7 @@ export const ConnectionsPanel = ({
           ))
         )}
       </UI.ConnectionsList>
+      </UI.Content>
     </UI.Container>
   );
 }
