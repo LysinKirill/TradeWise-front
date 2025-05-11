@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { colors } from '@/shared/constants/colors';
 
 export const Container = styled.div`
@@ -9,18 +9,32 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   
+  ${({ theme }) => theme.isMobile && css`
+    height: auto;
+    padding: 1rem;
+  `}
 `;
 
 export const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  ${({ theme }) => theme.isMobile && css`
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  `}
 `;
 
 export const Title = styled.h3`
   color: ${colors.white};
   margin: 0;
   font-size: 1.25rem;
+
+  ${({ theme }) => theme.isMobile && css`
+    font-size: 1rem;
+  `}
 `;
 
 export const AddButton = styled.button`
@@ -50,9 +64,22 @@ export const AddButton = styled.button`
     opacity: 0.7;
     cursor: not-allowed;
   }
+
+  ${({ theme }) => theme.isMobile && css`
+    width: 100%;
+    height: auto;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    justify-content: center;
+  `}
 `;
+
 export const Content = styled.div`
   overflow-y: auto;
+
+  ${({ theme }) => theme.isMobile && css`
+    max-height: none;
+  `}
 `;
 
 export const PresetsGrid = styled.div`
@@ -62,6 +89,10 @@ export const PresetsGrid = styled.div`
   padding: 1rem 0;
   border-bottom: 1px solid ${colors.greyText};
   overflow-y: auto;
+
+  ${({ theme }) => theme.isMobile && css`
+    grid-template-columns: 1fr;
+  `}
 `;
 
 export const ConnectionsList = styled.div`
@@ -85,6 +116,10 @@ export const ConnectionsList = styled.div`
     background: ${colors.purpleButton};
     border-radius: 3px;
   }
+
+  ${({ theme }) => theme.isMobile && css`
+    padding-right: 0;
+  `}
 `;
 
 export const EmptyState = styled.div`
@@ -92,4 +127,9 @@ export const EmptyState = styled.div`
   text-align: center;
   padding: 2rem;
   font-size: 0.9rem;
+
+  ${({ theme }) => theme.isMobile && css`
+    font-size: 0.8rem;
+    padding: 1rem;
+  `}
 `;

@@ -1,6 +1,6 @@
 import { StrategyBuilder } from './components/StrategyBuilder';
 import { useStrategyBuilder } from './hooks/useStrategyBuilder';
-import { IStrategy, IStrategyNode } from './types';
+import { IStrategy } from './types';
 import { CONNECTION_PRESETS, MODULE_PRESETS } from './constants';
 import { CanvasArea } from './components/CanvasArea';
 import { ConnectionsPanel } from './components/ConnectionsPanel';

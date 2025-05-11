@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { colors } from '@/shared/constants/colors';
 
 export const CanvasContainer = styled.div`
@@ -15,6 +15,11 @@ export const CanvasContainer = styled.div`
     border-color: ${colors.purpleButton};
     background: ${colors.accentBlack};
   }
+
+  ${({ theme }) => theme.isMobile && css`
+    width: 100%;
+    height: 40vh;
+  `}
 `;
 
 export const StageDivider = styled.div`
@@ -32,6 +37,12 @@ export const StageDivider = styled.div`
     color: ${colors.greyText};
     font-size: 0.8rem;
   }
+
+  ${({ theme }) => theme.isMobile && css`
+    &::after {
+      font-size: 0.7rem;
+    }
+  `}
 `;
 
 export const StyledConnectionLine = styled.line.attrs(() => ({
@@ -62,12 +73,16 @@ export const StrategyNodeWrapper = styled.div.attrs<{ $x: number; $y: number,  }
   justify-content: center;
   transition: all 0.2s ease;
 
-
-
   &:hover {
     transform: scale(1.1);
     box-shadow: 0 2px 8px rgba(128, 26, 229, 0.4);
   }
+
+  ${({ theme }) => theme.isMobile && css`
+    width: 60px;
+    height: 60px;
+    font-size: 0.75rem;
+  `}
 `;
 
 export const NodeHeader = styled.div`
@@ -82,6 +97,10 @@ export const NodeTitle = styled.h4`
   color: ${colors.darkPurpleButton};
   font-size: 0.8rem;
   pointer-events: none;
+
+  ${({ theme }) => theme.isMobile && css`
+    font-size: 0.7rem;
+  `}
 `;
 
 export const NodeHandle = styled.div`
@@ -90,6 +109,11 @@ export const NodeHandle = styled.div`
   background: ${colors.purpleButton};
   border-radius: 50%;
   cursor: crosshair;
+
+  ${({ theme }) => theme.isMobile && css`
+    width: 10px;
+    height: 10px;
+  `}
 `;
 
 
@@ -110,6 +134,11 @@ export const CardContainer = styled.div`
     transform: translateY(-2px);
     box-shadow: 0 2px 8px rgba(128, 26, 229, 0.2);
   }
+
+  ${({ theme }) => theme.isMobile && css`
+    padding: 0.75rem;
+    min-height: 60px;
+  `}
 `;
 
 export const CardHeader = styled.div`
@@ -123,6 +152,10 @@ export const CardTitle = styled.h4`
   color: ${colors.white};
   font-size: 1rem;
   font-weight: 500;
+
+  ${({ theme }) => theme.isMobile && css`
+    font-size: 0.875rem;
+  `}
 `;
 
 export const ConnectionType = styled.span<{ $color?: string }>`
@@ -132,11 +165,20 @@ export const ConnectionType = styled.span<{ $color?: string }>`
   border-radius: 4px;
   font-size: 0.75rem;
   font-weight: 500;
+
+  ${({ theme }) => theme.isMobile && css`
+    font-size: 0.65rem;
+    padding: 0.2rem 0.4rem;
+  `}
 `;
 
 export const ConnectionDetails = styled.div`
   color: ${colors.greyText};
   font-size: 0.875rem;
+
+  ${({ theme }) => theme.isMobile && css`
+    font-size: 0.75rem;
+  `}
 `;
 
 export const ConditionBadge = styled.span`
@@ -146,6 +188,11 @@ export const ConditionBadge = styled.span`
   border-radius: 4px;
   font-size: 0.75rem;
   margin-right: 0.5rem;
+
+  ${({ theme }) => theme.isMobile && css`
+    font-size: 0.65rem;
+    padding: 0.2rem 0.4rem;
+  `}
 `;
 
 export const CloseButton = styled.div`
@@ -161,6 +208,11 @@ export const CloseButton = styled.div`
   &:hover {
     color: ${colors.white};
   }
+
+  ${({ theme }) => theme.isMobile && css`
+    font-size: 0.65rem;
+    padding: 0.2rem 0.4rem;
+  `}
 `;
 
 export const NodeCloseButton = styled.button`
@@ -180,4 +232,10 @@ export const NodeCloseButton = styled.button`
   &:hover {
     opacity: 1;
   }
+
+  ${({ theme }) => theme.isMobile && css`
+    width: 16px;
+    height: 16px;
+    font-size: 0.75rem;
+  `}
 `;

@@ -1,21 +1,35 @@
 import { colors } from "@/shared/constants/colors";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const OverviewContainer = styled.div`
   background: ${colors.darkPurpleButton};
   border-radius: 16px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
+
+  ${({ theme }) => theme.isMobile && css`
+    padding: 1rem;
+    border-radius: 12px;
+  `}
 `;
 
 export const Title = styled.h3`
   color: ${colors.white};
   margin: 0 0 1.5rem 0;
   font-size: 1.25rem;
+
+  ${({ theme }) => theme.isMobile && css`
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  `}
 `;
 
 export const InputGroup = styled.div`
   margin-bottom: 1rem;
+
+  ${({ theme }) => theme.isMobile && css`
+    margin-bottom: 0.75rem;
+  `}
 `;
 
 export const StyledInput = styled.input`
@@ -30,6 +44,11 @@ export const StyledInput = styled.input`
   &:focus {
     outline: 2px solid ${colors.purpleButton};
   }
+
+  ${({ theme }) => theme.isMobile && css`
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  `}
 `;
 
 export const StyledTextarea = styled.textarea`
@@ -42,4 +61,10 @@ export const StyledTextarea = styled.textarea`
   min-height: 100px;
   resize: vertical;
   font-size: 1rem;
+
+  ${({ theme }) => theme.isMobile && css`
+    padding: 0.6rem;
+    font-size: 0.9rem;
+    min-height: 80px;
+  `}
 `;

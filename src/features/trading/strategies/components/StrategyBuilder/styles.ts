@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { colors } from '@shared/constants/colors';
 
 export const Container = styled.div`
@@ -7,12 +7,21 @@ export const Container = styled.div`
   align-items: center;
   overflow: hidden;
   color: ${colors.white}; 
+
+  ${({ theme }) => theme.isMobile && css`
+    padding: 1rem;
+  `}
 `;
 
 export const Layout = styled.div`
   display: flex;
   flex: 1;
   overflow: hidden;
+
+  ${({ theme }) => theme.isMobile && css`
+    flex-direction: column;
+    overflow: visible;
+  `}
 `;
 
 export const SidePanel = styled.div`
@@ -25,6 +34,13 @@ export const SidePanel = styled.div`
   border-radius: 8px;
   padding: 1rem;
   max-height: 85vh;
+
+  ${({ theme }) => theme.isMobile && css`
+    width: 100%;
+    max-height: none;
+    padding: 0.5rem;
+    margin-top: 1rem;
+  `}
 `;
 
 export const WidePanel = styled.div`
@@ -33,6 +49,10 @@ export const WidePanel = styled.div`
   padding: 1rem;
   padding-top: 0;
   gap: 1rem;
+
+  ${({ theme }) => theme.isMobile && css`
+    padding: 0.5rem;
+  `}
 `;
 
 export const Footer = styled.footer`
@@ -42,6 +62,12 @@ export const Footer = styled.footer`
   padding: 1rem 2rem;
   background: ${colors.darkPurpleButton};
   border-top: 1px solid ${colors.greyText};
+
+  ${({ theme }) => theme.isMobile && css`
+    flex-direction: column;
+    padding: 1rem;
+    gap: 0.5rem;
+  `}
 `;
 
 export const CommitButton = styled.button`
@@ -66,6 +92,12 @@ export const CommitButton = styled.button`
     background: ${colors.greyText};
     cursor: not-allowed;
   }
+
+  ${({ theme }) => theme.isMobile && css`
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+  `}
 `;
 
 export const ValidationAlert = styled.div`
@@ -74,11 +106,20 @@ export const ValidationAlert = styled.div`
   padding: 0.5rem 1rem;
   border-radius: 4px;
   background: ${colors.red};
+
+  ${({ theme }) => theme.isMobile && css`
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+  `}
 `;
 
 export const CommitSection = styled.div`
-  //margin-top: 20px;
   display: flex;
   justify-content: flex-end;
+
+  ${({ theme }) => theme.isMobile && css`
+    justify-content: center;
+    width: 100%;
+  `}
 `;
 

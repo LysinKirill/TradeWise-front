@@ -1,5 +1,5 @@
 import { colors } from "@/shared/constants/colors";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const IconContainer = styled.div<{ $color: string }>`
   background: ${props => `${props.$color}20`};
@@ -15,6 +15,12 @@ export const IconContainer = styled.div<{ $color: string }>`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+
+  ${({ theme }) => theme.isMobile && css`
+    width: 44px;
+    height: 44px;
+    font-size: 22px;
+  `}
 `;
 
 export const CardContent = styled.div`
@@ -26,6 +32,11 @@ export const CardContent = styled.div`
   transition: all 0.3s ease;
   padding-top: 60px;
   width: 100%;
+
+  ${({ theme }) => theme.isMobile && css`
+    padding-top: 50px;
+    gap: 0.4rem;
+  `}
 `;
 
 export const CardContainer = styled.div`
@@ -65,6 +76,17 @@ export const CardContainer = styled.div`
   &:active {
     cursor: grabbing;
   }
+
+  ${({ theme }) => theme.isMobile && css`
+    width: 80px;
+    height: 80px;
+    padding: 0.75rem;
+
+    &:hover {
+      width: 100%;
+      min-height: 160px;
+    }
+  `}
 `;
 
 export const PresetTitle = styled.h4`
@@ -76,6 +98,10 @@ export const PresetTitle = styled.h4`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  ${({ theme }) => theme.isMobile && css`
+    font-size: 0.8rem;
+  `}
 `;
 
 export const PresetType = styled.span`
@@ -86,12 +112,22 @@ export const PresetType = styled.span`
   font-size: 0.65rem;
   font-weight: 500;
   text-align: center;
+
+  ${({ theme }) => theme.isMobile && css`
+    font-size: 0.6rem;
+    padding: 0.2rem 0.5rem;
+  `}
 `;
 
 export const ParametersList = styled.div`
   display: grid;
   gap: 0.3rem;
   margin-top: 0.5rem;
+
+  ${({ theme }) => theme.isMobile && css`
+    gap: 0.25rem;
+    margin-top: 0.4rem;
+  `}
 `;
 
 export const ParameterBadge = styled.span`
@@ -102,4 +138,8 @@ export const ParameterBadge = styled.span`
   font-size: 0.65rem;
   text-align: center;
   white-space: nowrap;
+
+  ${({ theme }) => theme.isMobile && css`
+    font-size: 0.6rem;
+  `}
 `;
