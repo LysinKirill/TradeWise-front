@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react';
 import * as UI from './styles';
 import { mockBacktestResult, mockStrategies } from './constants';
@@ -11,7 +10,6 @@ const Backtesting = () => {
   const [result, setResult] = useState<null | typeof mockBacktestResult>(null);
   const [history, setHistory] = useState<any[]>([]);
 
-  // Load history from localStorage
   useEffect(() => {
     const savedHistory = localStorage.getItem('backtestHistory');
     if (savedHistory) {
@@ -19,7 +17,6 @@ const Backtesting = () => {
     }
   }, []);
 
-  // Save history to localStorage
   useEffect(() => {
     if (history.length > 0) {
       localStorage.setItem('backtestHistory', JSON.stringify(history));
@@ -47,7 +44,6 @@ const Backtesting = () => {
       setResult(mockBacktestResult);
       toast.success(`Backtest completed: "${selectedStrategy.name}"`);
 
-      // Save result to history
       const newHistory = [
         ...history,
         {
@@ -111,7 +107,6 @@ const Backtesting = () => {
         </UI.ResultBlock>
       )}
 
-      {/* History of previous backtest runs */}
       {history.length > 0 && (
         <UI.HistoryBlock>
           <h3>Previous Runs</h3>
