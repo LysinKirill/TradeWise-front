@@ -2,7 +2,8 @@
 import styled, { css } from 'styled-components';
 import settings from '@assets/icons/settings.png';
 import user from '@assets/icons/user.png';
-import logoutIcon from '@assets/images/Logo.png';
+import logoutIcon from '@assets/icons/icons-logout.png';
+import { colors } from '@/shared/constants/colors';
 
 export const Header = styled.header`
   max-width: 100vw;
@@ -128,8 +129,8 @@ export const SettingsIcon = styled.span`
 `;
 
 export const LogoutIcon = styled.span`
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   background: url(${logoutIcon}) center/contain no-repeat;
   filter: brightness(0) invert(1);
 `;
@@ -210,4 +211,37 @@ export const CloseButton = styled.button`
 export const SidebarFooter = styled.div`
   margin-top: auto;
   padding-top: 2rem;
+`;
+
+export const ProfileWrapper = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
+export const ProfileDropdown = styled.div`
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: ${colors.accentBlack};
+  border: 1px solid ${colors.greyText};
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  min-width: 160px;
+  z-index: 10;
+  padding: 0.5rem 0;
+`;
+
+export const DropdownItem = styled.div`
+  padding: 0.5rem 1rem;
+  color: ${colors.white};
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: ${colors.purpleButton}20;
+  }
 `;

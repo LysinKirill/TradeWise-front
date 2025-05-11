@@ -1,4 +1,9 @@
 import styled from "styled-components";
+import dashBoard from '@assets/icons/icon-dashboard.png';
+import strategies from '@assets/icons/icon-strategy.png';
+import research from '@assets/icons/icons-research.png';
+import { colors } from "@/shared/constants/colors";
+
 
 export const BottomNavContainer = styled.nav`
   position: fixed;
@@ -33,8 +38,15 @@ export const BottomNavItem = styled.li`
     gap: 4px;
     
     &.active {
-      color: #90caf9;
+      //color: ${colors.purpleButton};
+      transform: scale(1.1);
+      margin-bottom: 0.5rem;
     }
+
+    &:hover {
+    transform: scale(1.05);
+    
+  }
   }
 `;
 
@@ -42,19 +54,20 @@ export const DashboardIcon = styled.div`
   width: 24px;
   height: 24px;
   background: rgba(255, 255, 255, 0.8);
-  //mask: url('/icons/dashboard.svg') center/contain no-repeat;
+  background: url(${dashBoard}) center/contain no-repeat;
   transition: all 0.2s ease;
 
   .active & {
-    background: #90caf9;
+    color: ${colors.purpleButton};
+    box-shadow: 0 8px 30px rgb(128, 26, 229);
     transform: scale(1.1);
   }
 `;
 
 export const StrategiesIcon = styled(DashboardIcon)`
-  //mask-image: url('/icons/strategies.svg');
+  background: url(${strategies}) center/contain no-repeat;
 `;
 
 export const ResearchIcon = styled(DashboardIcon)`
-  //mask-image: url('/icons/research.svg');
+  background: url(${research}) center/contain no-repeat;
 `;
