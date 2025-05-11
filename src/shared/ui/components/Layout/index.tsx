@@ -12,6 +12,7 @@ import GetStartedModal from '@shared/ui/components/Modals/GetStartedModal';
 import { RegistrationForm } from '@shared/ui/components/Modals/RegistrationModal';
 import MobileBottomNav from '../Navigation/components/MobileBottomNav';
 import { useMediaQuery } from '@/shared/hooks/useMediaQuery';
+import { ToastContainer } from 'react-toastify';
 
 const Layout = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
@@ -19,6 +20,7 @@ const Layout = () => {
   return (
     <Suspense fallback={<Loading />}>
       <ThemeProvider theme={UI.darkTheme}>
+      <ToastContainer position="top-right" autoClose={5000} theme="dark" />
         <UI.Layout>
           <GetStartedModal />
           <RegistrationForm />
