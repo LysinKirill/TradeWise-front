@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { colors } from '@/shared/constants/colors';
 
 export const Container = styled.div`
-  //background: ${colors.darkPurpleButton};
   border-radius: 16px;
   padding: 2rem;
   width: 100vw;

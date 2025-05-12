@@ -5,7 +5,7 @@ import { mockBacktestResult, mockStrategies } from './constants';
 import { toast } from 'react-toastify';
 import { Footer } from '@/shared/ui/components/Footer';
 
-const Backtesting = () => {
+const LiveTrading = () => {
   const [amount, setAmount] = useState('');
   const [selectedStrategyId, setSelectedStrategyId] = useState('');
   const [loading, setLoading] = useState(false);
@@ -66,7 +66,7 @@ const Backtesting = () => {
 
   return (
     <UI.Container>
-      <UI.Title>Backtesting</UI.Title>
+      <UI.Title>LiveTrading</UI.Title>
       
       <UI.InputGroup>
         <label>Strategy</label>
@@ -95,7 +95,7 @@ const Backtesting = () => {
 
       <UI.ButtonWrapper>
         <UI.PrimaryButton onClick={handleRunBacktest} disabled={loading}>
-          {loading ? 'Running...' : 'Run Backtest'}
+          {loading ? 'Running...' : 'Run Strategy'}
         </UI.PrimaryButton>
       </UI.ButtonWrapper>
 
@@ -121,9 +121,9 @@ const Backtesting = () => {
           </ul>
         </UI.HistoryBlock>
       )}
-       <Footer/>
+      <Footer/>
     </UI.Container>
   );
 };
 
-export default Backtesting;
+export default LiveTrading;

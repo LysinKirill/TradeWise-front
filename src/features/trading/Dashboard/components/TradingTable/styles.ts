@@ -14,7 +14,7 @@ export const TableHeader = styled.thead`
 
 export const StyledTableCell = styled(MuiTableCell)<{ $negative?: boolean }>`
   color: ${({ $negative }) => 
-    $negative ? colors.red : colors.accentBlack} !important;
+    $negative ? colors.red : colors.white} !important;
   padding: 1rem !important;
 `;
 

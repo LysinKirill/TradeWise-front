@@ -8,6 +8,7 @@ import { IStrategyBuilderProps } from '../../types';
 import { CONNECTION_PRESETS } from '../../constants';
 import { Toast } from './Toast';
 import { useState } from 'react';
+import { Footer } from '@/shared/ui/components/Footer';
 
 export const StrategyBuilder = ({ children }: IStrategyBuilderProps) => {
   const {
@@ -66,6 +67,7 @@ export const StrategyBuilder = ({ children }: IStrategyBuilderProps) => {
       {toast && (
         <Toast type={toast.type} message={toast.message} onClose={() => setToast(null)} />
       )}
+        <Footer/>
     </UI.Container>
   );
 };

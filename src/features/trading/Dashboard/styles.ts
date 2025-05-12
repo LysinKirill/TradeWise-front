@@ -48,6 +48,7 @@ export const RightPanel = styled.div`
   background: ${({ theme }) => theme.paperBackground};
   border-radius: 8px;
   padding: 1.5rem;
+  padding-top: 0;
 `;
 
 export const Section = styled.div`
