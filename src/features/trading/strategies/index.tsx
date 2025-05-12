@@ -5,6 +5,7 @@ import { CONNECTION_PRESETS, MODULE_PRESETS } from './constants';
 import { CanvasArea } from './components/CanvasArea';
 import { ConnectionsPanel } from './components/ConnectionsPanel';
 import { ModulesPanel } from './components/ModulesPanel';
+import { Footer } from '@/shared/ui/components/Footer';
 
 const Strategies = () => {
   const {

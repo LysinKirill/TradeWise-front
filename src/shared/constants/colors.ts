@@ -18,7 +18,11 @@ export type TColors =
   | 'darkHover'
   | 'lightHover'
   | 'transperent'
-  | 'iconGrey';
+  | 'iconGrey'
+  | 'inputBg'
+  | 'cardBg'
+  | 'primaryText'
+  | 'secondaryText';
 
 export const colors: Record<TColors, string> = {
   inherit: 'inherit',
@@ -41,6 +45,10 @@ export const colors: Record<TColors, string> = {
   backgroundBlack: '#141217',
   purpleButton: '#801AE5',
   darkPurpleButton: '#302938',
+  inputBg: '#1E1E1E',
+  cardBg: '#2B2B2B',
+  primaryText: '#FFFFFF',
+  secondaryText: '#CCCCCC',
 };
 
 export const chartColors = {
