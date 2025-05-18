@@ -39,9 +39,9 @@ export const AuthModal = () => {
   const validateField = (name: string, value: string) => {
     const fieldConfig = authFormFields.find(f => f.name === name);
     if (!fieldConfig) return '';
-    
+
     let error = '';
-    
+
     if (fieldConfig.required && !value.trim()) {
       error = 'This field is required';
     }
@@ -55,7 +55,7 @@ export const AuthModal = () => {
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    
+
     authFormFields.forEach(({ name }) => {
       const error = validateField(name, formData[name]);
       if (error) newErrors[name] = error;
@@ -68,7 +68,7 @@ export const AuthModal = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev: IUserAuthData) => ({ ...prev, [name]: value }));
-    
+
     if (errors[name]) {
       const error = validateField(name, value);
       setErrors((prev: Record<string, string>) => ({ ...prev, [name]: error }));
@@ -83,23 +83,23 @@ export const AuthModal = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    //if (!validateForm()) return;
+    if (!validateForm()) return;
 
     setIsSubmitting(true);
     try {
-      const userData = await authUser(formData);
-      dispatch(closeAuthModal());
-      
-      login({
-        email: userData.email,
-        fullName: userData.fullName
-      });
+      const response = await authUser(formData);
 
-      navigate(ROUTES.DASHBOARD);
-      // Optional: Add success handling or redirect
+      if (response.status === 200) {
+        dispatch(closeAuthModal());
+        login(response.data.userData, response.data);
+        navigate(ROUTES.DASHBOARD);
+      }
+
     } catch (error) {
       console.error('Login error:', error);
-      // Add error handling (e.g., show error message)
+      setErrors({
+        general: 'Invalid email or password'
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -116,7 +116,7 @@ export const AuthModal = () => {
               <UI.WelcomeContent>
                 <UI.WelcomeTitle>Welcome Back!</UI.WelcomeTitle>
                 <UI.WelcomeSubtitle>
-                 
+
                 </UI.WelcomeSubtitle>
               </UI.WelcomeContent>
             </UI.WelcomeOverlay>
@@ -125,7 +125,7 @@ export const AuthModal = () => {
             <UI.Title>Sign in</UI.Title>
 
             <UI.Form onSubmit={handleSubmit}>
-            {authFormFields.map((field) => (
+              {authFormFields.map((field) => (
                 <TextField
                   key={field.name}
                   fullWidth
@@ -162,6 +162,12 @@ export const AuthModal = () => {
                 </Button>
               </Box>
             </UI.Form>
+            {errors.general && (
+              <Typography color="error" sx={{ mb: 1 }}>
+                {errors.general}
+              </Typography>
+            )}
+
 
             <Typography sx={UI.formStyles.existingAccountText}>
               Do not have an account?{' '}

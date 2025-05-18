@@ -5,6 +5,7 @@ import {
   TRequestConfig,
   IAxios,
 } from './types';
+import { useAuth } from '@/app/providers/AuthProvider';
 
 export const DEFAULT_TIMEOUT = 60000;
 
@@ -27,20 +28,26 @@ class Http implements IAxios {
     });
     this.requests = {};
 
-    this.http.interceptors.request.use(
-      (config) => {
-        //const token = keycloak.token;
-       // if (token) {
-         // config.headers.Authorization = `Bearer ${token}`;
-       // }
-
-       //WRITE LOGIC FOR ADDING TOKEN, ADD AUTH PROVIDER 
-
-        return config;
-      },
-      (error) => {
+    //TO DO: update or remove later
+    this.http.interceptors.response.use(
+      response => response,
+      async error => {
+        const originalRequest = error.config;
+        
+        if (error.response?.status === 401 && !originalRequest._retry) {
+          originalRequest._retry = true;
+          
+          //const auth = useAuth();
+          //const success = await auth.refreshToken();
+          
+          /*if (success) {
+            originalRequest.headers.Authorization = `Bearer ${auth.token}`;
+            return this.http(originalRequest);
+          }*/
+        }
+        
         return Promise.reject(error);
-      },
+      }
     );
   }
 
