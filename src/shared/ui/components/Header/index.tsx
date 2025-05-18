@@ -19,7 +19,7 @@ const Header = () => {
     <UI.Header>
       <UI.HeaderContent>
         <UI.Logo>
-          <UI.LogoIcon src={Logo} />
+          <UI.LogoIcon src={Logo} onClick={() => { navigate('/'); closeDropdown(); }}/>
           TradeWise
         </UI.Logo>
 
