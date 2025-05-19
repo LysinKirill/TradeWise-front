@@ -12,6 +12,7 @@ import { ROUTES } from '@/shared/constants/routes';
 import { useAuth } from '@/app/providers/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import { IUserAuthData } from '@/features/auth/types';
+import { toast } from 'react-toastify';
 
 export const AuthModal = () => {
   const dispatch = useTypedDispatch();
@@ -91,6 +92,7 @@ export const AuthModal = () => {
 
       if (response.status === 200) {
         dispatch(closeAuthModal());
+        toast.success('Log in succesfully!')
         login(response.data.userData, response.data);
         navigate(ROUTES.DASHBOARD);
       }

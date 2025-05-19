@@ -10,6 +10,7 @@ import * as UI from './styles';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import background from '@assets/images/background.png';
 import { IUserRegistrationData } from '@/features/auth/types';
+import { toast } from 'react-toastify';
 
 
 export const RegistrationForm = () => {
@@ -95,6 +96,7 @@ export const RegistrationForm = () => {
       if (response.status === 200) {
         dispatch(closeRegistrationModal());
         handleReset();
+        toast.success('Success! Your account has been created. Please, log in')
         dispatch(openAuthModal());
       } 
     } catch (error) {

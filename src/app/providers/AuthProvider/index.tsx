@@ -1,8 +1,9 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { getLocalToken, setLocalToken, removeLocalToken } from '@shared/utils/tokenStorage';
 import axios from 'axios';
 import { TAuthContextType, TokenData, TUser } from './types';
+import { decodeJWT, JwtPayload } from '@/shared/utils/jwt';
 
 const AuthContext = createContext<TAuthContextType | undefined>({
   isAuthenticated: false,
@@ -14,6 +15,17 @@ const AuthContext = createContext<TAuthContextType | undefined>({
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<TUser | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const decodeAndSetUser = useCallback((token: string) => {
+    const decoded = decodeJWT<JwtPayload>(token);
+    console.log(decoded);
+    if (decoded) {
+      setUser({
+        email: decoded.email,
+        fullName: decoded.fullName
+      });
+    }
+  }, []);
 
   const login = (user: TUser, tokenData: TokenData) => {
     setUser(user);
@@ -31,10 +43,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     const token = getLocalToken();
+    
     if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      //TO DO: можно сделать запрос на проверку токена/профиля и установить user
-      setIsAuthenticated(true);
+          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          setIsAuthenticated(true);
+       
     }
   }, []);
 
