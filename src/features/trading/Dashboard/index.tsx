@@ -7,9 +7,10 @@ import { StrategyTable } from './components/StrategyTable';
 import * as UI from './styles';
 import { Footer } from '@/shared/ui/components/Footer';
 import { useMediaQuery } from '@/shared/hooks/useMediaQuery';
-import { DashboardStats, PortfolioPosition, TradingStrategy } from './types';
+import { DashboardStats } from './types';
 import { fetchDashboardStats } from '@/shared/api/account-overview';
 import { fetchTradingStrategies } from '@/shared/api/strategies';
+import { TradingStrategy } from '@/shared/types/types';
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -24,8 +25,8 @@ const Dashboard = () => {
     const loadData = async () => {
       try {
         const [statsResponse, strategiesResponse] = await Promise.all([
-          fetchDashboardStats(),
-          fetchTradingStrategies()
+          fetchDashboardStats() as Promise<DashboardStats>,
+          fetchTradingStrategies() as Promise<TradingStrategy[]>
         ]);
         
         setStats(statsResponse);
