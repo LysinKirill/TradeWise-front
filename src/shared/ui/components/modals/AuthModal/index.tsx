@@ -92,8 +92,8 @@ export const AuthModal = () => {
 
       if (response.status === 200) {
         dispatch(closeAuthModal());
-        toast.success('Log in succesfully!')
-        login(response.data.userData, response.data);
+        toast.success('Log in succesfully!');
+        login(response.data.userData, response.data.token);
         navigate(ROUTES.DASHBOARD);
       }
 

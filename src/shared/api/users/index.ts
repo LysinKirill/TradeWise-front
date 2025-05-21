@@ -20,7 +20,7 @@ export const registerUser = async (userData: IUserRegistrationData) => {
 export const authUser = async (userData: IUserAuthData) => {
   try {
     const response = await http.post(
-      `/api/v1/login`, 
+      `/api/auth/v1/login`, 
       userData,   
     );
     

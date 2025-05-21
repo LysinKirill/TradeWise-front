@@ -5,14 +5,13 @@ import {
   TRequestConfig,
   IAxios,
 } from './types';
-import { useAuth } from '@/app/providers/AuthProvider';
+import { getLocalToken } from '@/shared/utils/tokenStorage';
 
 export const DEFAULT_TIMEOUT = 60000;
 
 class Http implements IAxios {
   private readonly http: AxiosInstance;
 
-  // Текущий набор исполняемых запросов
   private readonly requests: Record<string, CancelTokenSource>;
 
   constructor(baseURL: string = '/', headers?: AxiosRequestConfig['headers'], paramsSerializer?: AxiosRequestConfig['paramsSerializer']) {
@@ -28,26 +27,19 @@ class Http implements IAxios {
     });
     this.requests = {};
 
-    //TO DO: update or remove later
-    this.http.interceptors.response.use(
-      response => response,
-      async error => {
-        const originalRequest = error.config;
-        
-        if (error.response?.status === 401 && !originalRequest._retry) {
-          originalRequest._retry = true;
-          
-          //const auth = useAuth();
-          //const success = await auth.refreshToken();
-          
-          /*if (success) {
-            originalRequest.headers.Authorization = `Bearer ${auth.token}`;
-            return this.http(originalRequest);
-          }*/
+    this.http.interceptors.request.use(
+      (config) => {
+        const token = getLocalToken();
+        console.log(token);
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
         }
-        
+
+        return config;
+      },
+      (error) => {
         return Promise.reject(error);
-      }
+      },
     );
   }
 
