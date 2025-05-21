@@ -22,11 +22,24 @@ export type TColors =
   | 'inputBg'
   | 'cardBg'
   | 'primaryText'
-  | 'secondaryText';
+  | 'secondaryText'
+  | 'darkPurple'
+  | 'neonPurple'
+  | 'neonBlue'
+  | 'backgroundDark'
+  | 'textPrimary'
+  | 'textSecondary'
+  | 'accentGreen'
+  | 'accentRed'
+  | 'borderColor'
+  | 'headerBg'
+  | 'rowHover'
+  | 'paperBackground'
+  | 'inputBackground'
+  | 'primaryColor';
 
 export const colors: Record<TColors, string> = {
   inherit: 'inherit',
-  accentGreen: '#8BC540',
   red: '#FF4D4D',
   lightRed: '#FFEEEE',
   orange: '#FF9446',
@@ -49,19 +62,33 @@ export const colors: Record<TColors, string> = {
   cardBg: '#2B2B2B',
   primaryText: '#FFFFFF',
   secondaryText: '#CCCCCC',
+  darkPurple: '#1A1A2E',
+  neonPurple: '#8A2BE2',
+  neonBlue: '#00F3FF',
+  backgroundDark: '#0A0A1A',
+  textPrimary: '#FFFFFF',
+  textSecondary: '#B0B0C8',
+  accentGreen: '#00FF88',
+  accentRed: '#FF467E',
+  borderColor: '#2E2E4A',
+  headerBg: '#2A1A4A',
+  rowHover: '#2E2E4A',
+  paperBackground: '#1A1A2E',
+  inputBackground: '#2A2A4A',
+  primaryColor: '#8A2BE2'
 };
 
 export const chartColors = {
-  primary: '#90caf9',  // Light blue
-  secondary: '#64b5f6', // Medium blue
-  tertiary: '#42a5f5',  // Darker blue
   accent: '#2196f3',    // Deep blue
   positive: '#4caf50',  // Green for gains
   negative: '#f44336',  // Red for losses
   neutral: '#9e9e9e',   // Grey for neutral
   background: '#1e1e1e', // Chart background
   textPrimary: '#ffffff',
-  textSecondary: '#b3b3b3'
+  textSecondary: '#b3b3b3',
+  primary: '#271C47',
+  secondary: '#5135A6',
+  tertiary: '#5A0273',
 };
 
 export const COLORS = [

@@ -3,7 +3,7 @@ import { useMediaQuery } from '@/shared/hooks/useMediaQuery';
 import Logo from '@assets/images/Logo.png';
 import { useState } from 'react';
 import { Navigation } from '../Navigation';
-import * as UI from './style';
+import * as UI from './styles';
 import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
@@ -18,10 +18,15 @@ const Header = () => {
   return (
     <UI.Header>
       <UI.HeaderContent>
-        <UI.Logo>
-          <UI.LogoIcon src={Logo} onClick={() => { navigate('/'); closeDropdown(); }}/>
-          TradeWise
-        </UI.Logo>
+        {isMobile ?
+          <UI.Logo>
+            TradeWise
+          </UI.Logo> :
+          <UI.Logo>
+            <UI.LogoIcon src={Logo} onClick={() => { navigate('/'); closeDropdown(); }} />
+            TradeWise
+          </UI.Logo>
+        }
 
         {isAuthenticated && (
           <>
@@ -29,9 +34,9 @@ const Header = () => {
 
             <UI.HeaderRight>
               {!isMobile && (
-                <UI.ProfileWrapper 
-                onMouseEnter={() => setIsDropdownOpen(true)}
-                onMouseLeave={() => setIsDropdownOpen(false)}>
+                <UI.ProfileWrapper
+                  onMouseEnter={() => setIsDropdownOpen(true)}
+                  onMouseLeave={() => setIsDropdownOpen(false)}>
                   <UI.HeaderButton onClick={toggleDropdown}>
                     <UI.UserIcon />
                     {user?.fullName}

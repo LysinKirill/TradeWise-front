@@ -1,4 +1,3 @@
-// src/shared/ui/components/Header/styles.ts
 import styled, { css } from 'styled-components';
 import settings from '@assets/icons/settings.png';
 import user from '@assets/icons/user.png';
@@ -27,6 +26,7 @@ export const Header = styled.header`
 
   ${({ theme }) => theme.isMobile && css`
     padding: 0.3rem 0;
+    height: 4rem;
   `}
 `;
 
@@ -40,6 +40,8 @@ export const HeaderContent = styled.div`
 
   ${({ theme }) => theme.isMobile && css`
     padding: 0 1rem;
+    height: 3rem;
+    justify-content: center;
   `}
 `;
 
@@ -58,7 +60,8 @@ export const Logo = styled.h1`
   }
 
   ${({ theme }) => theme.isMobile && css`
-    font-size: 1.2rem;
+    font-size: 1.8rem;
+    text-shadow: 0 0px 3px rgb(251, 251, 251);
   `}
 `;
 
@@ -71,6 +74,7 @@ export const LogoIcon = styled.img`
   ${({ theme }) => theme.isMobile && css`
     width: 24px;
     height: 24px;
+    
   `}
 `;
 
