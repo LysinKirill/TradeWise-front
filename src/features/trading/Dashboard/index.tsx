@@ -62,11 +62,11 @@ const Dashboard = () => {
       <UI.StatsContainer>
         <StatsCard 
           title="Total balance" 
-          value={`$${stats?.balance?.toLocaleString() ?? 0}`} 
+          value={`${stats?.balance?.toLocaleString() ?? 0}`} 
         />
         <StatsCard 
           title="Today's P/L" 
-          value={`$${stats?.todayPnl?.toLocaleString() ?? 0}`} 
+          value={`${stats?.todayPnl?.toLocaleString() ?? 0}`} 
         />
         <StatsCard 
           title="Strategies" 

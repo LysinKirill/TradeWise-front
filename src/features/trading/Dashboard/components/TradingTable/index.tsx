@@ -16,8 +16,8 @@ export const TradingTable = ({ data }: { data: IPortfolioData[] }) => (
         <UI.StyledTableRow key={index}>
           <UI.StyledTableCell>{position.ticker}</UI.StyledTableCell>
           <UI.StyledTableCell>{position.quantity}</UI.StyledTableCell>
-          <UI.StyledTableCell>${position.currentPrice.toLocaleString()}</UI.StyledTableCell>
-          <UI.StyledTableCell>{position.dailyYield}%</UI.StyledTableCell>
+          <UI.StyledTableCell>{position.currentPrice.toLocaleString()}</UI.StyledTableCell>
+          <UI.StyledTableCell>{position.dailyYield}</UI.StyledTableCell>
         </UI.StyledTableRow>
       ))}
     </UI.TableBody>
