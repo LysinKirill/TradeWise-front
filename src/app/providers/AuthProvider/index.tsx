@@ -2,7 +2,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { getLocalToken, setLocalToken, removeLocalToken } from '@shared/utils/tokenStorage';
 import axios from 'axios';
-import { TAuthContextType, TokenData, TUser } from './types';
+import { TAuthContextType, TUser } from './types';
 import { decodeJWT, JwtPayload } from '@/shared/utils/jwt';
 
 const AuthContext = createContext<TAuthContextType | undefined>({
@@ -18,7 +18,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const decodeAndSetUser = useCallback((token: string) => {
     const decoded = decodeJWT<JwtPayload>(token);
-    console.log(decoded);
     if (decoded) {
       setUser({
         email: decoded.email,
@@ -27,11 +26,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
-  const login = (user: TUser, tokenData: TokenData) => {
-    setUser(user);
-    setLocalToken(tokenData.accessToken);
+  const login = (user: TUser, token: string) => {
+    setLocalToken(token);
     setIsAuthenticated(true);
-    axios.defaults.headers.common['Authorization'] = `Bearer ${tokenData.accessToken}`;
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    decodeAndSetUser(token);
   };
 
   const logout = () => {
@@ -43,15 +42,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     const token = getLocalToken();
-    
     if (token) {
-          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-          setIsAuthenticated(true);
-       
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      setIsAuthenticated(true);
+      decodeAndSetUser(token);
     }
-  }, []);
+  }, [decodeAndSetUser]);
 
-  //TO DO: set user data instead of isAuthenticated 
   return (
     <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!isAuthenticated }}>
       {children}

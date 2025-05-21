@@ -8,7 +8,7 @@ export type TokenData = {
 export type TAuthContextType = {
   isAuthenticated: boolean;
   user: TUser | null;
-  login: (userData: TUser, tokenData: TokenData) => void;
+  login: (userData: TUser, token: string) => void;
   logout: () => void;
 };
 
