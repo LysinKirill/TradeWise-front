@@ -18,7 +18,8 @@ export const StrategyBuilder = ({ children }: IStrategyBuilderProps) => {
     handleUpdateNode,
     handleAddConnection,
     handleCommitStrategy,
-    handleRemoveConnection
+    handleRemoveConnection,
+    handleUpdateConnection,
   } = useStrategyBuilder();
 
   const [toast, setToast] = useState<{ type: 'error' | 'success'; message: string } | null>(null);
@@ -56,10 +57,12 @@ export const StrategyBuilder = ({ children }: IStrategyBuilderProps) => {
             onDescriptionChange={(desc: string) => updateProperty('description', desc)}
           />
           <ConnectionsPanel
+            nodes={strategy.nodes}
             connections={strategy.connections}
             presets={CONNECTION_PRESETS}
             onAddConnection={handleAddConnection}
             onRemoveConnection={handleRemoveConnection}
+            onUpdateConnection={handleUpdateConnection}
           />
         </UI.SidePanel>
       </UI.Layout>

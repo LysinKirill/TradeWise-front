@@ -13,35 +13,104 @@ export const MODULE_PRESETS: IModulePreset[] = [
   {
     id: 'model-1',
     name: 'Moving Average Model',
-    type: 'model',
-    parameters: { windowSize: 14 },
-    icon: '',
-    color: colors.blue
+    type: 'technical',
+    parameters: { 
+      windowSize: 14,
+      maType: 'EMA'
+    },
+    icon: '📈',
+    color: colors.blue,
+    createdAt: '2024-03-15T09:30:00Z'
   },
   {
     id: 'model-2',
     name: 'Bollinger Bands',
-    type: 'model',
-    parameters: { period: 20, deviation: 2 },
-    icon: '', 
-    color: colors.orange
+    type: 'technical',
+    parameters: { 
+      period: 20,
+      deviation: 2,
+      priceSource: 'close'
+    },
+    icon: '📊', 
+    color: colors.orange,
+    createdAt: '2024-02-28T14:20:00Z'
   },
   {
-    id: 'market-buy',
-    type: 'model',
+    id: 'model-3',
+    name: 'RSI Indicator',
+    type: 'oscillator',
+    parameters: {
+      period: 14,
+      overbought: 70,
+      oversold: 30
+    },
+    icon: '📉',
+    color: colors.purpleButton,
+    createdAt: '2024-04-01T11:15:00Z'
+  },
+  {
+    id: 'model-4',
+    name: 'MACD Cross',
+    type: 'momentum',
+    parameters: {
+      fastPeriod: 12,
+      slowPeriod: 26,
+      signalPeriod: 9
+    },
+    icon: '⚡',
+    color: colors.accentGreen,
+    createdAt: '2024-03-22T16:45:00Z'
+  },
+  {
+    id: 'order-1',
     name: 'Market Buy Order',
-    icon: '', // Иконка для покупки
+    type: 'execution',
+    parameters: { 
+      orderType: 'market',
+      quantity: 100
+    },
+    icon: '🟢',
     color: '#4CAF50',
-    parameters: { orderType: 'market' }
+    createdAt: '2024-01-10T08:00:00Z'
   },
   {
-    id: 'limit-sell',
-    type: 'model',
+    id: 'order-2',
     name: 'Limit Sell Order',
-    icon: '', // Иконка для продажи
+    type: 'execution',
+    parameters: {
+      orderType: 'limit',
+      limitPrice: 150.50,
+      quantity: 50
+    },
+    icon: '🔴',
     color: '#F44336',
-    parameters: { orderType: 'limit' }
+    createdAt: '2024-02-05T13:20:00Z'
   },
+  {
+    id: 'risk-1',
+    name: 'Stop-Loss Strategy',
+    type: 'risk-management',
+    parameters: {
+      stopPercent: 5,
+      trailing: true
+    },
+    icon: '🛡️',
+    color: colors.red,
+    createdAt: '2024-03-10T10:00:00Z'
+  },
+  {
+    id: 'model-5',
+    name: 'Fibonacci Retracement',
+    type: 'technical',
+    parameters: {
+      swingHigh: 200,
+      swingLow: 180,
+      levels: [23.6, 38.2, 50, 61.8]
+    },
+    icon: '📐',
+    color: colors.gold,
+    createdAt: '2024-04-10T09:45:00Z'
+  }
 ];
 
 export const CONNECTION_PRESETS: IConnectionPreset[] = [

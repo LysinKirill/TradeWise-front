@@ -208,8 +208,25 @@ const transformToApiFormat = useCallback((strategy: IStrategy) => {
     }));
   };
 
-  const handleRemoveConnection = (connectionId: string) => {
+  /*const handleRemoveConnection = (connectionId: string) => {
     updateProperty('connections', strategy.connections.filter(c => c.id !== connectionId));
+  };*/
+
+  ///TODO: fix these methods
+  const handleUpdateConnection = (id: string, updates: Partial<IStrategyConnection>) => {
+    setStrategy(prev => ({
+      ...prev,
+      connections: prev.connections.map(conn => 
+        conn.id === id ? { ...conn, ...updates } : conn
+      )
+    }));
+  };
+  
+  const handleRemoveConnection = (id: string) => {
+    setStrategy(prev => ({
+      ...prev,
+      connections: prev.connections.filter(c => c.id !== id)
+    }));
   };
 
   const handleCommitStrategy = async () => {
@@ -229,6 +246,7 @@ const transformToApiFormat = useCallback((strategy: IStrategy) => {
     handleAddConnection,
     handleValidate,
     handleCommitStrategy,
+    handleUpdateConnection,
     handleRemoveConnection,
     handleRemoveNode
   };

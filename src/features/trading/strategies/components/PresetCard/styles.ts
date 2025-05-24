@@ -39,6 +39,24 @@ export const CardContent = styled.div`
   `}
 `;
 
+export const ModelName = styled.div`
+  color: ${colors.white};
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-align: center;
+  width: 100%;
+  padding: 0 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+
+  ${({ theme }) => theme.isMobile && css`
+    font-size: 0.7rem;
+  `}
+`;
+
 export const CardContainer = styled.div`
   background: ${colors.accentBlack};
   border: 1px solid ${colors.greyText};
@@ -49,6 +67,7 @@ export const CardContainer = styled.div`
   cursor: grab;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
@@ -83,6 +102,37 @@ export const CardContainer = styled.div`
     padding: 0.75rem;
 
     &:hover {
+      width: 100%;
+      min-height: 160px;
+    }
+  `}
+`;
+
+export const CardWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100px;
+  height: 130px;
+  transition: all 0.3s ease;
+  position: relative;
+
+  &:hover ${CardContainer} {
+    border-color: ${colors.purpleButton};
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 4px 12px rgba(128, 26, 229, 0.25);
+    border-radius: 16px;
+    width: 200px;
+    height: auto;
+    min-height: 180px;
+  }
+
+  ${({ theme }) => theme.isMobile && css`
+    width: 80px;
+    height: 110px;
+
+    &:hover ${CardContainer} {
       width: 100%;
       min-height: 160px;
     }

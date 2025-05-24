@@ -1,26 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as UI from './styles';
-
-type Condition = {
-  parameter: string;
-  condition: string;
-  value: string;
-};
-
-type ConnectionModalProps = {
-  nodes: Array<{ id: string; name: string }>;
-  connection?: {
-    source: string;
-    target: string;
-    conditions: Condition[];
-  };
-  onSave: (connection: {
-    source: string;
-    target: string;
-    conditions: Condition[];
-  }) => void;
-  onClose: () => void;
-};
+import { fetchSupportedInstruments } from '@/shared/api/stocks';
+import { StatTypeOptions, TransitionConditionOptions } from './constants';
+import { Condition, ConnectionModalProps, Instrument } from './types';
 
 export const ConnectionModal = ({
   nodes,
@@ -33,15 +15,42 @@ export const ConnectionModal = ({
   const [conditions, setConditions] = useState<Condition[]>(
     connection?.conditions || []
   );
+  const [instruments, setInstruments] = useState<Instrument[]>([]);
+  const [loadingInstruments, setLoadingInstruments] = useState(true);
+
+  useEffect(() => {
+    const loadInstruments = async () => {
+      try {
+        const data = await fetchSupportedInstruments();
+        console.log(data);
+        setInstruments(data || []);
+      } catch (error) {
+        console.error('Failed to load instruments:', error);
+        setInstruments([]);
+      } finally {
+        setLoadingInstruments(false);
+      }
+    };
+
+    loadInstruments();
+  }, []);
 
   const addCondition = () => {
-    setConditions([...conditions, { parameter: '', condition: '', value: '' }]);
-    console.log(conditions);
+    setConditions([...conditions, {
+      instrumentId: '',
+      statType: 'Unknown',
+      transitionConditionType: 'Unknown',
+      value: ''
+    }]);
   };
 
-  const updateCondition = (index: number, field: keyof Condition, value: string) => {
+  const updateCondition = (
+    index: number,
+    field: keyof Condition,
+    value: string
+  ) => {
     const newConditions = [...conditions];
-    newConditions[index][field] = value;
+    newConditions[index][field] = value as any;
     setConditions(newConditions);
   };
 
@@ -52,7 +61,7 @@ export const ConnectionModal = ({
           <UI.ModalTitle>{connection ? 'Edit' : 'New'} Connection</UI.ModalTitle>
           <UI.CloseButton onClick={onClose}>×</UI.CloseButton>
         </UI.ModalHeader>
-        
+
         <UI.ModalBody>
           <UI.FormGroup>
             <label>Source Node:</label>
@@ -92,30 +101,50 @@ export const ConnectionModal = ({
           {conditions.map((cond, index) => (
             <UI.ConditionRow key={index}>
               <select
-                value={cond.parameter}
-                onChange={(e) => updateCondition(index, 'parameter', e.target.value)}
+                value={cond.instrumentId}
+                onChange={(e) => updateCondition(index, 'instrumentId', e.target.value)}
               >
-                <option value="">Parameter</option>
-                <option value="Bollinger Band Upper">Bollinger Band Upper</option>
-                <option value="Moving Average">Moving Average</option>
+                <option value="">Select Instrument</option>
+                {loadingInstruments ? (
+                  <option disabled>Loading instruments...</option>
+                ) : (
+                  instruments.map(instrument => (
+                    <option key={instrument.id} value={instrument.name}>
+                      {instrument.name}
+                    </option>
+                  ))
+                )}
               </select>
-              
+
               <select
-                value={cond.condition}
-                onChange={(e) => updateCondition(index, 'condition', e.target.value)}
+                value={cond.statType}
+                onChange={(e) => updateCondition(index, 'statType', e.target.value)}
               >
-                <option value=">">&gt;</option>
-                <option value="<">&lt;</option>
-                <option value="=">=</option>
+                {StatTypeOptions.map(option => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
               </select>
-              
+
+              <select
+                value={cond.transitionConditionType}
+                onChange={(e) => updateCondition(index, 'transitionConditionType', e.target.value)}
+              >
+                {TransitionConditionOptions.map(option => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+
               <input
                 type="number"
                 value={cond.value}
                 onChange={(e) => updateCondition(index, 'value', e.target.value)}
               />
-              
-              <UI.RemoveButton onClick={() => 
+
+              <UI.RemoveButton onClick={() =>
                 setConditions(conditions.filter((_, i) => i !== index))
               }>
                 ×
@@ -126,7 +155,7 @@ export const ConnectionModal = ({
 
         <UI.ModalFooter>
           <UI.ActionButton onClick={onClose}>Cancel</UI.ActionButton>
-          <UI.ActionButton 
+          <UI.ActionButton
             onClick={() => onSave({ source, target, conditions })}
             disabled={!source || !target}
           >

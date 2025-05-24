@@ -1,4 +1,4 @@
-export type NodeType = 'start' | 'finish' | 'model' | 'condition';
+//export type NodeType = 'start' | 'finish' | 'model' | 'condition';
 export type StageType = 'input' | 'processing' | 'output';
 
 export enum IConditionType {
@@ -68,9 +68,9 @@ export interface IModulePreset {
   icon: string;
   color: string;
   parameters: Record<string, unknown>;
+  createdAt: string;
 }
 
-// Пропсы компонентов
 export interface IStrategyBuilderProps {
   children?: React.ReactNode;
   nodes: IStrategyNode[];
@@ -102,10 +102,11 @@ export interface IStrategyNodeProps {
 }
 
 export interface IConnectionsPanelProps {
-  connections?: IStrategyConnection[];
-  presets?: IConnectionPreset[];
-  onAddConnection: (connection: IStrategyConnection | IConnectionPreset) => void;
-  onRemoveConnection: (connectionId: string) => void;
+  nodes: IStrategyNode[];
+  connections: IStrategyConnection[];
+  onAddConnection: (connection: IStrategyConnection) => void;
+  onUpdateConnection: (id: string, connection: IStrategyConnection) => void;
+  onRemoveConnection: (id: string) => void;
 }
 
 export interface IConnectionCardProps {

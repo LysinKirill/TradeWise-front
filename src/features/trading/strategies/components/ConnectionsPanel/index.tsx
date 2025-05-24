@@ -1,52 +1,68 @@
-import { IConnectionsPanelProps } from './../../types';
-import { CONNECTION_PRESETS, DEFAULT_CONNECTION } from '../../constants';
-import { ConnectionCard } from '../ConnectionCard';
+import { useState } from 'react';
 import * as UI from './styles';
+import { IConnectionsPanelProps } from '../../types';
+import { ConnectionCard } from '../ConnectionCard';
+import { ConnectionModal } from '../ConnectionModal';
 
 export const ConnectionsPanel = ({ 
+  nodes,
   connections = [], 
-  presets = CONNECTION_PRESETS, 
   onAddConnection,
+  onUpdateConnection,
   onRemoveConnection
 }: IConnectionsPanelProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingConnection, setEditingConnection] = useState<string | null>(null);
 
-  const safePresets = Array.isArray(presets) ? presets : [];
-  const safeConnections = Array.isArray(connections) ? connections : [];
- 
+  const handleSave = (updated: any) => {
+    if (editingConnection) {
+      onUpdateConnection(editingConnection, updated);
+    } else {
+      onAddConnection(updated);
+    }
+    setIsModalOpen(false);
+  };
+
   return (
     <UI.Container>
       <UI.Header>
         <UI.Title>Connections</UI.Title>
-        <UI.AddButton onClick={() => onAddConnection(DEFAULT_CONNECTION)}>
+        <UI.AddButton onClick={() => setIsModalOpen(true)}>
           + New Connection
         </UI.AddButton>
       </UI.Header>
-      <UI.Content>
-        {/*<UI.PresetsGrid>
-        {safePresets.map(preset => (
-          <ConnectionCard
-            key={preset.id}
-            preset={preset}
-            onClick={() => onAddConnection(preset)}
-          />
-        ))}
-      </UI.PresetsGrid>*/}
-      
 
-      <UI.ConnectionsList>
-        {safeConnections.length === 0 ? (
-          <UI.EmptyState>No connections created yet</UI.EmptyState>
-        ) : (
-          safeConnections.map(connection => (
-            <ConnectionCard 
-              key={connection.id} 
-              connection={connection}
-              onRemove={() => onRemoveConnection(connection.id)} 
-            />
-          ))
-        )}
-      </UI.ConnectionsList>
+      <UI.Content>
+        <UI.ConnectionsList>
+          {connections.length === 0 ? (
+            <UI.EmptyState>No connections created yet</UI.EmptyState>
+          ) : (
+            connections.map(connection => (
+              <ConnectionCard 
+                key={connection.id} 
+                connection={connection}
+                onClick={() => {
+                  setEditingConnection(connection.id);
+                  setIsModalOpen(true);
+                }}
+                onRemove={() => onRemoveConnection(connection.id)}
+              />
+            ))
+          )}
+        </UI.ConnectionsList>
       </UI.Content>
+
+      {isModalOpen && (
+        <ConnectionModal
+          nodes={nodes || []}
+          connection={connections.find(c => c.id === editingConnection)}
+          onSave={handleSave}
+          onClose={() => {
+            setIsModalOpen(false);
+            setEditingConnection(null);
+          }}
+        />
+      )}
     </UI.Container>
   );
-}
+};

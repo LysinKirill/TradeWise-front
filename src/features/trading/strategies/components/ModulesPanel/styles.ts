@@ -31,7 +31,8 @@ export const Title = styled.h3`
 export const PresetsGrid = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 1rem;
+  gap: 5rem;
+  margin-left: 2rem;
 
   ${({ theme }) => theme.isMobile && css`
     flex-direction: column;
@@ -47,6 +48,29 @@ export const EmptyState = styled.div`
   ${({ theme }) => theme.isMobile && css`
     padding: 1rem;
     font-size: 0.9rem;
+  `}
+`;
+
+export const ModelName = styled.div`
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: ${colors.white};
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-align: center;
+  width: 100%;
+  padding: 0 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+
+  ${({ theme }) => theme.isMobile && css`
+    font-size: 0.7rem;
+    top: 8px;
   `}
 `;
 
@@ -67,31 +91,5 @@ export const DeleteZone = styled.div`
   ${({ theme }) => theme.isMobile && css`
     height: 80px;
     font-size: 0.9rem;
-  `}
-`;
-
-export const NodeCloseButton = styled.button`
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: red;
-  color: white;
-  border: none;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.2s;
-
-  &:hover {
-    opacity: 1;
-  }
-
-  ${({ theme }) => theme.isMobile && css`
-    top: -8px;
-    right: -8px;
-    width: 18px;
-    height: 18px;
   `}
 `;
