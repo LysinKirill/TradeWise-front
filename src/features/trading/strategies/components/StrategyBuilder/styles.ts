@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { colors } from '@shared/constants/colors';
+import { chartColors, colors } from '@shared/constants/colors';
 
 export const Container = styled.div`
   display: flex;
@@ -30,9 +30,7 @@ export const SidePanel = styled.div`
   flex-shrink: 0;
   width: 25vw;
   max-width: 100%;
-  background: ${colors.backgroundBlack};
   border-radius: 8px;
-  padding: 1rem;
   max-height: 85vh;
 
   ${({ theme }) => theme.isMobile && css`
@@ -55,23 +53,13 @@ export const WidePanel = styled.div`
   `}
 `;
 
-export const Footer = styled.footer`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem 2rem;
-  background: ${colors.darkPurpleButton};
-  border-top: 1px solid ${colors.greyText};
-
-  ${({ theme }) => theme.isMobile && css`
-    flex-direction: column;
-    padding: 1rem;
-    gap: 0.5rem;
-  `}
-`;
-
 export const CommitButton = styled.button`
-  background: ${colors.purpleButton};
+  background: linear-gradient(
+      135deg,
+      ${chartColors.primary} 0%,
+      ${chartColors.secondary} 50%,
+      ${chartColors.tertiary} 100%
+  );
   color: ${colors.white};
   border: none;
   border-radius: 16px;

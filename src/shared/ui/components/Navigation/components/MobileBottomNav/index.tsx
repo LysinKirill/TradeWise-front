@@ -1,4 +1,3 @@
-// src/shared/ui/components/Navigation/MobileBottomNav.tsx
 import { NavLink } from 'react-router-dom';
 import { ROUTES } from '@/shared/constants/routes';
 import * as UI from './styles';

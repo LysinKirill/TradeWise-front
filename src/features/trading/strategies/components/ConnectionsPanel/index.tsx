@@ -1,6 +1,6 @@
 import { IConnectionsPanelProps } from './../../types';
 import { CONNECTION_PRESETS, DEFAULT_CONNECTION } from '../../constants';
-import { ConnectionCard } from './../CanvasArea/ConnectionCard';
+import { ConnectionCard } from '../ConnectionCard';
 import * as UI from './styles';
 
 export const ConnectionsPanel = ({ 
@@ -12,9 +12,7 @@ export const ConnectionsPanel = ({
 
   const safePresets = Array.isArray(presets) ? presets : [];
   const safeConnections = Array.isArray(connections) ? connections : [];
-
-
-  
+ 
   return (
     <UI.Container>
       <UI.Header>
@@ -24,7 +22,7 @@ export const ConnectionsPanel = ({
         </UI.AddButton>
       </UI.Header>
       <UI.Content>
-      <UI.PresetsGrid>
+        {/*<UI.PresetsGrid>
         {safePresets.map(preset => (
           <ConnectionCard
             key={preset.id}
@@ -32,7 +30,8 @@ export const ConnectionsPanel = ({
             onClick={() => onAddConnection(preset)}
           />
         ))}
-      </UI.PresetsGrid>
+      </UI.PresetsGrid>*/}
+      
 
       <UI.ConnectionsList>
         {safeConnections.length === 0 ? (

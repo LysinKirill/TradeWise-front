@@ -2,35 +2,46 @@ import { colors } from '@/shared/constants/colors';
 import { IConnectionPreset, IModulePreset } from './types';
 
 export const MODULE_PRESETS: IModulePreset[] = [
-  {
+  /*{
     id: 'finish',
     name: 'Finish Node',
     type: 'finish',
     parameters: {},
-    icon: '🏁',
+    icon: '', 
     color: colors.accentGreen
-  },
+  },*/
   {
     id: 'model-1',
     name: 'Moving Average Model',
     type: 'model',
-    parameters: {
-      windowSize: 14
-    },
-    icon: '📈',
+    parameters: { windowSize: 14 },
+    icon: '',
     color: colors.blue
   },
   {
     id: 'model-2',
     name: 'Bollinger Bands',
     type: 'model',
-    parameters: {
-      period: 20,
-      deviation: 2
-    },
-    icon: '📊',
+    parameters: { period: 20, deviation: 2 },
+    icon: '', 
     color: colors.orange
-  }
+  },
+  {
+    id: 'market-buy',
+    type: 'model',
+    name: 'Market Buy Order',
+    icon: '', // Иконка для покупки
+    color: '#4CAF50',
+    parameters: { orderType: 'market' }
+  },
+  {
+    id: 'limit-sell',
+    type: 'model',
+    name: 'Limit Sell Order',
+    icon: '', // Иконка для продажи
+    color: '#F44336',
+    parameters: { orderType: 'limit' }
+  },
 ];
 
 export const CONNECTION_PRESETS: IConnectionPreset[] = [

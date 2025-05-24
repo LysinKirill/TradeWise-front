@@ -1,5 +1,6 @@
 import { IPresetCardProps } from '../../types';
 import * as UI from './styles';
+import modelIcon from '@assets/icons/modulePreset.png';
 
 export const PresetCard = ({ preset, onClick, onDragStart, onDoubleClick }: IPresetCardProps) => {
 
@@ -8,16 +9,25 @@ export const PresetCard = ({ preset, onClick, onDragStart, onDoubleClick }: IPre
     return String(value);
   };
 
+  const handleDragStart = (e: React.DragEvent) => {
+    e.dataTransfer.setData('application/json', JSON.stringify(preset));
+    e.dataTransfer.effectAllowed = 'copy';
+  };
+
   return (
     <UI.CardContainer 
       draggable
       onClick={onClick}
-      onDragStart={onDragStart}
+      onDragStart={handleDragStart}
       data-preset-id={preset.id}
       onDoubleClick={onDoubleClick}
     >
       <UI.IconContainer $color={preset.color}>
-        {preset.icon}
+      <img 
+          src={modelIcon} 
+          alt={preset.name}
+          style={{ width: 40, height: 40 }}
+        />
       </UI.IconContainer>
       <UI.CardContent>
         <UI.PresetTitle>{preset.name}</UI.PresetTitle>

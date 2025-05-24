@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components';
-import { colors } from '@/shared/constants/colors';
+import { chartColors, colors } from '@/shared/constants/colors';
 
 export const Container = styled.div`
-  background: ${colors.darkPurpleButton};
+  background: ${colors.backgroundBlack};
   border-radius: 12px;
   padding: 1.5rem;
   height: 40vh;
@@ -31,6 +31,7 @@ export const Title = styled.h3`
   color: ${colors.white};
   margin: 0;
   font-size: 1.25rem;
+  text-shadow: 0 0 10px ${colors.white}90;
 
   ${({ theme }) => theme.isMobile && css`
     font-size: 1rem;
@@ -38,7 +39,12 @@ export const Title = styled.h3`
 `;
 
 export const AddButton = styled.button`
-  background: ${colors.purpleButton};
+  background: linear-gradient(
+        135deg,
+        ${chartColors.primary} 0%,
+        ${chartColors.secondary} 50%,
+        ${chartColors.tertiary} 100%
+  );
   color: ${colors.white};
   border: none;
   padding: 0.5rem 0.5rem;

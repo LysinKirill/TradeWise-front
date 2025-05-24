@@ -2,7 +2,7 @@ import { colors } from "@/shared/constants/colors";
 import styled, { css } from "styled-components";
 
 export const OverviewContainer = styled.div`
-  background: ${colors.darkPurpleButton};
+  background: ${colors.backgroundBlack};
   border-radius: 16px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;

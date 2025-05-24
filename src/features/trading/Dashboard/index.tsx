@@ -43,7 +43,8 @@ const Dashboard = () => {
   }, []);
 
   const filteredStrategies = strategies.filter(strategy =>
-    strategy.name.toLowerCase().includes(searchQuery.toLowerCase())
+    strategy.title.toLowerCase().includes(searchQuery.toLowerCase())
+    //strategy.title
   );
 
   const portfolioPositions = stats?.portfolioPositions || [];

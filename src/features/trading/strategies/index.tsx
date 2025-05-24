@@ -6,6 +6,9 @@ import { CanvasArea } from './components/CanvasArea';
 import { ConnectionsPanel } from './components/ConnectionsPanel';
 import { ModulesPanel } from './components/ModulesPanel';
 import { Footer } from '@/shared/ui/components/Footer';
+import * as UI from './styles';
+import { ValidationModal } from './components/validationModal/ValidationModal';
+import { useEffect, useState } from 'react';
 
 const Strategies = () => {
   const {
@@ -19,38 +22,54 @@ const Strategies = () => {
     handleRemoveConnection,
     handleRemoveNode
   } = useStrategyBuilder();
+  const [showErrorModal, setShowErrorModal] = useState(false);
+
+  useEffect(() => {
+    if (validationError) {
+      setShowErrorModal(true);
+    }
+  }, [validationError]);
 
   return (
-    <StrategyBuilder
-      nodes={nodes}
-      connections={connections}
-      onNodesChange={handleNodesChange}
-      onConnectionsChange={handleConnectionsChange}
-    >
-      <ModulesPanel
-        presets={MODULE_PRESETS}
-        onAddNode={handleNodesChange}
-        onRemoveNode={handleRemoveNode} 
-      />
-      <CanvasArea
+    <>
+      <StrategyBuilder
         nodes={nodes}
         connections={connections}
-        stages={strategy.stages}
+        onNodesChange={handleNodesChange}
         onConnectionsChange={handleConnectionsChange}
-        onNodesChange={handleNodesChange} 
-      />
-      <ConnectionsPanel
-        connections={connections}
-        presets={CONNECTION_PRESETS}
-        onAddConnection={handleConnectionsChange}
-        onRemoveConnection={handleRemoveConnection}
-      />
-      <CommitSection
-        strategy={strategy}
+      >
+        <ModulesPanel
+          presets={MODULE_PRESETS}
+          onAddNode={handleNodesChange}
+          onRemoveNode={handleRemoveNode}
+        />
+        <CanvasArea
+          nodes={nodes}
+          connections={connections}
+          stages={strategy.stages}
+          onConnectionsChange={handleConnectionsChange}
+          onNodesChange={handleNodesChange}
+        />
+        <ConnectionsPanel
+          connections={connections}
+          presets={CONNECTION_PRESETS}
+          onAddConnection={handleConnectionsChange}
+          onRemoveConnection={handleRemoveConnection}
+        />
+        <CommitSection
+          strategy={strategy}
+          error={validationError}
+          onCommit={handleCommitStrategy}
+        />
+      </StrategyBuilder>
+      <ValidationModal
         error={validationError}
-        onCommit={handleCommitStrategy}
+        onClose={() => setShowErrorModal(false)}
       />
-    </StrategyBuilder>
+      <UI.Footer>
+        <Footer />
+      </UI.Footer>
+    </>
   );
 }
 

@@ -35,9 +35,11 @@ export interface IStrategyConnection {
   id: string;
   source: string;
   target: string;
-  conditions: IConnectionCondition[];
-  preset?: string;
-  color?: string;
+  conditions: Array<{
+    type: number;
+    statType: number;
+    value: number;
+  }>;
 }
 
 export interface IStrategy {

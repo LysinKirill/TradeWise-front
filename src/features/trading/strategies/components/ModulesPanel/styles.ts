@@ -20,6 +20,7 @@ export const Title = styled.h3`
   color: ${colors.white};
   margin: 0 0 1.5rem 0;
   font-size: 1.25rem;
+  text-shadow: 0 0 10px ${colors.white}90;
 
   ${({ theme }) => theme.isMobile && css`
     font-size: 1rem;

@@ -67,7 +67,6 @@ export const StrategyBuilder = ({ children }: IStrategyBuilderProps) => {
       {toast && (
         <Toast type={toast.type} message={toast.message} onClose={() => setToast(null)} />
       )}
-        <Footer/>
     </UI.Container>
   );
 };

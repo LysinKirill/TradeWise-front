@@ -30,7 +30,7 @@ export const CardContent = styled.div`
   opacity: 0;
   transform: translateY(20px);
   transition: all 0.3s ease;
-  padding-top: 60px;
+  //padding-top: 60px;
   width: 100%;
 
   ${({ theme }) => theme.isMobile && css`

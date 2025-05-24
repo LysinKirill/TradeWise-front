@@ -2,9 +2,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useRef, useState } from 'react';
 import * as UI from './styles';
-import { StrategyNode } from './StrategyNode';
-import { ConnectionLine } from './ConnectionLine';
+import { StrategyNode } from '../StrategyNode';
+import { ConnectionLine } from '../ConnectionLine';
 import { IStrategyNode, IStrategyConnection, StageType, NodeType } from '../../types';
+import { MODULE_PRESETS } from '../../constants';
+import { ConnectionModal } from '../ConnectionModal';
+
 
 interface CanvasAreaProps {
   stages: StageType[];
@@ -21,6 +24,8 @@ export const CanvasArea = ({
   onNodesChange,
   onConnectionsChange
 }: CanvasAreaProps) => {
+  const [editingConnection, setEditingConnection] = useState<IStrategyConnection | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const canvasRef = useRef<HTMLDivElement>(null);
   const [draggingNode, setDraggingNode] = useState<string | null>(null);
   const [connectingFrom, setConnectingFrom] = useState<string | null>(null);
@@ -29,6 +34,8 @@ export const CanvasArea = ({
   const connectionsSafe = Array.isArray(connections) ? connections : [];
   const stagesSafe = Array.isArray(stages) ? stages : [];
 
+
+  console.log(isModalOpen);
   const calculateStagePositions = () => {
     if (!canvasRef.current) return [];
     const width = canvasRef.current.offsetWidth;
@@ -49,6 +56,7 @@ export const CanvasArea = ({
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
+    if (e.dataTransfer.types.includes('nodeId')) return;
     if (!canvasRef.current || !draggingNode) return;
 
     const rect = canvasRef.current.getBoundingClientRect();
@@ -68,6 +76,11 @@ export const CanvasArea = ({
     const type = e.dataTransfer.getData('type') as NodeType;
     if (type === 'start') return;
 
+    if (e.dataTransfer.types.includes('nodeId')) {
+      e.stopPropagation();
+      return;
+    }
+
     const stagePositions = calculateStagePositions();
     const rect = canvasRef.current?.getBoundingClientRect();
 
@@ -84,18 +97,62 @@ export const CanvasArea = ({
         y: existingNodesInStage.length * 80 + 20
       };
 
+      const presetData = e.dataTransfer.getData('application/json');
+      let preset: typeof MODULE_PRESETS[number] | null = null;
+
+      try {
+        preset = presetData ? JSON.parse(presetData) : null;
+      } catch (e) {
+        console.error('Error parsing preset data', e);
+      }
+
+      const type = preset?.type || (e.dataTransfer.getData('type') as NodeType);
+
       const newNode: IStrategyNode = {
         id: `node-${Date.now()}`,
         type,
+        name: preset?.name || `New ${type}`,
         position: newPosition,
         stage: stages[stageIndex],
-        label: type === 'start' ? 'Start' : undefined
+        parameters: preset?.parameters || {},
+        color: preset?.color || '#7F56D9'
       };
 
       onNodesChange([...nodesSafe, newNode]);
     }
     setDraggingNode(null);
   }, [nodesSafe, stages]);
+
+  const handleEditConnection = (connection: IStrategyConnection) => {
+    setEditingConnection(connection);
+    setIsModalOpen(true);
+  };
+
+  const handleSaveConnection = (updated: {
+    source: string;
+    target: string;
+    conditions: ICondition[];
+  }) => {
+    if (editingConnection) {
+      // Редактирование существующей связи
+      const updatedConnections = connectionsSafe.map(conn => 
+        conn.id === editingConnection.id ? 
+        { ...conn, ...updated } : 
+        conn
+      );
+      onConnectionsChange(updatedConnections);
+    } else {
+      // Создание новой связи
+      const newConnection: IStrategyConnection = {
+        id: `${updated.source}-${updated.target}-${Date.now()}`,
+        ...updated,
+        conditions: updated.conditions
+      };
+      onConnectionsChange([...connectionsSafe, newConnection]);
+    }
+    setIsModalOpen(false);
+  };
+
 
   const handleConnect = useCallback((sourceId: string, targetId: string) => {
     const newConnection: IStrategyConnection = {
@@ -108,6 +165,7 @@ export const CanvasArea = ({
   }, [connectionsSafe]);
 
   return (
+    <>
     <UI.CanvasContainer
       ref={canvasRef}
       onDragOver={handleDragOver}
@@ -146,11 +204,24 @@ export const CanvasArea = ({
 
       {connectionsSafe.map(connection => (
         <ConnectionLine
-          key={connection.id}
-          connection={connection}
-          nodes={nodesSafe}
-        />
+        key={connection.id}
+        connection={connection}
+        nodes={nodesSafe}
+        onEdit={() => handleEditConnection(connection)}
+      />
       ))}
     </UI.CanvasContainer>
+    {isModalOpen && (
+      <ConnectionModal
+        nodes={nodesSafe}
+        connection={editingConnection || undefined}
+        onSave={handleSaveConnection}
+        onClose={() => {
+          setIsModalOpen(false);
+          setEditingConnection(null);
+        }}
+      />
+    )}
+    </>
   );
 };

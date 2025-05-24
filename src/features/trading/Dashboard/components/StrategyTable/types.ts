@@ -1,7 +1,12 @@
 export interface IStrategyData {
   id: string;
-  name: string;
+  title: string;
   description: string;
+  status: 'active' | 'paused' | 'archived';
+  createdAt: string;
+  updatedAt: string;
+  profit: number;
+  riskLevel: number;
 }
 
 export interface IStrategyTableProps {

@@ -114,3 +114,23 @@ export const TableBody = styled.tbody`
     }
   `}
 `;
+
+export const StatusIndicator = styled.span<{ status: 'active' | 'paused' | string }>`
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  background-color: ${({ status }) => {
+    switch (status) {
+      case 'active': return '#D1FAE5';  // Light green
+      case 'paused': return '#FEF3C7';  // Light amber
+      default: return '#F3F4F6';       // Light gray
+    }
+  }};
+  color: ${({ status }) => {
+    switch (status) {
+      case 'active': return '#059669';  // Dark green
+      case 'paused': return '#D97706';  // Dark amber
+      default: return '#4B5563';       // Dark gray
+    }
+  }};
+`;
