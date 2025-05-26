@@ -1,8 +1,10 @@
 import http from '../axios-client';
 
-export const linkEmail = async ({ email }: { email: string }) => {
+export const linkInvestApiKey = async ({ investApiKey }: { investApiKey: string }) => {
   try {
-    const res = await http.post('/api/v1/account/link-email', { email });
+    const res = await http.post('/api/v1/invest/link-invest-api-key-with-account', { 
+      investApiKey 
+    });
     return res.data;
   } catch (error) {
     console.error(error);
