@@ -21,3 +21,32 @@ export type Candle = {
   low: number;
   close: number;
 };
+
+export type StatType = 
+  | 'Unknown'
+  | 'BollingerBandLower'
+  | 'BollingerBandMiddle'
+  | 'BollingerBandUpper'
+  | 'ExponentialMovingAverage'
+  | 'RelativeStrengthIndex'
+  | 'MovingAverageConvergenceDivergence'
+  | 'MovingAverage';
+
+export const statTypes: StatType[] = [
+  'BollingerBandLower',
+  'BollingerBandMiddle',
+  'BollingerBandUpper',
+  'ExponentialMovingAverage',
+  'RelativeStrengthIndex',
+  'MovingAverageConvergenceDivergence',
+  //'MovingAverage'
+];
+
+export type StatData = {
+  [key in StatType]?: number;
+};
+
+export type InstrumentDetailsModalProps = {
+  instrument: IResearchData;
+  onClose: () => void;
+};

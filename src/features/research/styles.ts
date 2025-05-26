@@ -23,7 +23,6 @@ export const ResearchSection = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
-// Стили таблицы
 export const TableWrapper = styled.div`
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -137,7 +136,6 @@ export const TableBody = styled.tbody`
   `}
 `;
 
-// Модальное окно
 export const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -156,7 +154,7 @@ export const ModalContainer = styled.div`
   padding: 2rem;
   border-radius: 12px;
   width: 80%;
-  max-width: 1000px;
+  max-width: 1500px;
   max-height: 90vh;
   overflow-y: auto;
 `;
@@ -186,9 +184,9 @@ export const CloseButton = styled.button`
 
 export const ModalBody = styled.div`
   padding: 1rem 0;
+  gap: 2rem;
 `;
 
-// Дополнительные компоненты
 export const Loader = styled.div`
   color: ${colors.white};
   padding: 2rem;
@@ -206,7 +204,6 @@ export const ErrorMessage = styled.div`
 export const ChartSection = styled.div`
   margin-top: 2rem;
   padding: 1.5rem;
-  background: ${colors.accentBlack};
   border-radius: 8px;
 `;
 
@@ -239,7 +236,6 @@ export const StatValue = styled.span`
 
 export const StatsTableSection = styled.div`
   margin-bottom: 2rem;
-  background: ${colors.accentBlack};
   border-radius: 8px;
   padding: 1rem;
 `;
@@ -264,6 +260,30 @@ export const TooltipDate = styled.div`
 `;
 
 export const TooltipItem = styled.div<{ color?: string }>`
-  color: ${({ color }) => color || colors.textPrimary};
+ color: ${colors.textSecondary};
   font-size: 0.9rem;
+`;
+
+export const TabsContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid ${colors.borderColor};
+`;
+
+export const TabButton = styled.button<{ active?: boolean }>`
+  padding: 0.8rem 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: ${({ active }) => active ? colors.neonBlue : colors.textSecondary};
+  border-bottom: 3px solid ${({ active }) => 
+    active ? colors.neonBlue : 'transparent'};
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: ${colors.neonBlue};
+    background: rgba(138, 43, 226, 0.05);
+  }
 `;

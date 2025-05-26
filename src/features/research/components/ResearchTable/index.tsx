@@ -1,5 +1,5 @@
-import * as UI from '../styles';
-import { ResearchTableProps } from '../types';
+import * as UI from '../../styles';
+import { ResearchTableProps } from '../../types';
 
 export const ResearchTable = ({ data, onRowClick }: ResearchTableProps) => (
   <UI.TableWrapper>

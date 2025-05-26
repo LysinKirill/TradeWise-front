@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ResearchTable } from './components/researchTable';
+import { ResearchTable } from './components/ResearchTable';
 import { fetchSupportedInstruments } from '@/shared/api/stocks';
 import * as UI from './styles';
 import { InstrumentDetailsModal } from './components/InstrumentDetailsModal';
