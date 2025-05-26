@@ -1,29 +1,25 @@
-// src/pages/Settings/index.tsx
 import { useState } from 'react';
 import * as UI from './styles';
-import { linkEmail, updatePassword, verifyEmail } from '@/shared/api/settings';
+import { linkInvestApiKey, updatePassword, verifyEmail } from '@/shared/api/settings';
 import { toast } from 'react-toastify';
 
 export default function Settings() {
-  const [email, setEmail] = useState('');
+  const [investApiKey, setInvestApiKey] = useState('');
   const [password, setPassword] = useState('');
   const [code, setCode] = useState('');
 
-  const validateEmail = (email: string) =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-  const handleLinkEmail = async () => {
-    if (!validateEmail(email)) {
-      toast.error('Please enter a valid email.');
+  const handleLinkInvestApiKey = async () => {
+    if (!investApiKey.trim()) {
+      toast.error('Please enter a valid API key.');
       return;
     }
 
-    const response = await linkEmail({ email });
+    const response = await linkInvestApiKey({ investApiKey });
     if (response?.success) {
-      toast.success('Email linked successfully!');
-      setEmail('');
+      toast.success('API key linked successfully!');
+      setInvestApiKey('');
     } else {
-      toast.error(response?.message || 'Failed to link email.');
+      toast.error(response?.message || 'Failed to link API key.');
     }
   };
 
@@ -63,15 +59,15 @@ export default function Settings() {
         <UI.Title>Account Settings</UI.Title>
 
         <UI.FormSection>
-          <UI.Subtitle>Link Email</UI.Subtitle>
+          <UI.Subtitle>Link Invest API Key</UI.Subtitle>
           <UI.Input
-            type="email"
-            value={email}
-            placeholder="Enter your email"
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            value={investApiKey}
+            placeholder="Enter your investment API key"
+            onChange={(e) => setInvestApiKey(e.target.value)}
           />
-          <UI.PrimaryButton onClick={handleLinkEmail}>
-            Link Email
+          <UI.PrimaryButton onClick={handleLinkInvestApiKey}>
+            Link API Key
           </UI.PrimaryButton>
         </UI.FormSection>
 

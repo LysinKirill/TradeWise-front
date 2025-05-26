@@ -10,6 +10,7 @@ export type TAuthContextType = {
   user: TUser | null;
   login: (userData: TUser, token: string) => void;
   logout: () => void;
+  //refreshToken: async () => null;
 };
 
 export type TUser = {

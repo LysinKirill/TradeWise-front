@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { getLocalToken, setLocalToken, removeLocalToken } from '@shared/utils/tokenStorage';
+import { getLocalToken, setLocalToken, removeLocalToken, getRefreshToken, setRefreshToken } from '@shared/utils/tokenStorage';
 import axios from 'axios';
 import { TAuthContextType, TUser } from './types';
 import { decodeJWT, JwtPayload } from '@/shared/utils/jwt';
@@ -10,11 +10,13 @@ const AuthContext = createContext<TAuthContextType | undefined>({
   user: null,
   login: () => { },
   logout: () => { },
+  refreshToken: async () => null,
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<TUser | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const decodeAndSetUser = useCallback((token: string) => {
     const decoded = decodeJWT<JwtPayload>(token);
@@ -26,9 +28,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
-  const login = (user: TUser, token: string) => {
+  const login = (user: TUser, token: string, ) => {
     setLocalToken(token);
     setIsAuthenticated(true);
+    setRefreshToken(refreshToken);
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     decodeAndSetUser(token);
   };
@@ -40,6 +43,36 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     delete axios.defaults.headers.common['Authorization'];
   };
 
+  const refreshToken = useCallback(async (): Promise<string | null> => {
+    if (isRefreshing) return null;
+    
+    try {
+      setIsRefreshing(true);
+      const refreshToken = getRefreshToken();
+      if (!refreshToken) {
+        logout();
+        return null;
+      }
+
+      const response = await axios.post('/api/v1/refresh', { refreshToken });
+      const newToken = response.data.accessToken;
+      const newRefreshToken = response.data.refreshToken;
+
+      setLocalToken(newToken);
+      setRefreshToken(newRefreshToken);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+      decodeAndSetUser(newToken);
+      
+      return newToken;
+    } catch (error) {
+      console.error('Token refresh failed:', error);
+      logout();
+      return null;
+    } finally {
+      setIsRefreshing(false);
+    }
+  }, [isRefreshing, logout, decodeAndSetUser]);
+
   useEffect(() => {
     const token = getLocalToken();
     if (token) {
@@ -50,7 +83,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [decodeAndSetUser]);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!isAuthenticated }}>
+    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!isAuthenticated, refreshToken}}>
       {children}
     </AuthContext.Provider>
   );
