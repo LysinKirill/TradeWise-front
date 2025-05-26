@@ -1,3 +1,5 @@
+import { Execution } from "./types";
+
 export const mockStrategies = [
   {
     id: 'strategy-1',
@@ -55,3 +57,20 @@ export const mockBacktestResult = {
   winRate: '62.5%',
   maxDrawdown: '-4.2%'
 };
+
+export const mockExecutions: Execution[] = [
+  {
+    id: "1",
+    createdAt: "2025-05-24T10:00:00.000Z",
+    updatedAt: "2025-05-24T10:05:00.000Z",
+    status: "Active",
+    strategyId: "aa9b070e-ff4b-4709-acf7-da655ea05c66"
+  },
+  {
+    id: "2",
+    createdAt: "2025-05-24T09:30:00.000Z",
+    updatedAt: "2025-05-24T09:45:00.000Z",
+    status: "Completed",
+    strategyId: "16cd084f-198e-445c-a07c-6f7772196dcf"
+  }
+];

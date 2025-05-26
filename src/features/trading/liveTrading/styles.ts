@@ -26,7 +26,7 @@ export const Title = styled.h2`
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 60px;
+    width: 100%;
     height: 3px;
     background: linear-gradient(
       90deg,
@@ -225,11 +225,128 @@ export const StatusIndicator = styled.span<{ status: string }>`
     colors.statusCompletedText};
 `;
 
-export const EmptyStateRow = styled.tr`
-  td {
-    padding: 2rem;
-    text-align: center;
+export const FormCard = styled.div`
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0px 10px 100px rgba(84, 1, 140, 0.75);
+`;
+
+export const HistoryCard = styled(FormCard)`
+  margin-top: 2rem;
+`;
+
+export const CardHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.2rem;
+  color: ${colors.white};
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid ${colors.borderColor};
+
+  svg {
+    stroke-width: 1.5px;
+  }
+`;
+
+export const InputRow = styled.div`
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  margin-bottom: 1.5rem;
+`;
+
+export const ActionRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+`;
+
+export const ResponsiveTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  
+  th, td {
+    padding: 1rem;
+    text-align: left;
+    font-size: 0.9rem;
+  }
+
+  th {
+    background: linear-gradient(
+    135deg,
+    ${chartColors.primary} 0%,
+    ${chartColors.secondary} 50%,
+    ${chartColors.tertiary} 90%
+  );
     color: ${colors.textSecondary};
-    font-style: italic;
+    font-weight: 500;
+    border-radius: 8px 8px 0px 0px;
+  }
+
+  td {
+    border-bottom: 1px solid ${colors.borderColor};
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  @media (max-width: 768px) {
+    th, td {
+      padding: 0.8rem;
+    }
+  }
+`;
+
+export const TimeGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  
+  div:first-child {
+    font-weight: 500;
+  }
+  
+  div:last-child {
+    font-size: 0.85rem;
+    color: ${colors.textSecondary};
+  }
+`;
+
+export const CancelButton = styled.button`
+  background: ${colors.accentRed}20;
+  color: ${colors.accentRed};
+  border: 1px solid ${colors.accentRed};
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${colors.accentRed}30;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+`;
+
+export const EmptyState = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: 2rem;
+  color: ${colors.textSecondary};
+  font-size: 0.95rem;
+
+  svg {
+    stroke-width: 1.2px;
   }
 `;

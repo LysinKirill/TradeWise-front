@@ -48,3 +48,12 @@ export const runStrategy = async (strategyId: string) => {
     throw new Error(error.response?.data?.detail || 'Failed to run strategy');
   }
 };
+
+export const cancelStrategy = async (executionId: string) => {
+  try {
+
+    return http.post('/api/v1/strategy/cancel', { strategyExecutionId: executionId });
+  } catch (error: any) {
+    throw new Error(error.response?.data?.detail || 'Failed to run strategy');
+  }
+};

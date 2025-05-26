@@ -3,40 +3,11 @@ import * as UI from './styles';
 import { toast } from 'react-toastify';
 import { Footer } from '@/shared/ui/components/Footer';
 import http from '@/shared/api/axios-client';
-import { fetchExecutions, fetchTradingStrategies, runStrategy } from '@/shared/api/strategies';
+import { cancelStrategy, fetchExecutions, fetchTradingStrategies, runStrategy } from '@/shared/api/strategies';
+import { FiXCircle, FiPlay, FiClock, FiZap, FiZapOff } from 'react-icons/fi';
+import { Execution, Strategy } from './types';
+import { mockExecutions } from './constants';
 
-interface Strategy {
-  id: string;
-  title: string;
-  description: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-interface Execution {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-  status: string;
-  strategyId: string;
-}
-
-const mockExecutions: Execution[] = [
-  {
-    id: "1",
-    createdAt: "2025-05-24T10:00:00.000Z",
-    updatedAt: "2025-05-24T10:05:00.000Z",
-    status: "Active",
-    strategyId: "aa9b070e-ff4b-4709-acf7-da655ea05c66"
-  },
-  {
-    id: "2",
-    createdAt: "2025-05-24T09:30:00.000Z",
-    updatedAt: "2025-05-24T09:45:00.000Z",
-    status: "Completed",
-    strategyId: "16cd084f-198e-445c-a07c-6f7772196dcf"
-  }
-];
 
 const LiveTrading = () => {
   const [amount, setAmount] = useState('');
@@ -88,81 +59,124 @@ const LiveTrading = () => {
     return strategies.find(s => s.id === strategyId)?.title || 'Unknown';
   };
 
+  const handleCancelStrategy = async (executionId: string) => {
+    try {
+      await cancelStrategy(executionId);
+      const updatedExecutions = await fetchExecutions();
+      setExecutions(updatedExecutions);
+      toast.success('Strategy canceled successfully');
+    } catch (error: any) {
+      const message = error.response?.data?.detail || 'Failed to cancel strategy';
+      toast.error(message);
+    }
+  };
+
   return (
     <UI.Container>
-      <UI.Title>Live Trading</UI.Title>
+      <UI.Title><FiZap /> Live Trading</UI.Title>
 
-      <UI.InputGroup>
-        <label>Strategy</label>
-        <UI.Select
-          value={selectedStrategyId}
-          onChange={(e) => setSelectedStrategyId(e.target.value)}
-        >
-          <option value="">Choose strategy</option>
-          {strategies.map((strategy) => (
-            <option key={strategy.id} value={strategy.id}>
-              {strategy.title} - {strategy.description}
-            </option>
-          ))}
-        </UI.Select>
-      </UI.InputGroup>
+      <UI.FormCard>
+        <UI.CardHeader>
+          <FiPlay /> Start New Strategy
+        </UI.CardHeader>
+        
+        <UI.InputRow>
+          <UI.InputGroup>
+            <label>Select Strategy</label>
+            <UI.Select
+              value={selectedStrategyId}
+              onChange={(e) => setSelectedStrategyId(e.target.value)}
+            >
+              <option value="">Choose strategy...</option>
+              {strategies.map((strategy) => (
+                <option key={strategy.id} value={strategy.id}>
+                  {strategy.title}
+                </option>
+              ))}
+            </UI.Select>
+          </UI.InputGroup>
 
-      <UI.InputGroup>
-        <label>Investment Amount</label>
-        <UI.StyledInput
-          type="number"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          placeholder="Enter amount"
-        />
-      </UI.InputGroup>
+          <UI.InputGroup>
+            <label>Amount ($)</label>
+            <UI.StyledInput
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder="5000"
+            />
+          </UI.InputGroup>
+        </UI.InputRow>
 
-      <UI.CheckboxGroup>
-        <input
-          type="checkbox"
-          checked={isPaperTrading}
-          onChange={(e) => setIsPaperTrading(e.target.checked)}
-        />
-        <label>Paper Trading</label>
-      </UI.CheckboxGroup>
+        <UI.ActionRow>
+          <UI.CheckboxGroup>
+            <input
+              type="checkbox"
+              checked={isPaperTrading}
+              onChange={(e) => setIsPaperTrading(e.target.checked)}
+            />
+            <label>Paper Trading</label>
+          </UI.CheckboxGroup>
 
-      <UI.ButtonWrapper>
-        <UI.PrimaryButton onClick={handleRunStrategy} disabled={loading}>
-          {loading ? 'Starting...' : 'Run Strategy'}
-        </UI.PrimaryButton>
-      </UI.ButtonWrapper>
+          <UI.PrimaryButton 
+            onClick={handleRunStrategy} 
+            disabled={loading || !selectedStrategyId}
+          >
+            {loading ? <FiClock /> : <FiZap />}
+            {loading ? ' Starting...' : ' Run Strategy'}
+          </UI.PrimaryButton>
+        </UI.ActionRow>
+      </UI.FormCard>
 
-      {/*executions.length > 0 &&*/ (
-        <UI.HistoryBlock>
-          <h3>Execution History</h3>
-          <UI.Table>
+      <UI.HistoryCard>
+        <UI.CardHeader>
+          <FiZapOff /> Active Executions
+        </UI.CardHeader>
+
+        {mockExecutions.length === 0 ? (
+          <UI.EmptyState>
+            <FiXCircle />
+            No active executions
+          </UI.EmptyState>
+        ) : (
+          <UI.ResponsiveTable>
             <thead>
               <tr>
                 <th>Strategy</th>
                 <th>Status</th>
-                <th>Started At</th>
-                <th>Last Updated</th>
+                <th>Started</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {executions.length > 0 ? (
-                executions.map((execution) => (
-                  <tr key={execution.id}>
-                    <td>{getStrategyName(execution.strategyId)}</td>
-                    <td>{execution.status}</td>
-                    <td>{new Date(execution.createdAt).toLocaleString()}</td>
-                    <td>{new Date(execution.updatedAt).toLocaleString()}</td>
-                  </tr>
-                ))) : (
-                <UI.EmptyStateRow>
-                  <td colSpan={4}>No executions found</td>
-                </UI.EmptyStateRow>
-              )}
+              {mockExecutions.map((execution) => (
+                <tr key={execution.id}>
+                  <td>{getStrategyName(execution.strategyId)}</td>
+                  <td>
+                    <UI.StatusIndicator status={execution.status}>
+                      {execution.status}
+                    </UI.StatusIndicator>
+                  </td>
+                  <td>
+                    <UI.TimeGroup>
+                      <div>{new Date(execution.createdAt).toLocaleDateString()}</div>
+                      <div>{new Date(execution.createdAt).toLocaleTimeString()}</div>
+                    </UI.TimeGroup>
+                  </td>
+                  <td>
+                    {execution.status === 'Active' && (
+                      <UI.CancelButton 
+                        onClick={() => handleCancelStrategy(execution.id)}
+                      >
+                        Cancel
+                      </UI.CancelButton>
+                    )}
+                  </td>
+                </tr>
+              ))}
             </tbody>
-          </UI.Table>
-        </UI.HistoryBlock>
-      )}
-
+          </UI.ResponsiveTable>
+        )}
+      </UI.HistoryCard>
 
       <Footer />
     </UI.Container>
