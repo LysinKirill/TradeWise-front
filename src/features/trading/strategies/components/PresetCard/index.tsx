@@ -13,10 +13,11 @@ export const PresetCard = ({ preset, onClick, onDragStart, onDoubleClick }: IPre
     e.dataTransfer.setData('application/json', JSON.stringify(preset));
     e.dataTransfer.effectAllowed = 'copy';
   };
+  console.log(preset.color);
 
   return (
     <UI.CardWrapper>
-      <UI.PresetTitle>{preset.name}</UI.PresetTitle>
+      <UI.PresetTitle>{preset.name.split('_')[0]}</UI.PresetTitle>
       <UI.CardContainer
         draggable
         onClick={onClick}

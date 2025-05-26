@@ -29,6 +29,7 @@ export interface IStrategyNode {
   preset?: string;
   color?: string;
   stage: StageType;
+  modelId?: string;
 }
 
 export interface IStrategyConnection {
@@ -69,6 +70,7 @@ export interface IModulePreset {
   color: string;
   parameters: Record<string, unknown>;
   createdAt: string;
+  modelId: string;
 }
 
 export interface IStrategyBuilderProps {

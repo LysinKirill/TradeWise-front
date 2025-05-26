@@ -43,25 +43,20 @@ export const useStrategyBuilder = (initialStrategy?: IStrategy) => {
     return stageTypeMap[stage] || 1;
   };
 
-  // В хуке useStrategyBuilder.ts
-
 const transformToApiFormat = useCallback((strategy: IStrategy) => {
-  // Убеждаемся, что все ID валидны
   const validateId = (id: string) => {
     if (!id) return null;
     return ensureValidUUID(id);
   };
 
-  // Преобразование нод
   const strategyStages = strategy.nodes
     .filter(node => node.type !== 'finish')
     .map(node => ({
       id: validateId(node.id)!,
       stageType: mapStageType(node.stage),
-      stageModel: node.name || node.type
+      modelId: node?.modelId || 0,
     }));
 
-  // Преобразование соединений
   const manualTransitions = strategy.connections
     .filter(conn => conn.source && conn.target)
     .map(conn => ({
@@ -74,7 +69,6 @@ const transformToApiFormat = useCallback((strategy: IStrategy) => {
       }))
     }));
 
-  // Находим стартовую ноду
   const startNode = strategy.nodes.find(n => n.type === 'start');
   if (!startNode) throw new Error('Start node required');
 

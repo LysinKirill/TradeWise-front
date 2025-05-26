@@ -2,7 +2,7 @@ import { colors } from "@/shared/constants/colors";
 import styled, { css } from "styled-components";
 
 export const IconContainer = styled.div<{ $color: string }>`
-  background: ${props => `${props.$color}20`};
+  background: ${props => `${props.$color}`};
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -42,13 +42,14 @@ export const CardContent = styled.div`
 export const ModelName = styled.div`
   color: ${colors.white};
   font-size: 0.8rem;
-  font-weight: 500;
+  font-weight: 700;
   text-align: center;
   width: 100%;
   padding: 0 8px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  word-wrap: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
+  hyphens: auto;
   opacity: 0.9;
   transition: opacity 0.2s;
 
@@ -83,12 +84,12 @@ export const CardContainer = styled.div`
     min-height: 200px;
 
     ${IconContainer} {
-      transform: translateY(-50%);
+      transform: translateY(-100%);
     }
 
     ${CardContent} {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(50%);
     }
   }
 

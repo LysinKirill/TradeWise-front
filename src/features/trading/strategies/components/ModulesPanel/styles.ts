@@ -51,29 +51,6 @@ export const EmptyState = styled.div`
   `}
 `;
 
-export const ModelName = styled.div`
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: ${colors.white};
-  font-size: 0.8rem;
-  font-weight: 500;
-  text-align: center;
-  width: 100%;
-  padding: 0 8px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  opacity: 0.9;
-  transition: opacity 0.2s;
-
-  ${({ theme }) => theme.isMobile && css`
-    font-size: 0.7rem;
-    top: 8px;
-  `}
-`;
-
 export const DeleteZone = styled.div`
   position: absolute;
   bottom: 0;

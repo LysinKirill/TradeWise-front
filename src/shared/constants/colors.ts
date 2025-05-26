@@ -36,7 +36,14 @@ export type TColors =
   | 'rowHover'
   | 'paperBackground'
   | 'inputBackground'
-  | 'primaryColor';
+  | 'primaryColor'
+  | 'statusPendingBg'
+  | 'statusPendingText'
+  | 'statusActiveBg'
+  | 'statusActiveText'
+  | 'statusCompletedBg'
+  | 'statusCompletedText'
+  | 'disabledBg'
 
 export const colors: Record<TColors, string> = {
   inherit: 'inherit',
@@ -75,7 +82,14 @@ export const colors: Record<TColors, string> = {
   rowHover: '#2E2E4A',
   paperBackground: '#1A1A2E',
   inputBackground: '#2A2A4A',
-  primaryColor: '#8A2BE2'
+  primaryColor: '#8A2BE2',
+  statusPendingBg: '#FEF3C7',
+  statusPendingText: '#D97706',
+  statusActiveBg: '#D1FAE5',
+  statusActiveText: '#059669',
+  statusCompletedBg: '#DBEAFE',
+  statusCompletedText: '#2563EB',
+  disabledBg: '#2D2D44',
 };
 
 export const chartColors = {

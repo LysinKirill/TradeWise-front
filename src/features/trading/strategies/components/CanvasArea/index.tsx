@@ -4,18 +4,10 @@ import { useCallback, useRef, useState } from 'react';
 import * as UI from './styles';
 import { StrategyNode } from '../StrategyNode';
 import { ConnectionLine } from '../ConnectionLine';
-import { IStrategyNode, IStrategyConnection, StageType, NodeType } from '../../types';
+import { IStrategyNode, IStrategyConnection, NodeType } from '../../types';
 import { MODULE_PRESETS } from '../../constants';
 import { ConnectionModal } from '../ConnectionModal';
-
-
-interface CanvasAreaProps {
-  stages: StageType[];
-  nodes?: IStrategyNode[];
-  connections?: IStrategyConnection[];
-  onNodesChange: (nodes: IStrategyNode[]) => void;
-  onConnectionsChange: (connections: IStrategyConnection[]) => void;
-}
+import { CanvasAreaProps } from './types';
 
 export const CanvasArea = ({
   stages,
@@ -34,8 +26,6 @@ export const CanvasArea = ({
   const connectionsSafe = Array.isArray(connections) ? connections : [];
   const stagesSafe = Array.isArray(stages) ? stages : [];
 
-
-  console.log(isModalOpen);
   const calculateStagePositions = () => {
     if (!canvasRef.current) return [];
     const width = canvasRef.current.offsetWidth;
@@ -70,6 +60,23 @@ export const CanvasArea = ({
       node.id === draggingNode ? { ...node, position: { x, y } } : node
     ));
   }, [draggingNode, nodesSafe]);
+
+  const generateUniqueName = (baseName: string, existingNodes: IStrategyNode[]) => {
+    let counter = 2;
+    let newName = baseName;
+    
+    while (existingNodes.some(n => n.name === newName)) {
+      newName = `${baseName}-${counter}`;
+      counter++;
+    }
+    
+    return newName;
+  };
+
+  const truncateName = (name: string) => {
+    const [shortName] = name.split('_');
+    return shortName || name;
+  };
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -107,17 +114,23 @@ export const CanvasArea = ({
       }
 
       const type = preset?.type || (e.dataTransfer.getData('type') as NodeType);
+      const baseName = preset?.name 
+      ? truncateName(preset.name) 
+      : `New ${type}`;
+
+      const uniqueName = generateUniqueName(baseName, nodesSafe);
 
       const newNode: IStrategyNode = {
         id: `node-${Date.now()}`,
         type,
-        name: preset?.name || `New ${type}`,
+        name: uniqueName,
         position: newPosition,
         stage: stages[stageIndex],
         parameters: preset?.parameters || {},
-        color: preset?.color || '#7F56D9'
+        color: preset?.color || '#7F56D9',
+        modelId: preset?.id
       };
-
+    
       onNodesChange([...nodesSafe, newNode]);
     }
     setDraggingNode(null);
@@ -134,7 +147,7 @@ export const CanvasArea = ({
     conditions: ICondition[];
   }) => {
     if (editingConnection) {
-      // Редактирование существующей связи
+      
       const updatedConnections = connectionsSafe.map(conn => 
         conn.id === editingConnection.id ? 
         { ...conn, ...updated } : 
@@ -142,7 +155,7 @@ export const CanvasArea = ({
       );
       onConnectionsChange(updatedConnections);
     } else {
-      // Создание новой связи
+      
       const newConnection: IStrategyConnection = {
         id: `${updated.source}-${updated.target}-${Date.now()}`,
         ...updated,

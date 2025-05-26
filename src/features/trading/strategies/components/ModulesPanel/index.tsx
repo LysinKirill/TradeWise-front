@@ -32,6 +32,7 @@ export const ModulesPanel = ({ onAddNode, onRemoveNode }: IModulesPanelProps) =>
         if (data.length === 0 || !data) {
           setModels(MODULE_PRESETS);
         } else {
+          console.log(data);
           setModels(data);
         }
       } catch (error) {

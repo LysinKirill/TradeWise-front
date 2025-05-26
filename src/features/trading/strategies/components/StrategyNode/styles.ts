@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { chartColors, COLORS, colors } from '@/shared/constants/colors';
+import { chartColors, colors } from '@/shared/constants/colors';
 
 export const NodeHeader = styled.div`
   display: flex;
@@ -11,7 +11,7 @@ export const NodeHeader = styled.div`
 export const NodeTitle = styled.h4<{ isStart?: boolean }>`
   margin: 0;
   color: ${colors.darkPurple};
-  font-size: 1rem;
+  font-size: 0.8rem;
 
   ${({ isStart }) => isStart && css`
     color: ${colors.white};
