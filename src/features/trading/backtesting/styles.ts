@@ -1,143 +1,148 @@
-import styled from 'styled-components';
-import { chartColors, colors } from '@/shared/constants/colors';
+import styled, { css } from "styled-components";
+import { colors, chartColors } from "@/shared/constants/colors";
 
 export const Container = styled.div`
-  //background: ${colors.darkPurpleButton};
-  border-radius: 16px;
   padding: 2rem;
-  width: 100vw;
-  margin: 3rem auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  max-width: 1440px;
+  margin: 0 auto;
+  min-height: 100vh;
+  color: ${colors.textPrimary};
+  
+  ${({ theme }) => theme.isMobile && css`
+    padding: 1rem;
+  `}
 `;
 
 export const Title = styled.h2`
+  font-size: 2.2rem;
+  margin: 0 0 2rem;
   color: ${colors.white};
-  margin: 0 0 1rem 0;
+  text-shadow: 0 0 10px ${colors.white}90;
+  position: relative;
+  padding-bottom: 0.5rem;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      ${chartColors.primary} 0%,
+      ${chartColors.secondary} 50%,
+      ${chartColors.tertiary} 100%
+    );
+  }
+
+  ${({ theme }) => theme.isMobile && css`
+    font-size: 1.8rem;
+  `}
 `;
 
 export const InputGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  color: ${colors.white};
+  margin-bottom: 1.5rem;
+  
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: ${colors.textSecondary};
+    font-size: 0.95rem;
+  }
 `;
 
 export const StyledInput = styled.input`
-  padding: 0.75rem;
-  border-radius: 6px;
-  background: ${colors.accentBlack};
-  border: 1px solid ${colors.greyText};
-  color: ${colors.white};
+  width: 100%;
+  padding: 0.9rem 1.2rem;
+  border: 1px solid ${colors.borderColor};
+  border-radius: 8px;
+  background: ${colors.inputBackground};
+  color: ${colors.textPrimary};
   font-size: 1rem;
+  transition: all 0.3s ease;
+
+  &[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.8);
+  }
 
   &:focus {
-    outline: 2px solid ${colors.purpleButton};
+    outline: none;
+    border-color: ${colors.neonPurple};
+    box-shadow: 0 0 12px ${colors.neonPurple}40;
   }
 `;
 
 export const Select = styled.select`
-  padding: 0.75rem;
-  border-radius: 6px;
-  background: ${colors.accentBlack};
-  border: 1px solid ${colors.greyText};
-  color: ${colors.white};
+  width: 100%;
+  padding: 0.9rem 1.2rem;
+  border: 1px solid ${colors.borderColor};
+  border-radius: 8px;
+  background: ${colors.inputBackground};
+  color: ${colors.textPrimary};
   font-size: 1rem;
+  appearance: none;
+  transition: all 0.3s ease;
 
   &:focus {
-    outline: 2px solid ${colors.purpleButton};
+    outline: none;
+    border-color: ${colors.neonPurple};
+    box-shadow: 0 0 12px ${colors.neonPurple}40;
   }
 `;
 
-export const ButtonWrapper = styled.div``;
-
 export const PrimaryButton = styled.button`
-  background: ${colors.purpleButton};
+  background: linear-gradient(
+    135deg,
+    ${chartColors.primary} 0%,
+    ${chartColors.secondary} 50%,
+    ${chartColors.tertiary} 100%
+  );
   color: ${colors.white};
   border: none;
   border-radius: 8px;
-  padding: 12px 24px;
+  padding: 1rem 2rem;
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 0 0 transparent;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      120deg,
+      transparent,
+      rgba(255,255,255,0.1),
+      transparent
+    );
+    transition: all 0.5s;
+  }
 
   &:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px ${colors.purpleButton};
-    z-index: 1;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px ${chartColors.primary}40;
+    
+    &::before {
+      left: 100%;
+    }
   }
 
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+    background: ${colors.disabledBg};
   }
-`;
-
-export const ResultBlock = styled.div`
-  margin-top: 2rem;
-  padding: 1.5rem;
-  border-radius: 12px;
-  background: ${colors.cardBg};
-  box-shadow: 0 0 15px ${colors.purpleButton};
-
-  h3 {
-    margin-bottom: 1rem;
-    color: ${colors.primaryText};
-  }
-
-  p {
-    margin: 0.5rem 0;
-    font-size: 1rem;
-  }
-`;
-
-export const HistoryBlock = styled.div`
-  margin-top: 3rem;
-  padding: 1.5rem;
-  border-radius: 12px;
-  background: ${colors.cardBg};
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-
-  h3 {
-    margin-bottom: 1rem;
-    color: ${colors.primaryText};
-  }
-
-  ul {
-    list-style: none;
-    padding-left: 0;
-    margin: 0;
-  }
-
-  li {
-    margin-bottom: 0.75rem;
-    font-size: 0.95rem;
-    color: ${colors.secondaryText};
-  }
-`;
-
-export const StatusIndicator = styled.span<{ status: string }>`
-  display: inline-block;
-  padding: 0.3rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  background: ${({ status }) => 
-    status === 'running' ? 'rgba(76, 175, 80, 0.2)' :
-    status === 'pending' ? 'rgba(255, 193, 7, 0.2)' :
-    status === 'failed' ? 'rgba(244, 67, 54, 0.2)' :
-    'rgba(158, 158, 158, 0.2)'};
-  color: ${({ status }) => 
-    status === 'running' ? '#4CAF50' :
-    status === 'pending' ? '#FFC107' :
-    status === 'failed' ? '#F44336' :
-    '#9E9E9E'};
 `;
 
 export const FormCard = styled.div`
+  
   border-radius: 12px;
   padding: 1.5rem;
   margin-bottom: 2rem;
@@ -159,6 +164,8 @@ export const CardHeader = styled.div`
   border-bottom: 1px solid ${colors.borderColor};
 
   svg {
+    width: 1.2em;
+    height: 1.2em;
     stroke-width: 1.5px;
   }
 `;
@@ -172,15 +179,18 @@ export const InputRow = styled.div`
 
 export const ActionRow = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
   margin-top: 1rem;
 `;
 
 export const ResponsiveTable = styled.table`
   width: 100%;
   border-collapse: collapse;
-  
+  background: ${colors.backgroundDark};
+  border-radius: 8px;
+  overflow: hidden;
+
   th, td {
     padding: 1rem;
     text-align: left;
@@ -189,22 +199,22 @@ export const ResponsiveTable = styled.table`
 
   th {
     background: linear-gradient(
-    135deg,
-    ${chartColors.primary} 0%,
-    ${chartColors.secondary} 50%,
-    ${chartColors.tertiary} 90%
-  );
-    color: ${colors.textSecondary};
-    font-weight: 500;
-    border-radius: 8px 8px 0px 0px;
+      135deg,
+      ${chartColors.primary} 0%,
+      ${chartColors.secondary} 50%,
+      ${chartColors.tertiary} 100%
+    );
+    color: ${colors.white};
+    font-weight: 600;
+    text-transform: uppercase;
   }
 
   td {
     border-bottom: 1px solid ${colors.borderColor};
   }
 
-  tr:last-child td {
-    border-bottom: none;
+  tr:hover {
+    background: ${colors.rowHover};
   }
 
   @media (max-width: 768px) {
@@ -259,6 +269,32 @@ export const EmptyState = styled.div`
   font-size: 0.95rem;
 
   svg {
+    width: 1.5em;
+    height: 1.5em;
     stroke-width: 1.2px;
   }
+`;
+
+export const StatusIndicator = styled.span<{ status: string }>`
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  background: ${({ status }) =>
+    status === 'pending' ? 'rgba(255, 193, 7, 0.15)' :
+      status === 'running' ? 'rgba(33, 150, 243, 0.15)' :
+        status === 'completed' ? 'rgba(76, 175, 80, 0.15)' :
+          status === 'failed' ? 'rgba(244, 67, 54, 0.15)' :
+            status === 'canceled' ? 'rgba(158, 158, 158, 0.15)' :
+              'rgba(103, 58, 183, 0.15)'};
+  color: ${({ status }) =>
+    status === 'pending' ? '#FFC107' :
+      status === 'running' ? '#2196F3' :
+        status === 'completed' ? '#4CAF50' :
+          status === 'failed' ? '#F44336' :
+            status === 'canceled' ? '#9E9E9E' :
+              '#673AB7'};
 `;

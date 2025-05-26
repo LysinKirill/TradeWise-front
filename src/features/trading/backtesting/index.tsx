@@ -2,76 +2,74 @@ import { useState, useEffect } from 'react';
 import * as UI from './styles';
 import { toast } from 'react-toastify';
 import { Footer } from '@/shared/ui/components/Footer';
-import { 
+import {
   startBacktest,
-  getBacktestStatus,
-  getBacktestResults,
-  cancelBacktest 
+  cancelBacktest,
+  getAllBacktests,
 } from '@/shared/api/backtest';
 import { FiXCircle, FiPlay, FiClock, FiBarChart2, FiSlash } from 'react-icons/fi';
-import { mockStrategies } from './constants';
-
-interface BacktestResult {
-  id: string;
-  profit: number;
-  trades: number;
-  winRate: number;
-  maxDrawdown: number;
-  status: 'pending' | 'running' | 'completed' | 'failed' | 'canceled';
-  createdAt: string;
-  strategyId: string;
-}
+import { fetchSupportedModels } from '@/shared/api/models';
+import { CustomDatePicker } from '@/shared/ui/components/DatePicker';
+import { BacktestInfo, Model } from './types';
 
 const Backtesting = () => {
-  const [amount, setAmount] = useState('');
-  const [selectedStrategyId, setSelectedStrategyId] = useState('');
+  const [models, setModels] = useState<Model[]>([]);
+  const [selectedModelId, setSelectedModelId] = useState('');
+  const [initialBalance, setInitialBalance] = useState('');
+  const [fromDate, setFromDate] = useState<Date | null>(null);
+  const [toDate, setToDate] = useState<Date | null>(null);
   const [loading, setLoading] = useState(false);
-  const [activeTests, setActiveTests] = useState<BacktestResult[]>([]);
-  const [history, setHistory] = useState<BacktestResult[]>([]);
+  const [backtests, setBacktests] = useState<BacktestInfo[]>([]);
 
   useEffect(() => {
     const loadInitialData = async () => {
       try {
-        const [tests, history] = await Promise.all([
-          getBacktestStatus(),
-          getBacktestResults()
-        ]);
-        setActiveTests(tests);
-        setHistory(history);
+        const modelsData = await fetchSupportedModels();
+        setModels(modelsData);
+        const backtestsData = await getAllBacktests();
+        setBacktests(backtestsData);
       } catch (error) {
-        toast.error('Failed to load backtest data');
+        toast.error('Failed to load initial data');
       }
     };
     loadInitialData();
   }, []);
 
   const handleRunBacktest = async () => {
-    if (!selectedStrategyId || !amount) {
-      toast.error('Please fill all fields');
+    if (!selectedModelId || !initialBalance || !fromDate || !toDate) {
+      toast.error('Please fill all required fields');
       return;
     }
 
     setLoading(true);
     try {
       const newTest = await startBacktest({
-        strategyId: selectedStrategyId,
-        amount: parseFloat(amount)
+        modelId: selectedModelId,
+        initialBalance: initialBalance,
+        from: fromDate.toISOString(),
+        to: toDate.toISOString()
       });
-      setActiveTests(prev => [...prev, newTest]);
+
+      setBacktests(prev => [...prev, newTest]);
       toast.success('Backtest started successfully');
     } catch (error) {
       toast.error('Failed to start backtest');
     } finally {
       setLoading(false);
-      setAmount('');
-      setSelectedStrategyId('');
+      setInitialBalance('');
+      setSelectedModelId('');
     }
   };
 
-  const handleCancelBacktest = async (testId: string) => {
+  const handleCancelBacktest = async (backtestId: string) => {
     try {
-      await cancelBacktest(testId);
-      setActiveTests(prev => prev.filter(t => t.id !== testId));
+      await cancelBacktest({ backtestExecutionId: backtestId });
+      setBacktests(prev =>
+        prev.map(b => b.backtestId === backtestId
+          ? { ...b, status: 'Cancelled' }
+          : b
+        )
+      );
       toast.success('Backtest canceled');
     } catch (error: any) {
       const message = error.response?.data?.detail || 'Cancel failed';
@@ -79,8 +77,16 @@ const Backtesting = () => {
     }
   };
 
-  const getStrategyName = (strategyId: string) => {
-    return mockStrategies.find(s => s.id === strategyId)?.name || 'Unknown';
+  const getModelName = (modelId: string) => {
+    return models.find(m => m.id === modelId)?.name || 'Unknown Model';
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
   };
 
   return (
@@ -94,36 +100,52 @@ const Backtesting = () => {
 
         <UI.InputRow>
           <UI.InputGroup>
-            <label>Strategy</label>
+            <label>Model</label>
             <UI.Select
-              value={selectedStrategyId}
-              onChange={(e) => setSelectedStrategyId(e.target.value)}
+              value={selectedModelId}
+              onChange={(e) => setSelectedModelId(e.target.value)}
             >
-              <option value="">Select strategy...</option>
-              {mockStrategies.map((strategy) => (
-                <option key={strategy.id} value={strategy.id}>
-                  {strategy.name}
+              <option value="">Select model...</option>
+              {models.map((model) => (
+                <option key={model.id} value={model.id}>
+                  {model.name} ({model.type})
                 </option>
               ))}
             </UI.Select>
           </UI.InputGroup>
 
           <UI.InputGroup>
-            <label>Amount ($)</label>
+            <label>Initial Balance ($)</label>
             <UI.StyledInput
               type="number"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              value={initialBalance}
+              onChange={(e) => setInitialBalance(e.target.value)}
               placeholder="10000"
               min="100"
             />
           </UI.InputGroup>
         </UI.InputRow>
 
+        <UI.InputRow>
+          <CustomDatePicker
+            selected={fromDate}
+            onChange={setFromDate}
+            label="From Date"
+          />
+
+          <CustomDatePicker
+            selected={toDate}
+            onChange={setToDate}
+            label="To Date"
+            minDate={fromDate || undefined}
+          />
+
+        </UI.InputRow>
+
         <UI.ActionRow>
-          <UI.PrimaryButton 
-            onClick={handleRunBacktest} 
-            disabled={loading || !selectedStrategyId}
+          <UI.PrimaryButton
+            onClick={handleRunBacktest}
+            disabled={loading || !selectedModelId}
           >
             {loading ? <FiClock /> : <FiPlay />}
             {loading ? ' Starting...' : ' Run Backtest'}
@@ -136,7 +158,7 @@ const Backtesting = () => {
           <FiSlash /> Active Backtests
         </UI.CardHeader>
 
-        {activeTests.length === 0 ? (
+        {backtests.filter(b => ['Pending', 'Running'].includes(b.status)).length === 0 ? (
           <UI.EmptyState>
             <FiXCircle />
             No active backtests
@@ -145,38 +167,37 @@ const Backtesting = () => {
           <UI.ResponsiveTable>
             <thead>
               <tr>
-                <th>Strategy</th>
+                <th>Model</th>
                 <th>Status</th>
-                <th>Started</th>
+                <th>Period</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {activeTests.map((test) => (
-                <tr key={test.id}>
-                  <td>{getStrategyName(test.strategyId)}</td>
-                  <td>
-                    <UI.StatusIndicator status={test.status}>
-                      {test.status}
-                    </UI.StatusIndicator>
-                  </td>
-                  <td>
-                    <UI.TimeGroup>
-                      <div>{new Date(test.createdAt).toLocaleDateString()}</div>
-                      <div>{new Date(test.createdAt).toLocaleTimeString()}</div>
-                    </UI.TimeGroup>
-                  </td>
-                  <td>
-                    {['pending', 'running'].includes(test.status) && (
-                      <UI.CancelButton 
-                        onClick={() => handleCancelBacktest(test.id)}
-                      >
-                        Cancel
-                      </UI.CancelButton>
-                    )}
-                  </td>
-                </tr>
-              ))}
+              {backtests
+                .filter(b => ['Pending', 'Running'].includes(b.status))
+                .map((test) => (
+                  <tr key={test.backtestId}>
+                    <td>{getModelName(test.backtestId)}</td>
+                    <td>
+                      <UI.StatusIndicator status={test.status}>
+                        {test.status}
+                      </UI.StatusIndicator>
+                    </td>
+                    <td>
+                      {formatDate(test.testPeriodStart)} - {formatDate(test.testPeriodEnd)}
+                    </td>
+                    <td>
+                      {test.status === 'Running' && (
+                        <UI.CancelButton
+                          onClick={() => handleCancelBacktest(test.backtestId)}
+                        >
+                          Cancel
+                        </UI.CancelButton>
+                      )}
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </UI.ResponsiveTable>
         )}
@@ -187,7 +208,7 @@ const Backtesting = () => {
           <FiBarChart2 /> Historical Results
         </UI.CardHeader>
 
-        {history.length === 0 ? (
+        {backtests.filter(b => ['Completed', 'Failed', 'Cancelled'].includes(b.status)).length === 0 ? (
           <UI.EmptyState>
             <FiXCircle />
             No completed backtests
@@ -196,30 +217,33 @@ const Backtesting = () => {
           <UI.ResponsiveTable>
             <thead>
               <tr>
-                <th>Strategy</th>
+                <th>Model</th>
                 <th>Profit</th>
                 <th>Trades</th>
-                <th>Win Rate</th>
-                <th>Drawdown</th>
-                <th>Date</th>
+                <th>Result</th>
+                <th>Period</th>
               </tr>
             </thead>
             <tbody>
-              {history.map((test) => (
-                <tr key={test.id}>
-                  <td>{getStrategyName(test.strategyId)}</td>
-                  <td>${test.profit.toFixed(2)}</td>
-                  <td>{test.trades}</td>
-                  <td>{(test.winRate * 100).toFixed(1)}%</td>
-                  <td>{(test.maxDrawdown * 100).toFixed(1)}%</td>
-                  <td>
-                    <UI.TimeGroup>
-                      <div>{new Date(test.createdAt).toLocaleDateString()}</div>
-                      <div>{new Date(test.createdAt).toLocaleTimeString()}</div>
-                    </UI.TimeGroup>
-                  </td>
-                </tr>
-              ))}
+              {backtests
+                .filter(b => ['Completed', 'Failed', 'Cancelled'].includes(b.status))
+                .map((test) => (
+                  <tr key={test.backtestId}>
+                    <td>{getModelName(test.backtestId)}</td>
+                    <td>${test.profit.toFixed(2)}</td>
+                    <td>{test.tradesCount}</td>
+                    <td>
+                      {test.status === 'Completed' ? (
+                        <span style={{ color: '#4CAF50' }}>
+                          +{(test.finalBalance / test.initialBalance * 100 - 100).toFixed(2)}%
+                        </span>
+                      ) : test.status}
+                    </td>
+                    <td>
+                      {formatDate(test.testPeriodStart)} - {formatDate(test.testPeriodEnd)}
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </UI.ResponsiveTable>
         )}

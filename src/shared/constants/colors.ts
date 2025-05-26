@@ -44,6 +44,12 @@ export type TColors =
   | 'statusCompletedBg'
   | 'statusCompletedText'
   | 'disabledBg'
+  | 'statusFailedBg'
+  | 'statusFailedText'
+  | 'statusCancelledBg'
+  | 'statusCancelledText'
+  | 'statusUnknownBg'
+  | 'statusUnknownText'
 
 export const colors: Record<TColors, string> = {
   inherit: 'inherit',
@@ -90,6 +96,12 @@ export const colors: Record<TColors, string> = {
   statusCompletedBg: '#DBEAFE',
   statusCompletedText: '#2563EB',
   disabledBg: '#2D2D44',
+  statusFailedBg: 'rgba(244, 67, 54, 0.15)',
+  statusFailedText: '#F44336',
+  statusCancelledBg: 'rgba(158, 158, 158, 0.15)',
+  statusCancelledText: '#9E9E9E',
+  statusUnknownBg: 'rgba(103, 58, 183, 0.15)',
+  statusUnknownText: '#673AB7'
 };
 
 export const chartColors = {

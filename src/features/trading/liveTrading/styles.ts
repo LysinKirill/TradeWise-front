@@ -87,10 +87,6 @@ export const Select = styled.select`
   }
 `;
 
-export const ButtonWrapper = styled.div`
-  margin-top: 2rem;
-`;
-
 export const PrimaryButton = styled.button`
   background: linear-gradient(
     135deg,
@@ -141,56 +137,6 @@ export const PrimaryButton = styled.button`
   }
 `;
 
-export const HistoryBlock = styled.div`
-  margin-top: 3rem;
-  background: ${colors.cardBg};
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 20px ${colors.purpleButton}10;
-`;
-
-export const TableWrapper = styled.div`
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  border-radius: 8px;
-  margin: 1rem 0;
-`;
-
-export const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  background: ${colors.backgroundDark};
-  border-radius: 8px;
-  overflow: hidden;
-
-  th, td {
-    padding: 1rem;
-    text-align: left;
-  }
-
-  th {
-    background: linear-gradient(
-      135deg,
-      ${chartColors.primary} 0%,
-      ${chartColors.secondary} 50%,
-      ${chartColors.tertiary} 100%
-    );
-    color: ${colors.white};
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-  }
-
-  td {
-    border-bottom: 1px solid ${colors.borderColor};
-    font-size: 0.95rem;
-  }
-
-  tr:hover {
-    background: ${colors.rowHover};
-  }
-`;
-
 export const CheckboxGroup = styled.div`
   display: flex;
   align-items: center;
@@ -215,14 +161,48 @@ export const StatusIndicator = styled.span<{ status: string }>`
   border-radius: 20px;
   font-size: 0.85rem;
   font-weight: 500;
-  background: ${({ status }) => 
-    status === 'Pending' ? colors.statusPendingBg :
-    status === 'Active' ? colors.statusActiveBg :
-    colors.statusCompletedBg};
-  color: ${({ status }) => 
-    status === 'Pending' ? colors.statusPendingText :
-    status === 'Active' ? colors.statusActiveText :
-    colors.statusCompletedText};
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  background: ${({ status }) => {
+    switch(status.toLowerCase()) {
+      case 'pending':
+        return colors.statusPendingBg;
+      case 'running':
+      case 'active':
+        return colors.statusActiveBg;
+      case 'completed':
+      case 'success':
+        return colors.statusCompletedBg;
+      case 'failed':
+      case 'error':
+        return colors.statusFailedBg;
+      case 'cancelled':
+      case 'canceled':
+        return colors.statusCancelledBg;
+      default:
+        return colors.statusUnknownBg;
+    }
+  }};
+  color: ${({ status }) => {
+    switch(status.toLowerCase()) {
+      case 'pending':
+        return colors.statusPendingText;
+      case 'running':
+      case 'active':
+        return colors.statusActiveText;
+      case 'completed':
+      case 'success':
+        return colors.statusCompletedText;
+      case 'failed':
+      case 'error':
+        return colors.statusFailedText;
+      case 'cancelled':
+      case 'canceled':
+        return colors.statusCancelledText;
+      default:
+        return colors.statusUnknownText;
+    }
+  }};
 `;
 
 export const FormCard = styled.div`
