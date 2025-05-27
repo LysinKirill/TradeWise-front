@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.paths.json",
   "compilerOptions": {
+    "types": ["vite-plugin-pwa/client"],
     "allowJs": true,
     "baseUrl": ".",
     "esModuleInterop": true,
@@ -13,7 +14,7 @@
     "target": "es5",
     "removeComments": true,
     "noEmit": true,
-    "isolatedModules": false, //change if you make local build 
+    "isolatedModules": true, //change if you make local build 
     "strict": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
