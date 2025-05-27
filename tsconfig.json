@@ -29,6 +29,7 @@
     ],
   },
   "include": [
+    "src/global.d.ts",
     "jest.config.ts",
     "jest.setup.ts",
     "src/**/*.ts",
