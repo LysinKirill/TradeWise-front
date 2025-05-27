@@ -24,6 +24,7 @@ export const ConnectionLine = ({ connection, nodes, onEdit }: IConnectionLinePro
         top: 0,
         width: '100%',
         height: '100%',
+        pointerEvents: 'none'
         
       }}
       onMouseEnter={() => setIsHovered(true)}

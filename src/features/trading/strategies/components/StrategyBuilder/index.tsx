@@ -8,7 +8,6 @@ import { IStrategyBuilderProps } from '../../types';
 import { CONNECTION_PRESETS } from '../../constants';
 import { Toast } from './Toast';
 import { useState } from 'react';
-import { Footer } from '@/shared/ui/components/Footer';
 
 export const StrategyBuilder = ({ children }: IStrategyBuilderProps) => {
   const {
@@ -20,6 +19,7 @@ export const StrategyBuilder = ({ children }: IStrategyBuilderProps) => {
     handleCommitStrategy,
     handleRemoveConnection,
     handleUpdateConnection,
+    isEditing
   } = useStrategyBuilder();
 
   const [toast, setToast] = useState<{ type: 'error' | 'success'; message: string } | null>(null);
@@ -46,7 +46,9 @@ export const StrategyBuilder = ({ children }: IStrategyBuilderProps) => {
           />
           <ModulesPanel onAddNode={handleAddNode} />
           <UI.CommitSection>
-            <UI.CommitButton onClick={handleCommit}>Commit strategy</UI.CommitButton>
+            <UI.CommitButton onClick={handleCommit}>
+              {isEditing ? 'Save Changes' : 'Commit Strategy'}
+            </UI.CommitButton>
           </UI.CommitSection>
         </UI.WidePanel>
 

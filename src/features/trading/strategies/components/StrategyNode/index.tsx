@@ -11,7 +11,7 @@ export const StrategyNode = ({
   const dragStartHandler = (e: React.DragEvent) => {
     e.dataTransfer.setData('nodeId', node.id);
     e.dataTransfer.effectAllowed = 'move';
-    
+
     const ghost = document.createElement('div');
     ghost.style.position = 'absolute';
     ghost.style.opacity = '0';
@@ -39,10 +39,14 @@ export const StrategyNode = ({
       onDragStart={dragStartHandler}
       onMouseDown={handleMouseDown}
     >
-     <UI.NodeTitle isStart={node.type === 'start'}>
+      <UI.NodeTitle isStart={node.type === 'start'}>
         {node.name || node.label || node.type.toUpperCase()}
       </UI.NodeTitle>
-      <UI.NodeHandle 
+      {node.parameters.MaxExecutionDurationSeconds && (
+        <UI.DurationBadge>
+          {node.parameters.MaxExecutionDurationSeconds}
+        </UI.DurationBadge>)}
+      <UI.NodeHandle
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
       >

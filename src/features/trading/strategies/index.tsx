@@ -9,6 +9,7 @@ import { Footer } from '@/shared/ui/components/Footer';
 import * as UI from './styles';
 import { ValidationModal } from './components/validationModal/ValidationModal';
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const Strategies = () => {
   const {
@@ -20,15 +21,25 @@ const Strategies = () => {
     handleConnectionsChange,
     handleCommitStrategy,
     handleRemoveConnection,
-    handleRemoveNode
+    handleRemoveNode,
+    initializeStrategy
   } = useStrategyBuilder();
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const location = useLocation();
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentStrategyId, setCurrentStrategyId] = useState<string | null>(null);
 
   useEffect(() => {
+    if (location.state?.editStrategy) {
+      const { id, ...strategyData } = location.state.editStrategy;
+      initializeStrategy(strategyData);
+      setIsEditing(true);
+      setCurrentStrategyId(id);
+    }
     if (validationError) {
       setShowErrorModal(true);
     }
-  }, [validationError]);
+  }, [validationError, location, initializeStrategy]);
 
   return (
     <>

@@ -25,7 +25,10 @@ export interface IStrategyNode {
   type: NodeType;
   label?: string;
   position: IPosition;
-  parameters?: Record<string, unknown>;
+  parameters: {
+    MaxExecutionDurationSeconds?: number;
+    [key: string]: any;
+  };
   preset?: string;
   color?: string;
   stage: StageType;
@@ -37,6 +40,7 @@ export interface IStrategyConnection {
   source: string;
   target: string;
   conditions: Array<{
+    transitionConditionType: any;
     type: number;
     statType: number;
     value: number;
@@ -44,6 +48,7 @@ export interface IStrategyConnection {
 }
 
 export interface IStrategy {
+  id: string;
   name: string;
   description: string;
   nodes: IStrategyNode[];

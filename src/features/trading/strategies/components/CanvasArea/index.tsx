@@ -21,6 +21,7 @@ export const CanvasArea = ({
   const canvasRef = useRef<HTMLDivElement>(null);
   const [draggingNode, setDraggingNode] = useState<string | null>(null);
   const [connectingFrom, setConnectingFrom] = useState<string | null>(null);
+  const [duration, setDuration] = useState('');
 
   const nodesSafe = Array.isArray(nodes) ? nodes : [];
   const connectionsSafe = Array.isArray(connections) ? connections : [];
@@ -64,18 +65,53 @@ export const CanvasArea = ({
   const generateUniqueName = (baseName: string, existingNodes: IStrategyNode[]) => {
     let counter = 2;
     let newName = baseName;
-    
+
     while (existingNodes.some(n => n.name === newName)) {
       newName = `${baseName}-${counter}`;
       counter++;
     }
-    
+
     return newName;
   };
 
   const truncateName = (name: string) => {
     const [shortName] = name.split('_');
     return shortName || name;
+  };
+
+  const [pendingNode, setPendingNode] = useState<{
+    type: NodeType;
+    position: { x: number; y: number };
+    stage: string;
+    preset?: typeof MODULE_PRESETS[number];
+  } | null>(null);
+
+  const handleAddNodeWithDuration = (duration: string) => {
+    if (!pendingNode || !duration) return;
+
+    const baseName = pendingNode.preset?.name
+      ? truncateName(pendingNode.preset.name)
+      : `New ${pendingNode.type}`;
+
+    const uniqueName = generateUniqueName(baseName, nodesSafe);
+
+    const newNode: IStrategyNode = {
+      id: `node-${Date.now()}`,
+      type: pendingNode.type,
+      name: uniqueName,
+      position: pendingNode.position,
+      stage: pendingNode.stage,
+      parameters: {
+        ...pendingNode.preset?.parameters,
+        MaxExecutionDurationSeconds: parseInt(duration),
+      },
+      color: pendingNode.preset?.color || '#7F56D9',
+      modelId: pendingNode.preset?.id
+    };
+
+    onNodesChange([...nodesSafe, newNode]);
+    setPendingNode(null);
+    setDuration('');
   };
 
   const handleDrop = useCallback((e: React.DragEvent) => {
@@ -114,24 +150,20 @@ export const CanvasArea = ({
       }
 
       const type = preset?.type || (e.dataTransfer.getData('type') as NodeType);
-      const baseName = preset?.name 
-      ? truncateName(preset.name) 
-      : `New ${type}`;
+      const baseName = preset?.name
+        ? truncateName(preset.name)
+        : `New ${type}`;
 
       const uniqueName = generateUniqueName(baseName, nodesSafe);
 
-      const newNode: IStrategyNode = {
-        id: `node-${Date.now()}`,
+      setPendingNode({
         type,
-        name: uniqueName,
         position: newPosition,
         stage: stages[stageIndex],
-        parameters: preset?.parameters || {},
-        color: preset?.color || '#7F56D9',
-        modelId: preset?.id
-      };
-    
-      onNodesChange([...nodesSafe, newNode]);
+        preset: preset || undefined
+      });
+
+
     }
     setDraggingNode(null);
   }, [nodesSafe, stages]);
@@ -147,15 +179,15 @@ export const CanvasArea = ({
     conditions: ICondition[];
   }) => {
     if (editingConnection) {
-      
-      const updatedConnections = connectionsSafe.map(conn => 
-        conn.id === editingConnection.id ? 
-        { ...conn, ...updated } : 
-        conn
+
+      const updatedConnections = connectionsSafe.map(conn =>
+        conn.id === editingConnection.id ?
+          { ...conn, ...updated } :
+          conn
       );
       onConnectionsChange(updatedConnections);
     } else {
-      
+
       const newConnection: IStrategyConnection = {
         id: `${updated.source}-${updated.target}-${Date.now()}`,
         ...updated,
@@ -179,62 +211,88 @@ export const CanvasArea = ({
 
   return (
     <>
-    <UI.CanvasContainer
-      ref={canvasRef}
-      onDragOver={handleDragOver}
-      onDrop={handleDrop}
-    >
-      {calculateStagePositions().map((pos, i) => (
-        <UI.StageDivider
-          key={stagesSafe[i] || `stage-${i}`}
-          style={{ left: `${pos}px` }}
-        />
-      ))}
+      <UI.CanvasContainer
+        ref={canvasRef}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+      >
+        {calculateStagePositions().map((pos, i) => (
+          <UI.StageDivider
+            key={stagesSafe[i] || `stage-${i}`}
+            style={{ left: `${pos}px` }}
+          />
+        ))}
 
-      {nodesSafe.map(node => (
-        <StrategyNode
-          key={node.id}
-          node={node}
-          onPositionChange={(pos) => {
-            onNodesChange(nodesSafe.map(n => n.id === node.id ? { ...n, position: pos } : n));
-          }}
-          onStartConnect={(sourceId) => setConnectingFrom(sourceId)}
-          onCompleteConnect={(targetId) => {
-            if (connectingFrom && connectingFrom !== targetId) {
-              handleConnect(connectingFrom, targetId);
-            }
-            setConnectingFrom(null);
-          }}
-          onRemove={(id) => {
-            onNodesChange(nodesSafe.filter(n => n.id !== id));
-            onConnectionsChange(connectionsSafe.filter(c => c.source !== id && c.target !== id));
-          }}
-          onConnect={function (source: string, target: string): void {
-            throw new Error('Function not implemented.');
+        {nodesSafe.map(node => (
+          <StrategyNode
+            key={node.id}
+            node={node}
+            onPositionChange={(pos) => {
+              onNodesChange(nodesSafe.map(n => n.id === node.id ? { ...n, position: pos } : n));
+            }}
+            onStartConnect={(sourceId) => setConnectingFrom(sourceId)}
+            onCompleteConnect={(targetId) => {
+              if (connectingFrom && connectingFrom !== targetId) {
+                handleConnect(connectingFrom, targetId);
+              }
+              setConnectingFrom(null);
+            }}
+            onRemove={(id) => {
+              onNodesChange(nodesSafe.filter(n => n.id !== id));
+              onConnectionsChange(connectionsSafe.filter(c => c.source !== id && c.target !== id));
+            }}
+            onConnect={function (source: string, target: string): void {
+              throw new Error('Function not implemented.');
+            }}
+          />
+        ))}
+
+        {connectionsSafe.map(connection => (
+          <ConnectionLine
+            key={connection.id}
+            connection={connection}
+            nodes={nodesSafe}
+            onEdit={() => handleEditConnection(connection)}
+          />
+        ))}
+      </UI.CanvasContainer>
+      {isModalOpen && (
+        <ConnectionModal
+          nodes={nodesSafe}
+          connection={editingConnection || undefined}
+          onSave={handleSaveConnection}
+          onClose={() => {
+            setIsModalOpen(false);
+            setEditingConnection(null);
           }}
         />
-      ))}
+      )}
+      {pendingNode && (
+        <UI.DurationModal>
+          <h3>Set Maximum Execution Duration</h3>
+          <UI.DurationInput
+            type="number"
+            min="1"
+            placeholder="Enter duration in seconds"
+            value={duration}
+            onChange={(e) => setDuration(e.target.value)}
+          />
+          <UI.ModalButtonGroup>
+          <UI.ConfirmButton onClick={() => {
+            if (duration) handleAddNodeWithDuration(duration);
+          }}>
+            Confirm
+          </UI.ConfirmButton>
+          <UI.CancelButton onClick={() => {
+            setPendingNode(null);
+            setDuration('');
+          }}>
+            Cancel
+          </UI.CancelButton>
+          </UI.ModalButtonGroup>
+        </UI.DurationModal>
+      )}
 
-      {connectionsSafe.map(connection => (
-        <ConnectionLine
-        key={connection.id}
-        connection={connection}
-        nodes={nodesSafe}
-        onEdit={() => handleEditConnection(connection)}
-      />
-      ))}
-    </UI.CanvasContainer>
-    {isModalOpen && (
-      <ConnectionModal
-        nodes={nodesSafe}
-        connection={editingConnection || undefined}
-        onSave={handleSaveConnection}
-        onClose={() => {
-          setIsModalOpen(false);
-          setEditingConnection(null);
-        }}
-      />
-    )}
     </>
   );
 };

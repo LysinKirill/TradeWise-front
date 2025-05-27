@@ -148,3 +148,11 @@ export const NodeHandle = styled.div`
     right: -10px;
   }
 `;
+
+export const DurationBadge = styled.div`
+  background: #f0f0f0;
+  border-radius: 4px;
+  padding: 2px 5px;
+  font-size: 0.8rem;
+  margin-top: 4px;
+`;

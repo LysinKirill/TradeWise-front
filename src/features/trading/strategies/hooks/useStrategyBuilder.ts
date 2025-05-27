@@ -2,7 +2,7 @@
 // src/features/trading/strategies/hooks/useStrategyBuilder.ts
 import { useState, useEffect, useCallback } from 'react';
 import { IStrategy, IStrategyNode, IStrategyConnection, IConnectionPreset } from '../types';
-import { createStrategy, validateStrategy } from '@/shared/api/strategies';
+import { createStrategy, editStrategy, validateStrategy } from '@/shared/api/strategies';
 import { v4 as uuidv4, v5 as uuidv5 } from 'uuid';
 
 const DEBOUNCE_DELAY = 500;
@@ -26,6 +26,13 @@ export const useStrategyBuilder = (initialStrategy?: IStrategy) => {
   });
   const [validationError, setValidationError] = useState<string | null>(null);
   const [isValidating, setIsValidating] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentStrategyId, setCurrentStrategyId] = useState<string | null>(null);
+
+  const initializeStrategy = (strategyData: IStrategy) => {
+    setStrategy(strategyData);
+    setIsEditing(true);
+  };
 
   const ensureValidUUID = (id: string): string => {
     if (/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id)) {
@@ -50,12 +57,13 @@ const transformToApiFormat = useCallback((strategy: IStrategy) => {
   };
 
   const strategyStages = strategy.nodes
-    .filter(node => node.type !== 'finish')
-    .map(node => ({
-      id: validateId(node.id)!,
-      stageType: mapStageType(node.stage),
-      modelId: node?.modelId || 0,
-    }));
+  .filter(node => node.type !== 'finish')
+  .map(node => ({
+    id: validateId(node.id)!,
+    stageType: mapStageType(node.stage),
+    modelId: node?.modelId || 0,
+    MaxExecutionDurationSeconds: node.parameters.MaxExecutionDurationSeconds || 0,
+  }));
 
   const manualTransitions = strategy.connections
     .filter(conn => conn.source && conn.target)
@@ -63,7 +71,7 @@ const transformToApiFormat = useCallback((strategy: IStrategy) => {
       sourceStageId: validateId(conn.source),
       destinationStageId: validateId(conn.target),
       transitionConditions: conn.conditions.map(cond => ({
-        transitionConditionType: cond.type,
+        transitionConditionType: cond.transitionConditionType,
         statType: cond.statType,
         value: cond.value
       }))
@@ -108,6 +116,7 @@ const transformToApiFormat = useCallback((strategy: IStrategy) => {
   }
 
   return {
+    id: strategy.id,
     StrategyStages: strategyStages,
     StrategyTransitions: strategyTransitions,
     title: strategy.name,
@@ -229,6 +238,12 @@ const transformToApiFormat = useCallback((strategy: IStrategy) => {
       throw new Error(validation.errors.join(', '));
     }
 
+    const data = transformToApiFormat(strategy);
+
+    if (isEditing && currentStrategyId) {
+      return editStrategy(data);
+    }
+
     return createStrategy(transformToApiFormat(strategy));
   };
 
@@ -242,7 +257,9 @@ const transformToApiFormat = useCallback((strategy: IStrategy) => {
     handleCommitStrategy,
     handleUpdateConnection,
     handleRemoveConnection,
-    handleRemoveNode
+    handleRemoveNode,
+    initializeStrategy,
+    isEditing
   };
 };
 
