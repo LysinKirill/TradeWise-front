@@ -26,6 +26,7 @@ export const CanvasArea = ({
   const nodesSafe = Array.isArray(nodes) ? nodes : [];
   const connectionsSafe = Array.isArray(connections) ? connections : [];
   const stagesSafe = Array.isArray(stages) ? stages : [];
+  const [isConnecting, setIsConnecting] = useState(false);
 
   const calculateStagePositions = () => {
     if (!canvasRef.current) return [];
@@ -45,10 +46,38 @@ export const CanvasArea = ({
     return index === -1 ? stagePositions.length - 1 : Math.max(0, index - 1);
   };
 
+  const handleDragStart = (nodeId: string, e: React.DragEvent) => {
+    const node = nodesSafe.find(n => n.id === nodeId);
+    if (node) {
+      dragOffset.current = {
+        x: e.clientX - node.position.x,
+        y: e.clientY - node.position.y
+      };
+    }
+    setDraggingNode(nodeId);
+  };
+
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
-    if (e.dataTransfer.types.includes('nodeId')) return;
+    //if (e.dataTransfer.types.includes('nodeId')) return;
     if (!canvasRef.current || !draggingNode) return;
+
+    const nodeId = e.dataTransfer.getData('nodeId');
+    if (nodeId) {
+      const rect = canvasRef.current?.getBoundingClientRect();
+      if (rect) {
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        onNodesChange(nodesSafe.map(node => 
+          node.id === nodeId ? { ...node, position: { x, y } } : node
+        ));
+      }
+      setDraggingNode(null);
+      return;
+    }
+
+    const type = e.dataTransfer.getData('type') as NodeType;
+    if (type === 'start') return;
 
     const rect = canvasRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left - 20;
@@ -88,6 +117,7 @@ export const CanvasArea = ({
 
   const handleAddNodeWithDuration = (duration: string) => {
     if (!pendingNode || !duration) return;
+    setDraggingNode(null);
 
     const baseName = pendingNode.preset?.name
       ? truncateName(pendingNode.preset.name)
@@ -116,28 +146,42 @@ export const CanvasArea = ({
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
-    const type = e.dataTransfer.getData('type') as NodeType;
-    if (type === 'start') return;
+    setDraggingNode(null); 
+    if (isConnecting) return;
 
-    if (e.dataTransfer.types.includes('nodeId')) {
-      e.stopPropagation();
+    // Handle existing node movement
+    const nodeId = e.dataTransfer.getData('nodeId');
+    if (nodeId) {
+      const rect = canvasRef.current?.getBoundingClientRect();
+      if (rect) {
+        const x = e.clientX - rect.left - 20;
+        const y = e.clientY - rect.top - 20;
+        
+        onNodesChange(nodesSafe.map(node => 
+          node.id === nodeId ? { ...node, position: { x, y } } : node
+        ));
+      }
       return;
     }
+
+    // Handle new node creation
+    const type = e.dataTransfer.getData('type') as NodeType;
+    if (type === 'start') return;
 
     const stagePositions = calculateStagePositions();
     const rect = canvasRef.current?.getBoundingClientRect();
 
     if (rect) {
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      const x = e.clientX - rect.left - 20;
+      const y = e.clientY - rect.top - 20;
       const stageIndex = getStageIndex(x);
 
       if (stageIndex === 0) return;
 
       const existingNodesInStage = organizeNodesInStage(stageIndex, nodesSafe);
       const newPosition = {
-        x: stagePositions[stageIndex] + 20,
-        y: existingNodesInStage.length * 80 + 20
+        x: stagePositions[stageIndex] ,
+        y: existingNodesInStage.length 
       };
 
       const presetData = e.dataTransfer.getData('application/json');
@@ -162,11 +206,8 @@ export const CanvasArea = ({
         stage: stages[stageIndex],
         preset: preset || undefined
       });
-
-
     }
-    setDraggingNode(null);
-  }, [nodesSafe, stages]);
+  }, [nodesSafe, stages, isConnecting]);
 
   const handleEditConnection = (connection: IStrategyConnection) => {
     setEditingConnection(connection);
@@ -178,24 +219,35 @@ export const CanvasArea = ({
     target: string;
     conditions: ICondition[];
   }) => {
+    setIsConnecting(true);
+    
     if (editingConnection) {
-
-      const updatedConnections = connectionsSafe.map(conn =>
-        conn.id === editingConnection.id ?
-          { ...conn, ...updated } :
-          conn
-      );
-      onConnectionsChange(updatedConnections);
-    } else {
-
-      const newConnection: IStrategyConnection = {
-        id: `${updated.source}-${updated.target}-${Date.now()}`,
+      const updatedConnection = {
+        ...editingConnection,
         ...updated,
         conditions: updated.conditions
       };
-      onConnectionsChange([...connectionsSafe, newConnection]);
+      
+      onConnectionsChange(connectionsSafe.map(conn => 
+        conn.id === editingConnection.id ? updatedConnection : conn
+      ));
+    } else {
+      const exists = connectionsSafe.some(c => 
+        c.source === updated.source && c.target === updated.target
+      );
+      
+      if (!exists) {
+        const newConnection: IStrategyConnection = {
+          id: `${updated.source}-${updated.target}-${Date.now()}`,
+          ...updated,
+          conditions: updated.conditions
+        };
+        onConnectionsChange([...connectionsSafe, newConnection]);
+      }
     }
+    
     setIsModalOpen(false);
+    setEditingConnection(null);
   };
 
 
@@ -241,9 +293,7 @@ export const CanvasArea = ({
               onNodesChange(nodesSafe.filter(n => n.id !== id));
               onConnectionsChange(connectionsSafe.filter(c => c.source !== id && c.target !== id));
             }}
-            onConnect={function (source: string, target: string): void {
-              throw new Error('Function not implemented.');
-            }}
+           onDragStart={(nodeId) => handleDragStart(nodeId)}
           />
         ))}
 

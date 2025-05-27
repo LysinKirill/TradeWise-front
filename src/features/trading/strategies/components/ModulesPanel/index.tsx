@@ -21,6 +21,7 @@ export const ModulesPanel = ({ onAddNode, onRemoveNode }: IModulesPanelProps) =>
     const nodeId = e.dataTransfer.getData('nodeId');
     if (nodeId) {
       onRemoveNode(nodeId);
+      setIsDeleting(false);
     }
     setIsDeleting(false);
   };
@@ -58,9 +59,9 @@ export const ModulesPanel = ({ onAddNode, onRemoveNode }: IModulesPanelProps) =>
         onDrop={handleDrop}
 
       >
-        {/*isDeleting ? (
+        {isDeleting ? (
           <UI.DeleteZone>Drop here to delete</UI.DeleteZone>
-        ) : */(
+        ) : (
           models.map(preset => (
               <PresetCard
                 key={preset.id}

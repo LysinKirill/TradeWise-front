@@ -3,6 +3,7 @@ import * as UI from './styles';
 import { fetchSupportedInstruments } from '@/shared/api/stocks';
 import { StatTypeOptions, TransitionConditionOptions } from './constants';
 import { Condition, ConnectionModalProps, Instrument } from './types';
+import { toast } from 'react-toastify';
 
 export const ConnectionModal = ({
   nodes,
@@ -22,7 +23,6 @@ export const ConnectionModal = ({
     const loadInstruments = async () => {
       try {
         const data = await fetchSupportedInstruments();
-        console.log(data);
         setInstruments(data || []);
       } catch (error) {
         console.error('Failed to load instruments:', error);
@@ -72,7 +72,7 @@ export const ConnectionModal = ({
               <option value="">Select Source</option>
               {nodes.map(node => (
                 <option key={node.id} value={node.id}>
-                  {node.name || node.id}
+                  {node.name || node.type || node.id}
                 </option>
               ))}
             </select>
@@ -109,7 +109,7 @@ export const ConnectionModal = ({
                   <option disabled>Loading instruments...</option>
                 ) : (
                   instruments.map(instrument => (
-                    <option key={instrument.id} value={instrument.name}>
+                    <option key={instrument.id} value={instrument.id}>
                       {instrument.name}
                     </option>
                   ))
@@ -147,7 +147,7 @@ export const ConnectionModal = ({
               <UI.RemoveButton onClick={() =>
                 setConditions(conditions.filter((_, i) => i !== index))
               }>
-                ×
+                
               </UI.RemoveButton>
             </UI.ConditionRow>
           ))}

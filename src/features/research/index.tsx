@@ -33,7 +33,6 @@ export const Research = () => {
 
   return (
     <UI.PageResearch>
-      <UI.Title>Market Research</UI.Title>
       
       {error && <UI.ErrorMessage>{error}</UI.ErrorMessage>}
       

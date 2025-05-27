@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import * as UI from './styles';
 import { Execution } from '@/features/trading/liveTrading/types';
 import { fetchExecutions, fetchTradingStrategies } from '@/shared/api/strategies';
+import * as UI from './styles';
 
 interface StrategyDetailsModalProps {
   strategyId: string;
@@ -23,13 +23,13 @@ export const StrategyDetailsModal = ({
   useEffect(() => {
     const loadData = async () => {
       try {
-        const strategiesResponse = await fetchTradingStrategies();
-        const strategy = strategiesResponse.find(
-          (s: any) => s.id === strategyId
-        );
+        const [strategiesResponse, executionsResponse] = await Promise.all([
+          fetchTradingStrategies(),
+          fetchExecutions()
+        ]);
 
-         const executions = await fetchExecutions();
-        const filteredExecutions = executions.filter(
+        const strategy = strategiesResponse.find((s: any) => s.id === strategyId);
+        const filteredExecutions = executionsResponse.filter(
           (e: Execution) => e.strategyId === strategyId
         );
 
@@ -55,60 +55,70 @@ export const StrategyDetailsModal = ({
 
         <UI.ModalBody>
           {loading ? (
-            <UI.Loader>Loading...</UI.Loader>
+            <UI.Loader>Loading Strategy Data...</UI.Loader>
           ) : (
             <>
-              <div className="section">
-                <h4>Configuration</h4>
-                <pre>
-                  {JSON.stringify(
-                    {
-                      Created: new Date(details?.createdAt).toLocaleString(),
-                      LastUpdated: new Date(details?.updatedAt).toLocaleString(),
-                      Description: details?.description,
-                    },
-                    null,
-                    2
-                  )}
-                </pre>
-              </div>
+              <UI.ConfigurationSection>
+                <UI.SectionTitle>Configuration</UI.SectionTitle>
+                <UI.ConfigData>
+                  <UI.ConfigRow>
+                    <UI.ConfigLabel>Created:</UI.ConfigLabel>
+                    <UI.ConfigValue>
+                      {new Date(details?.createdAt).toLocaleString()}
+                    </UI.ConfigValue>
+                  </UI.ConfigRow>
+                  <UI.ConfigRow>
+                    <UI.ConfigLabel>Last Updated:</UI.ConfigLabel>
+                    <UI.ConfigValue>
+                      {new Date(details?.updatedAt).toLocaleString()}
+                    </UI.ConfigValue>
+                  </UI.ConfigRow>
+                  <UI.ConfigRow>
+                    <UI.ConfigLabel>Description:</UI.ConfigLabel>
+                    <UI.ConfigValue>{details?.description || 'N/A'}</UI.ConfigValue>
+                  </UI.ConfigRow>
+                </UI.ConfigData>
+              </UI.ConfigurationSection>
 
-              <div className="section">
-                <h4>Execution History</h4>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Status</th>
-                      <th>Started</th>
-                      <th>Duration</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+              <UI.ExecutionSection>
+                <UI.SectionTitle>Execution History</UI.SectionTitle>
+                <UI.ExecutionTable>
+                  <UI.TableHeader>
+                    <UI.TableRow>
+                      <UI.TableHeaderCell>Status</UI.TableHeaderCell>
+                      <UI.TableHeaderCell>Started</UI.TableHeaderCell>
+                      <UI.TableHeaderCell>Duration</UI.TableHeaderCell>
+                    </UI.TableRow>
+                  </UI.TableHeader>
+                  <UI.TableBody>
                     {executions.map((execution) => (
-                      <tr key={execution.id}>
-                        <td>{execution.status}</td>
-                        <td>{new Date(execution.createdAt).toLocaleString()}</td>
-                        <td>
+                      <UI.TableRow key={execution.id}>
+                        <UI.TableCell>
+                          <UI.StatusIndicator status={execution.status} />
+                        </UI.TableCell>
+                        <UI.TableCell>
+                          {new Date(execution.createdAt).toLocaleString()}
+                        </UI.TableCell>
+                        <UI.TableCell>
                           {execution.updatedAt
                             ? `${Math.round(
                                 (new Date(execution.updatedAt).getTime() -
-                                  new Date(execution.createdAt).getTime()) /
-                                  1000
-                              )}s`
+                                new Date(execution.createdAt).getTime()
+                              ) / 1000)}s`
                             : 'N/A'}
-                        </td>
-                      </tr>
+                        </UI.TableCell>
+                      </UI.TableRow>
                     ))}
-                  </tbody>
-                </table>
-              </div>
+                  </UI.TableBody>
+                </UI.ExecutionTable>
+              </UI.ExecutionSection>
 
               <UI.ActionButtonGroup>
                 <UI.EditButton onClick={() => onEdit(strategyId)}>
-                  Edit
+                  Edit Configuration
                 </UI.EditButton>
                 <UI.DeleteButton onClick={() => onDelete(strategyId)}>
-                  Delete
+                  Delete Strategy
                 </UI.DeleteButton>
               </UI.ActionButtonGroup>
             </>
@@ -118,3 +128,5 @@ export const StrategyDetailsModal = ({
     </UI.ModalOverlay>
   );
 };
+
+

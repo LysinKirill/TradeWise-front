@@ -78,7 +78,7 @@ const Strategies = () => {
         onClose={() => setShowErrorModal(false)}
       />
       <UI.Footer>
-        <Footer />
+       
       </UI.Footer>
     </>
   );

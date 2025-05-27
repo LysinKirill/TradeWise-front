@@ -23,7 +23,7 @@ export const ResearchSection = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
-export const TableWrapper = styled.div`
+/*export const TableWrapper = styled.div`
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   margin: 2rem 0;
@@ -50,9 +50,9 @@ export const Table = styled.table`
     margin: 0;
     font-size: 0.8rem;
   `}
-`;
+`;*/
 
-export const TableHeader = styled.thead`
+/*export const TableHeader = styled.thead`
   background: linear-gradient(
     135deg,
     ${chartColors.primary} 0%,
@@ -68,9 +68,9 @@ export const TableHeader = styled.thead`
       ${chartColors.tertiary} 100%
     );
   `}
-`;
+`;*/
 
-export const StyledTableCell = styled(MuiTableCell)<{ $negative?: boolean }>`
+/*export const StyledTableCell = styled(MuiTableCell)<{ $negative?: boolean }>`
   color: ${({ $negative }) => 
     $negative ? colors.accentRed : colors.textPrimary} !important;
   padding: 1.2rem !important;
@@ -83,9 +83,9 @@ export const StyledTableCell = styled(MuiTableCell)<{ $negative?: boolean }>`
     font-size: 0.75rem !important;
     white-space: inherit;
   `}
-`;
+`;*/
 
-export const StyledTableRow = styled(MuiTableRow)`
+/*export const StyledTableRow = styled(MuiTableRow)`
   transition: all 0.3s ease;
   
   &:nth-child(even) {
@@ -104,9 +104,9 @@ export const StyledTableRow = styled(MuiTableRow)`
       box-shadow: none;
     }
   `}
-`;
+`;*/
 
-export const TableHeaderCell = styled(MuiTableCell)`
+/*export const TableHeaderCell = styled(MuiTableCell)`
   font-weight: 600 !important;
   color: ${colors.white} !important;
   padding: 1.2rem !important;
@@ -121,9 +121,9 @@ export const TableHeaderCell = styled(MuiTableCell)`
     font-size: 0.7rem !important;
     letter-spacing: 0.3px;
   `}
-`;
+`;*/
 
-export const TableBody = styled.tbody`
+/*export const TableBody = styled.tbody`
   & > tr:last-child > td {
     border-bottom: none !important;
   }
@@ -135,7 +135,7 @@ export const TableBody = styled.tbody`
     }
   `}
 `;
-
+*/
 export const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -277,13 +277,118 @@ export const TabButton = styled.button<{ active?: boolean }>`
   border: none;
   cursor: pointer;
   font-size: 1rem;
-  color: ${({ active }) => active ? colors.neonBlue : colors.textSecondary};
+  color: ${({ active }) => active ? colors.neonPurple : colors.textSecondary};
   border-bottom: 3px solid ${({ active }) => 
-    active ? colors.neonBlue : 'transparent'};
+    active ? colors.neonPurple : 'transparent'};
   transition: all 0.3s ease;
 
   &:hover {
-    color: ${colors.neonBlue};
+    color: ${colors.neonPurple};
     background: rgba(138, 43, 226, 0.05);
+  }
+`;
+
+export const TableWrapper = styled.div`
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+  margin: 2rem 0;
+  border-radius: 12px;
+  background: ${colors.backgroundDark};
+  box-shadow: 0 0 40px rgba(138, 43, 226, 0.4);
+  
+  ${({ theme }) => theme.isMobile && css`
+    margin: 1rem -1rem;
+    width: calc(100% + 2rem);
+    box-shadow: none;
+    border-radius: 8px;
+  `}
+`;
+
+export const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  background: ${colors.backgroundDark};
+  position: relative;
+  overflow: hidden;
+`;
+
+export const TableHeader = styled.thead`
+  background: linear-gradient(
+    135deg,
+    ${chartColors.primary} 0%,
+    ${chartColors.secondary} 50%,
+    ${chartColors.tertiary} 90%
+  );
+  box-shadow: 0 4px 20px rgba(138, 43, 226, 0.25);
+`;
+
+export const StyledTableCell = styled(MuiTableCell)<{ $negative?: boolean }>`
+  color: ${({ $negative }) => 
+    $negative ? colors.accentRed : colors.textPrimary} !important;
+  padding: 1.2rem 1.5rem !important;
+  font-size: 0.95rem !important;
+  border-bottom: 1px solid ${colors.darkPurple} !important;
+  transition: all 0.2s ease;
+  
+  ${({ theme }) => theme.isMobile && css`
+    padding: 0.8rem !important;
+    font-size: 0.85rem !important;
+  `}
+`;
+
+export const TableHeaderCell = styled(MuiTableCell)`
+  font-weight: 600 !important;
+  color: ${colors.white} !important;
+  padding: 1.5rem !important;
+  font-size: 1rem !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: none !important;
+  border-radius: 12px 12px 0 0 ;
+  background: linear-gradient(
+    135deg,
+    ${chartColors.primary} 0%,
+    ${chartColors.secondary} 50%,
+    ${chartColors.tertiary} 90%
+  );
+  
+  ${({ theme }) => theme.isMobile && css`
+    padding: 1rem !important;
+    font-size: 0.8rem !important;
+  `}
+`;
+
+export const StyledTableRow = styled(MuiTableRow)`
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: ${colors.backgroundDark};
+  
+  &:nth-child(even) {
+    background: ${colors.accentBlack};
+  }
+
+  &:hover {
+    background: ${colors.rowHover} !important;
+    transform: scale(1.005);
+    box-shadow: 
+      0 3px 15px rgba(138, 43, 226, 0.2),
+      inset 0 0 15px rgba(255, 255, 255, 0.05);
+  }
+
+  ${({ theme }) => theme.isMobile && css`
+    &:hover {
+      transform: none;
+      box-shadow: none;
+    }
+  `}
+`;
+
+export const TableBody = styled.tbody`
+  & > tr:first-child > td {
+    padding-top: 1.5rem;
+  }
+  
+  & > tr:last-child > td {
+    border-bottom: none !important;
+    padding-bottom: 1.5rem;
   }
 `;

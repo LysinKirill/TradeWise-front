@@ -63,7 +63,7 @@ const Backtesting = () => {
 
   const handleCancelBacktest = async (backtestId: string) => {
     try {
-      await cancelBacktest({ backtestExecutionId: backtestId });
+      await cancelBacktest(  backtestId );
       setBacktests(prev =>
         prev.map(b => b.backtestId === backtestId
           ? { ...b, status: 'Cancelled' }
@@ -88,6 +88,7 @@ const Backtesting = () => {
       day: 'numeric'
     });
   };
+  console.log(backtests);
 
   return (
     <UI.Container>

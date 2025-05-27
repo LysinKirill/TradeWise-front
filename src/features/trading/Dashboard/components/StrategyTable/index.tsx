@@ -8,18 +8,24 @@ import { toast } from 'react-toastify';
 import { StrategyDetailsModal } from '../StrategyDetailsModal';
 import { ConfirmationModal } from '@/shared/ui/components/ComfirmationModal';
 import { useNavigate } from 'react-router-dom';
+import EditStrategyModal from '@/shared/ui/components/EditStrategyModal';
 
 export const StrategyTable = ({ strategies, onUpdate }: IStrategyTableProps) => {
   const { user } = useAuth();
   const [selectedStrategy, setSelectedStrategy] = useState<string | null>(null);
   const [deleteCandidate, setDeleteCandidate] = useState<string | null>(null);
-  const [editStrategy, setEditStrategy] = useState<string | null>(null);
-  const navigate = useNavigate();
-  
+  const [editStrategyId, setEditStrategyId] = useState<string | null>(null);
+
+  const handleSave = () => {
+    onUpdate?.();
+    setEditStrategyId(null);
+  };
+
   const handleEdit = async (strategyId: string) => {
     try {
       const strategyData = await getStrategy(strategyId);
-      navigate('/strategies', { state: { editStrategy: strategyData } });
+      setEditStrategyId(strategyId);
+
     } catch (error) {
       toast.error('Failed to load strategy for editing');
     }
@@ -50,7 +56,7 @@ export const StrategyTable = ({ strategies, onUpdate }: IStrategyTableProps) => 
         </UI.TableHeader>
         <UI.TableBody>
           {strategies.map((strategy) => (
-            <UI.StyledTableRow 
+            <UI.StyledTableRow
               key={strategy.id}
               onClick={() => setSelectedStrategy(strategy.id)}
               clickable
@@ -65,7 +71,7 @@ export const StrategyTable = ({ strategies, onUpdate }: IStrategyTableProps) => 
                   <UI.EditButton
                     onClick={(e) => {
                       e.stopPropagation();
-                      setEditStrategy(strategy.id);
+                      setEditStrategyId(strategy.id);
                     }}
                   >
                     Edit
@@ -101,6 +107,14 @@ export const StrategyTable = ({ strategies, onUpdate }: IStrategyTableProps) => 
         onConfirm={() => deleteCandidate && handleDelete(deleteCandidate)}
         onCancel={() => setDeleteCandidate(null)}
       />
+
+      {editStrategyId && (
+        <EditStrategyModal
+          strategyId={editStrategyId}
+          onClose={() => setEditStrategyId(null)}
+          onSave={handleSave}
+        />
+      )}
     </>
   );
 };

@@ -40,7 +40,8 @@ export interface IStrategyConnection {
   source: string;
   target: string;
   conditions: Array<{
-    transitionConditionType: any;
+    instrumentId: string;
+    transitionConditionType: string;
     type: number;
     statType: number;
     value: number;
@@ -101,11 +102,12 @@ export interface IConnectionLineProps {
 
 export interface IStrategyNodeProps {
   node: IStrategyNode;
-  onConnect: (source: string, target: string) => void;
+  onConnect?: (source: string, target: string) => void;
   onPositionChange: (position: IPosition) => void;
   onRemove?: (nodeId: string) => void;
   onStartConnect?: (sourceId: string) => void;
   onCompleteConnect?: (targetId: string) => void;
+  onDragStart?: (nodeId: string,) => void;
 }
 
 export interface IConnectionsPanelProps {
@@ -121,6 +123,7 @@ export interface IConnectionCardProps {
   connection?: IStrategyConnection;
   onClick?: () => void;
   onRemove?: () => void;
+  nodes?: IStrategyNode[];
 }
 
 export interface IModulesPanelProps {

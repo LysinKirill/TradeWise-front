@@ -69,7 +69,9 @@ export const deleteStrategy = async (strategyId: any) => {
 
 export const editStrategy = async (strategy: any) => {
   try {
-    await http.post('/api/v1/strategy/edit', { strategy });
+    const response = await http.post('/api/v1/strategy/edit', strategy);
+
+    return response;
 
   } catch (error: any) {
     throw new Error(error.response?.data?.detail || 'Failed to edit strategy');
@@ -78,7 +80,9 @@ export const editStrategy = async (strategy: any) => {
 
 export const getStrategy = async (strategyId: string) => {
   try {
-    await http.get(`/api/v1/strategy/get?StrategyId=${strategyId}`);
+    const response = await http.get(`/api/v1/strategy/get?StrategyId=${strategyId}`);
+
+    return response.data;
 
   } catch (error: any) {
     throw new Error(error.response?.data?.detail || 'Failed to get strategy');

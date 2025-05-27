@@ -3,10 +3,14 @@ import { IConnectionCardProps } from '../../types';
 
 export const ConnectionCard = ({ 
   connection, 
+  nodes,
   onClick, 
   onRemove 
 }: IConnectionCardProps) => {
   if (!connection) return null;
+
+  const sourceNode = nodes.find(n => n.id === connection.source);
+  const targetNode = nodes.find(n => n.id === connection.target);
 
   return (
     <UI.CardContainer onClick={onClick}>
@@ -16,7 +20,7 @@ export const ConnectionCard = ({
       }}>×</UI.CloseButton>
       
       <UI.CardHeader>
-        <UI.CardTitle>{`${connection.source} → ${connection.target}`}</UI.CardTitle>
+        <UI.CardTitle>{`${sourceNode?.name || sourceNode?.type || 'Unknown'} → ${targetNode?.name || 'Unknown'}`}</UI.CardTitle>
         <UI.ConnectionType $color={connection.color}>
           {connection.preset?.toUpperCase() || 'CUSTOM'}
         </UI.ConnectionType>

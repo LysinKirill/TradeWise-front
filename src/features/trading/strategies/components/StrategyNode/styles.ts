@@ -43,6 +43,8 @@ export const StrategyNodeWrapper = styled.div.attrs<{ $x: number; $y: number }>(
   transition: all 0.2s ease;
   box-shadow: 0 2px 6px ${colors.white};
   padding: 12px;
+  transition: transform 0.1s ease-out;
+  will-change: transform;
 
   &:hover {
     transform: translateY(-2px);

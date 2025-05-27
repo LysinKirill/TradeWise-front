@@ -71,6 +71,7 @@ const transformToApiFormat = useCallback((strategy: IStrategy) => {
       sourceStageId: validateId(conn.source),
       destinationStageId: validateId(conn.target),
       transitionConditions: conn.conditions.map(cond => ({
+        instrumentId: cond.instrumentId,
         transitionConditionType: cond.transitionConditionType,
         statType: cond.statType,
         value: cond.value
@@ -80,7 +81,6 @@ const transformToApiFormat = useCallback((strategy: IStrategy) => {
   const startNode = strategy.nodes.find(n => n.type === 'start');
   if (!startNode) throw new Error('Start node required');
 
-  // Находим конечные ноды
   const endNodes = strategy.nodes
     .filter(node => 
       !strategy.connections.some(conn => conn.source === node.id) &&
@@ -92,21 +92,16 @@ const transformToApiFormat = useCallback((strategy: IStrategy) => {
       transitionConditions: []
     }));
 
-  // Формируем полный список переходов
   const strategyTransitions = [
-    // Стартовый переход
     {
       sourceStageId: null,
       destinationStageId: validateId(startNode.id),
       transitionConditions: []
     },
-    // Основные переходы
     ...manualTransitions,
-    // Финишные переходы
     ...endNodes,
   ];
-
-  // Проверяем минимальные требования
+  
   if (strategyStages.length === 0) {
     setValidationError('At least one stage required');
   }
@@ -211,11 +206,6 @@ const transformToApiFormat = useCallback((strategy: IStrategy) => {
     }));
   };
 
-  /*const handleRemoveConnection = (connectionId: string) => {
-    updateProperty('connections', strategy.connections.filter(c => c.id !== connectionId));
-  };*/
-
-  ///TODO: fix these methods
   const handleUpdateConnection = (id: string, updates: Partial<IStrategyConnection>) => {
     setStrategy(prev => ({
       ...prev,

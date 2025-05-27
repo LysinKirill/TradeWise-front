@@ -2,7 +2,7 @@ import { colors } from "@/shared/constants/colors";
 import styled, { css } from "styled-components";
 
 export const OverviewContainer = styled.div`
-  background: ${colors.backgroundBlack};
+  box-shadow: 0px 10px 100px rgba(84, 1, 140, 0.75);
   border-radius: 16px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;

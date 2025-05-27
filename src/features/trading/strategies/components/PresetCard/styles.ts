@@ -59,7 +59,7 @@ export const ModelName = styled.div`
 `;
 
 export const CardContainer = styled.div`
-  background: ${colors.accentBlack};
+  //background: ${colors.backgroundBlack};
   border: 1px solid ${colors.greyText};
   border-radius: 50%;
   width: 100px;

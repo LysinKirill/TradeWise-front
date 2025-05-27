@@ -7,7 +7,7 @@ export const Container = styled.div`
   align-items: center;
   overflow: hidden;
   color: ${colors.white}; 
-
+  
   ${({ theme }) => theme.isMobile && css`
     padding: 1rem;
   `}
@@ -17,6 +17,7 @@ export const Layout = styled.div`
   display: flex;
   flex: 1;
   overflow: hidden;
+  box-shadow: 0px 10px 100px rgba(84, 1, 140, 0.75);
 
   ${({ theme }) => theme.isMobile && css`
     flex-direction: column;
@@ -32,6 +33,7 @@ export const SidePanel = styled.div`
   max-width: 100%;
   border-radius: 8px;
   max-height: 85vh;
+  padding: 1rem;
 
   ${({ theme }) => theme.isMobile && css`
     width: 100%;
@@ -45,7 +47,7 @@ export const WidePanel = styled.div`
   display: flex;
   flex-direction: column;
   padding: 1rem;
-  padding-top: 0;
+  padding-top: 0.5rem;
   gap: 1rem;
 
   ${({ theme }) => theme.isMobile && css`

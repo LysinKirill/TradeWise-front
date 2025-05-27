@@ -48,7 +48,7 @@ const ModalOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.774);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -57,6 +57,7 @@ const ModalOverlay = styled.div`
 
 const ModalContainer = styled.div`
   background: ${colors.backgroundDark};
+  box-shadow: 0 0 40px rgba(138, 43, 226, 0.4);
   border-radius: 12px;
   padding: 2rem;
   width: 90%;
@@ -92,17 +93,21 @@ const ButtonGroup = styled.div`
   margin-top: 1rem;
 `;
 
-const BaseButton = styled.button`
-  padding: 0.75rem 1.5rem;
+export const BaseButton = styled.button`
+  padding: 0.8rem 1.8rem;
   border: none;
   border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  backdrop-filter: blur(4px);
 
   &:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   }
 
   &:active {
@@ -111,8 +116,13 @@ const BaseButton = styled.button`
 `;
 
 const ConfirmButton = styled(BaseButton)`
-  background: ${colors.red};
-  color: ${colors.white};
+  background: ${colors.red}20;
+  color: ${colors.red};
+  border: 1px solid ${colors.red}80;
+
+  &:hover {
+    background: ${colors.red}30;
+  }
 `;
 
 const CancelButton = styled(BaseButton)`

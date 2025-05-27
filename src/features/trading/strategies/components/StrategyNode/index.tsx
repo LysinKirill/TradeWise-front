@@ -6,18 +6,19 @@ export const StrategyNode = ({
   node,
   onRemove,
   onStartConnect,
-  onCompleteConnect
+  onCompleteConnect,
+  onDragStart
 }: IStrategyNodeProps) => {
   const dragStartHandler = (e: React.DragEvent) => {
     e.dataTransfer.setData('nodeId', node.id);
     e.dataTransfer.effectAllowed = 'move';
-
-    const ghost = document.createElement('div');
-    ghost.style.position = 'absolute';
-    ghost.style.opacity = '0';
-    document.body.appendChild(ghost);
-    e.dataTransfer.setDragImage(ghost, 0, 0);
-    setTimeout(() => document.body.removeChild(ghost));
+    onDragStart?.(node.id);
+    //const ghost = document.createElement('div');
+    //ghost.style.position = 'absolute';
+    //ghost.style.opacity = '0';
+    //document.body.appendChild(ghost);
+    //e.dataTransfer.setDragImage(ghost, 0, 0);
+    //setTimeout(() => document.body.removeChild(ghost));
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {

@@ -3,7 +3,7 @@ import { colors } from '@shared/constants/colors';
 
 export const Container = styled.div`
   position: relative;
-  background: ${colors.backgroundBlack};
+  box-shadow: 0px 10px 100px rgba(84, 1, 140, 0.75);
   border-radius: 16px;
   padding: 1.5rem;
   width: 65vw;

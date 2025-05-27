@@ -41,6 +41,7 @@ export const ConnectionsPanel = ({
               <ConnectionCard 
                 key={connection.id} 
                 connection={connection}
+                nodes={nodes}
                 onClick={() => {
                   setEditingConnection(connection.id);
                   setIsModalOpen(true);

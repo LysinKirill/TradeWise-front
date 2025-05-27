@@ -6,10 +6,11 @@ export const Footer = styled.footer`
   align-items: center;
   gap: 1rem;
   padding: 1rem 2rem;
+  width: 100%;
+  justify-content: center;
   border-top: 1px solid ${colors.greyText};
 
   ${({ theme }) => theme.isMobile && css`
-    //flex-direction: column;
     padding: 1rem;
     gap: 0.5rem;
   `}

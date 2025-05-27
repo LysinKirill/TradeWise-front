@@ -1,5 +1,36 @@
 import { chartColors, colors } from "@/shared/constants/colors";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+export const Toast = styled(ToastContainer)`
+  .Toastify__toast {
+    background: ${colors.accentBlack};
+    border: 1px solid ${colors.greyText}30;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    color: ${colors.white};
+    padding: 1rem;
+  }
+
+  .Toastify__progress-bar {
+    background: linear-gradient(
+      90deg,
+      ${chartColors.primary} 0%,
+      ${chartColors.secondary} 100%
+    );
+  }
+
+  .Toastify__close-button {
+    color: ${colors.greyText};
+    opacity: 1;
+    transition: color 0.2s;
+
+    &:hover {
+      color: ${colors.white};
+    }
+  }
+`;
 
 export const ModalOverlay = styled.div`
   position: fixed;
@@ -25,6 +56,7 @@ export const ModalContainer = styled.div`
   max-height: 90vh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 `;
 
 export const ModalHeader = styled.div`
@@ -37,34 +69,39 @@ export const ModalHeader = styled.div`
 
 export const ModalTitle = styled.h3`
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 2.25rem;
   color: ${colors.white};
+  text-shadow: 0 0 10px ${colors.white}90;
   font-weight: 600;
-  background: linear-gradient(
-    135deg,
-    ${chartColors.primary} 0%,
-    ${chartColors.secondary} 100%
-  );
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 `;
 
 export const ModalBody = styled.div`
   padding: 1.5rem;
   overflow-y: auto;
   flex-grow: 1;
+  
+  &::-webkit-scrollbar {
+    width: 6px;
+    background: ${colors.darkPurpleButton};
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: ${chartColors.primary};
+    border-radius: 3px;
+  }
 `;
 
-export const FormGroup = styled.div`
+/*export const FormGroup = styled.div`
   margin-bottom: 1.5rem;
 
   label {
     display: block;
     margin-bottom: 0.75rem;
     font-weight: 500;
-    color: ${colors.white};
+    color: ${colors.white}90;
     font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   select, input {
@@ -76,6 +113,7 @@ export const FormGroup = styled.div`
     color: ${colors.white};
     font-size: 1rem;
     transition: all 0.2s ease;
+    appearance: none;
 
     &:focus {
       outline: none;
@@ -83,7 +121,15 @@ export const FormGroup = styled.div`
       box-shadow: 0 0 0 2px ${chartColors.primary}30;
     }
   }
-`;
+
+  select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.8rem center;
+    background-size: 1rem;
+    padding-right: 2.5rem;
+  }
+`;*/
 
 export const ConditionsHeader = styled.div`
   display: flex;
@@ -115,60 +161,59 @@ export const AddButton = styled.button`
   cursor: pointer;
   font-weight: 500;
   transition: all 0.2s ease;
-  position: relative;
-  overflow: hidden;
 
   &:hover {
     transform: translateY(-1px);
     box-shadow: 0 4px 15px ${chartColors.primary}30;
   }
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      135deg,
-      rgba(255,255,255,0.1) 0%,
-      rgba(255,255,255,0.05) 100%
-    );
-  }
 `;
 
-export const ConditionRow = styled.div`
+/*export const ConditionRow = styled.div`
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr auto;
-  gap: 1rem;
+  grid-template-columns: 2fr 1.5fr 1.5fr 100px 40px;
+  gap: 0.8rem;
   align-items: center;
   margin-bottom: 1rem;
 
   select, input {
-    padding: 0.75rem;
+    padding: 0.65rem;
     background: ${colors.darkPurpleButton};
     border: 1px solid ${colors.greyText}50;
-    border-radius: 8px;
+    border-radius: 6px;
     color: ${colors.white};
     font-size: 0.9rem;
+    height: 40px;
   }
 
   input {
     width: 100%;
+    padding: 0.65rem 0.8rem;
   }
-`;
+`;*/
 
 export const RemoveButton = styled.button`
   background: none;
   border: none;
   color: ${colors.greyText};
   cursor: pointer;
-  padding: 0 0.5rem;
-  transition: color 0.2s ease;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  border-radius: 50%;
 
   &:hover {
     color: ${colors.white};
+    background: ${colors.red}30;
+  }
+
+  &::before {
+    content: '×';
+    font-size: 1.4rem;
+    line-height: 1;
   }
 `;
 
@@ -195,61 +240,10 @@ export const ActionButton = styled.button<{ disabled?: boolean }>`
   cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
   font-weight: 500;
   transition: all 0.2s ease;
-  position: relative;
-  overflow: hidden;
 
   &:hover:not(:disabled) {
     transform: translateY(-1px);
     box-shadow: 0 4px 15px ${chartColors.primary}30;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-            135deg,
-            rgba(255,255,255,0.1) 0%,
-            rgba(255,255,255,0.05) 100%,
-          );
-
-   ${({ disabled }) => disabled && css`
-    background:  'rgba(0,0,0,0.3)';
-  `}
-  }
-`;
-
-
-export const GearButton = styled.button`
-  background: linear-gradient(
-    135deg,
-    ${chartColors.primary} 0%,
-    ${chartColors.secondary} 100%
-  );
-  border: none;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-
-  &:hover {
-    transform: rotate(90deg) scale(1.1);
-    box-shadow: 0 4px 15px ${chartColors.primary}30;
-  }
-
-  svg {
-    width: 18px;
-    height: 18px;
-    fill: ${colors.white};
   }
 `;
 
@@ -258,12 +252,96 @@ export const CloseButton = styled.button`
   border: none;
   cursor: pointer;
   padding: 8px;
-  color: #6b7280;
+  color: ${colors.greyText};
   font-size: 1.5rem;
   line-height: 1;
   transition: color 0.2s;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
-    color: #4b5563;
+    color: ${colors.white};
+    background: ${colors.greyText}15;
+  }
+`;
+
+export const FormGroup = styled.div`
+  margin-bottom: 1.5rem;
+
+  label {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+    color: ${colors.textPrimary};
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  select, input {
+    width: 100%;
+    padding: 0.9rem 1.2rem;
+    border: 1px solid ${colors.borderColor};
+    border-radius: 8px;
+    background: ${colors.inputBackground};
+    color: ${colors.textPrimary};
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    appearance: none;
+
+    &:focus {
+      outline: none;
+      border-color: ${colors.neonPurple};
+      box-shadow: 0 0 12px ${colors.neonPurple}40;
+    }
+  }
+
+  select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1.2rem center;
+    background-size: 1rem;
+    padding-right: 3rem;
+  }
+`;
+
+export const ConditionRow = styled.div`
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1.5fr 100px 40px;
+  gap: 0.8rem;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  select, input {
+    width: 100%;
+    padding: 0.9rem 1.2rem;
+    border: 1px solid ${colors.borderColor};
+    border-radius: 8px;
+    background: ${colors.inputBackground};
+    color: ${colors.textPrimary};
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    height: auto;
+
+    &:focus {
+      outline: none;
+      border-color: ${colors.neonPurple};
+      box-shadow: 0 0 12px ${colors.neonPurple}40;
+    }
+  }
+
+  select {
+    background-repeat: no-repeat;
+    background-position: right 1.2rem center;
+    background-size: 1rem;
+    padding-right: 3rem;
+  }
+
+  input {
+    padding: 0.9rem 1.2rem;
   }
 `;

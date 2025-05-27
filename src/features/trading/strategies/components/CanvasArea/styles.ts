@@ -9,7 +9,7 @@ export const CanvasContainer = styled.div`
   width: 65vw;
   overflow: hidden;
   transition: border-color 0.2s ease;
-  
+  box-shadow: 0px 10px 100px rgba(84, 1, 140, 0.75);
   &.dragover {
     border-color: ${colors.purpleButton};
     background: ${colors.accentBlack};

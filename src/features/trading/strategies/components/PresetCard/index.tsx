@@ -13,7 +13,6 @@ export const PresetCard = ({ preset, onClick, onDragStart, onDoubleClick }: IPre
     e.dataTransfer.setData('application/json', JSON.stringify(preset));
     e.dataTransfer.effectAllowed = 'copy';
   };
-  console.log(preset.color);
 
   return (
     <UI.CardWrapper>
