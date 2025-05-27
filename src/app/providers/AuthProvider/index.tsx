@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { getLocalToken, setLocalToken, removeLocalToken, getRefreshToken, setRefreshToken } from '@shared/utils/tokenStorage';
+import { getLocalToken, setLocalToken, removeLocalToken, getRefreshToken, setRefreshToken, removeRefreshToken } from '@shared/utils/tokenStorage';
 import axios from 'axios';
 import { TAuthContextType, TUser } from './types';
 import { decodeJWT, JwtPayload } from '@/shared/utils/jwt';
@@ -12,7 +12,7 @@ const AuthContext = createContext<TAuthContextType | undefined>({
   user: null,
   login: () => { },
   logout: () => { },
-  refreshToken: '',
+  refreshToken: () => Promise.resolve(null),
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

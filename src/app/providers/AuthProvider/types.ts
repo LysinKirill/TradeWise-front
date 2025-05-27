@@ -10,7 +10,7 @@ export type TAuthContextType = {
   user: TUser | null;
   login: (userData: TUser, token: string, refreshToken: string) => void;
   logout: () => void;
-  refreshToken?: string;
+  refreshToken: () => Promise<string | null>;
 };
 
 export type TUser = {

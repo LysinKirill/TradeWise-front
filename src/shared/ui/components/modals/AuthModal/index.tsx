@@ -94,7 +94,7 @@ export const AuthModal = () => {
         dispatch(closeAuthModal());
         toast.success('Log in succesfully!');
         
-        login(response.data.userData, response.data.accessToken);
+        login(response.data.userData, response.data.accessToken, response.data.refreshToken);
         navigate(ROUTES.DASHBOARD);
       }
 
