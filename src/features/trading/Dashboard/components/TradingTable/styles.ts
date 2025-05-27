@@ -134,3 +134,50 @@ export const StatusIndicator = styled.span<{ status: 'active' | 'paused' | strin
     }
   }};
 `;
+
+
+export const ActionButtonGroup = styled.div`
+  display: flex;
+  gap: 0.8rem;
+  justify-content: flex-end;
+`;
+
+export const EditButton = styled.button`
+  background: ${colors.neonPurple}20;
+  color: ${colors.neonPurple};
+  border: 1px solid ${colors.neonPurple};
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${colors.neonPurple}30;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+`;
+
+export const DeleteButton = styled.button`
+  background: ${colors.red}20;
+  color: ${colors.red};
+  border: 1px solid ${colors.red};
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${colors.red}30;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+`;

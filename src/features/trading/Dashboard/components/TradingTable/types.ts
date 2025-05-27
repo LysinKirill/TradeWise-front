@@ -1,4 +1,5 @@
 export interface IPortfolioData {
+  instrumentId: string;
   ticker: string;
   quantity: number;
   currentPrice: number;
