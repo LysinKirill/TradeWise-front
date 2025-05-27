@@ -15,7 +15,7 @@ export default function Settings() {
     }
 
     const response = await linkInvestApiKey({ investApiKey });
-    if (response?.success) {
+    if (response?.status === 200) {
       toast.success('API key linked successfully!');
       setInvestApiKey('');
     } else {
