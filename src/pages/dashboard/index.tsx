@@ -1,1 +1,1 @@
-export { default } from '@/features/trading/dashboard/index';
+export { default } from '@/features/trading/Dashboard/index';
