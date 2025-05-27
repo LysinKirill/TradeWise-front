@@ -10,7 +10,6 @@ import { ConfirmationModal } from '@/shared/ui/components/ComfirmationModal';
 import EditStrategyModal from '@/shared/ui/components/EditStrategyModal';
 
 export const StrategyTable = ({ strategies, onUpdate }: IStrategyTableProps) => {
-  const { user } = useAuth();
   const [selectedStrategy, setSelectedStrategy] = useState<string | null>(null);
   const [deleteCandidate, setDeleteCandidate] = useState<string | null>(null);
   const [editStrategyId, setEditStrategyId] = useState<string | null>(null);
