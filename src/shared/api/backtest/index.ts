@@ -12,7 +12,7 @@ export const startBacktest = (params: { modelId: string; initialBalance: string,
 export const getAllBacktests = () => {
   try {
 
-    return http.get('/api/v1/backtest/all-backtests');
+    return http.post('/api/v1/backtest/all-backtests');
   } catch (error: any) {
     throw new Error(error.response?.data?.detail || 'Failed to get all backtests');
   }

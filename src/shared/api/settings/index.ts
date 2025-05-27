@@ -5,7 +5,7 @@ export const linkInvestApiKey = async ({ investApiKey }: { investApiKey: string 
     const res = await http.post('/api/v1/invest/link-invest-api-key-with-account', { 
       investApiKey 
     });
-    return res.data;
+    return res;
   } catch (error) {
     console.error(error);
     return error.response;
