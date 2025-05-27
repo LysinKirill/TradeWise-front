@@ -1,31 +1,51 @@
-import styled from "styled-components";
-import { TableCell as MuiTableCell, TableRow as MuiTableRow, } from "@mui/material";
+import { colors } from "@/shared/constants/colors";
+import styled, { css } from "styled-components";
 
 export const DashboardContainer = styled.div`
-  padding: 1rem;
-  padding-top: 10rem;
-  width: 95vw;
   margin: 0 auto;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  
+  color: ${colors.textPrimary};
+  padding: 2rem;
+  max-width: 100%; 
+  overflow-x: hidden; 
+  box-sizing: border-box;
+
+  ${({ theme }) => theme.isMobile && css`
+    height: auto;
+    padding: 1rem;
+  `}
 `;
 
 export const DashboardHeader = styled.div`
   margin-bottom: 2rem;
+
+  ${({ theme }) => theme.isMobile && css`
+    margin-bottom: 1rem;
+  `}
 `;
 
 export const DashboardTitle = styled.h1`
   font-size: 2.5rem;
   margin: 0;
-  color: ${({ theme }) => theme.textPrimary};
+  color: ${colors.white};
+  text-shadow: 0 0 10px ${colors.white}90;
+
+  ${({ theme }) => theme.isMobile && css`
+    font-size: 2rem;
+    line-height: 1.2;
+  `}
 `;
 
 export const DashboardSubtitle = styled.p`
   font-size: 1.2rem;
-  color: ${({ theme }) => theme.textSecondary};
+  color: ${colors.textSecondary};
   margin: 0.5rem 0 0;
+
+  ${({ theme }) => theme.isMobile && css`
+    font-size: 1rem;
+  `}
 `;
 
 export const StatsContainer = styled.div`
@@ -33,103 +53,97 @@ export const StatsContainer = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
   margin-bottom: 3rem;
-`;
 
-export const StatCard = styled.div`
-  background: ${({ theme }) => theme.cardBackground};
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: ${({ theme }) => theme.cardShadow};
-`;
-
-export const StatLabel = styled.div`
-  font-size: 1rem;
-  color: ${({ theme }) => theme.textSecondary};
-  margin-bottom: 0.5rem;
-`;
-
-export const StatValue = styled.div<{ $positive?: boolean }>`
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: ${({ $positive, theme }) => 
-    $positive ? theme.successColor : $positive === false ? theme.errorColor : theme.textPrimary};
+  ${({ theme }) => theme.isMobile && css`
+    grid-template-rows: 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  `}
 `;
 
 export const MainContent = styled.div`
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
   gap: 2rem;
   flex: 1;
+
+  ${({ theme }) => theme.isMobile && css`
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  `}
 `;
 
 export const LeftPanel = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+
+  ${({ theme }) => theme.isMobile && css`
+    gap: 1rem;
+  `}
 `;
 
 export const RightPanel = styled.div`
-  background: ${({ theme }) => theme.paperBackground};
   border-radius: 8px;
-  padding: 1.5rem;
+
+  ${({ theme }) => theme.isMobile && css`
+    margin-top: 1rem;
+  `}
 `;
 
 export const Section = styled.div`
-  background: ${({ theme }) => theme.paperBackground};
   border-radius: 8px;
   padding: 1.5rem;
   margin-bottom: 2rem;
+
+  ${({ theme }) => theme.isMobile && css`
+    max-width: 95vw;
+    padding: 0rem;
+    margin-bottom: 1rem;
+  `}
 `;
 
 export const SectionTitle = styled.h3`
   font-size: 1.2rem;
   margin: 0 0 1rem;
-  color: ${({ theme }) => theme.textPrimary};
+  color: ${colors.white};
+  text-shadow: 0 0 10px ${colors.white}90;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid ${colors.neonPurple};
+
+  ${({ theme }) => theme.isMobile && css`
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+  `}
 `;
 
 export const SearchInput = styled.input`
   width: 100%;
+  max-width: 100%;
   padding: 0.8rem;
-  border: 1px solid ${({ theme }) => theme.borderColor};
+  border: 1px solid ${colors.borderColor};
   border-radius: 4px;
   font-size: 1rem;
   margin-bottom: 1.5rem;
-  background: ${({ theme }) => theme.inputBackground};
-  color: ${({ theme }) => theme.textPrimary};
+  background: ${colors.inputBackground};
+  color: ${colors.textPrimary};
+  transition: all 0.3s ease;
 
   &:focus {
     outline: none;
-    border-color: ${({ theme }) => theme.primaryColor};
+    border-color: ${colors.neonPurple};
+    box-shadow: 0 0 10px ${colors.neonPurple}40;
   }
-`;
 
-export const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-`;
+  &::placeholder {
+    color: ${colors.textSecondary};
+  }
 
-export const TableHeader = styled.thead`
-  background: ${({ theme }) => theme.tableHeaderBackground};
+  ${({ theme }) => theme.isMobile && css`
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  `}
 `;
-
-export const StyledTableCell = styled(MuiTableCell)<{ $negative?: boolean }>`
-  color: ${({ $negative, theme }) => 
-    $negative ? theme.errorColor : theme.textPrimary} !important;
-  padding: 1rem !important;
-`;
-
-export const StyledTableRow = styled(MuiTableRow)`
-  border-bottom: 1px solid ${({ theme }) => theme.borderColor};
-`;
-
-export const TableHeaderCell = styled(MuiTableCell)`
-  font-weight: 600 !important;
-  color: ${({ theme }) => theme.textPrimary} !important;
-  padding: 1rem !important;
-`;
-
-export const TableBody = styled.tbody``;
 
 export const Footer = styled.footer`
   margin-top: auto;
@@ -137,16 +151,60 @@ export const Footer = styled.footer`
   display: flex;
   justify-content: center;
   gap: 2rem;
-  border-top: 1px solid ${({ theme }) => theme.borderColor};
+  border-top: 1px solid ${colors.borderColor};
+
+  ${({ theme }) => theme.isMobile && css`
+    padding: 1rem 0;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  `}
 `;
 
 export const FooterLink = styled.a`
-  color: ${({ theme }) => theme.textSecondary};
+  color: ${colors.textSecondary};
   text-decoration: none;
   cursor: pointer;
   font-size: 0.9rem;
+  transition: color 0.3s ease;
 
   &:hover {
-    color: ${({ theme }) => theme.primaryColor};
+    color: ${colors.neonBlue};
+    text-shadow: 0 0 8px ${colors.neonBlue}80;
   }
+
+  ${({ theme }) => theme.isMobile && css`
+    font-size: 0.8rem;
+  `}
+`;
+
+export const LoadingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: ${colors.textPrimary};
+  font-size: 1.5rem;
+`;
+
+export const ErrorContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: ${colors.accentRed};
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 2rem;
+`;
+
+export const EmptyState = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  color: ${colors.textSecondary};
+  font-size: 1rem;
+  border: 1px dashed ${colors.borderColor};
+  border-radius: 8px;
 `;

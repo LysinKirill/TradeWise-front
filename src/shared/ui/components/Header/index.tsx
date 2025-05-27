@@ -1,31 +1,63 @@
-// src/shared/ui/components/Header/index.tsx
 import { useAuth } from '@/app/providers/AuthProvider';
+import { useMediaQuery } from '@/shared/hooks/useMediaQuery';
 import Logo from '@assets/images/Logo.png';
-import * as UI from './style';
+import { useState } from 'react';
+import { Navigation } from '../Navigation';
+import * as UI from './styles';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const { isAuthenticated, user, logout } = useAuth();
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const toggleDropdown = () => setIsDropdownOpen(prev => !prev);
+  const closeDropdown = () => setIsDropdownOpen(false);
 
   return (
     <UI.Header>
       <UI.HeaderContent>
-        <UI.Logo>
-          <UI.LogoIcon src={Logo} />
-          TradeWise
-        </UI.Logo>
+        {isMobile ?
+          <UI.Logo>
+            TradeWise
+          </UI.Logo> :
+          <UI.Logo>
+            <UI.LogoIcon src={Logo} onClick={() => { navigate('/'); closeDropdown(); }} />
+            TradeWise
+          </UI.Logo>
+        }
+
         {isAuthenticated && (
-          <UI.HeaderRight>
-            <UI.HeaderButton onClick={() => console.log('Profile')}>
-              <UI.UserIcon />
-              {user?.fullName}
-            </UI.HeaderButton>
-            <UI.HeaderButton onClick={() => console.log('Settings')}>
-              <UI.SettingsIcon />
-            </UI.HeaderButton>
-            <UI.HeaderButton onClick={logout}>
-              <UI.LogoutIcon /> Logout
-            </UI.HeaderButton>
-          </UI.HeaderRight>
+          <>
+            {!isMobile && <Navigation isAuthenticated={isAuthenticated} />}
+
+            <UI.HeaderRight>
+              {!isMobile && (
+                <UI.ProfileWrapper
+                  onMouseEnter={() => setIsDropdownOpen(true)}
+                  onMouseLeave={() => setIsDropdownOpen(false)}>
+                  <UI.HeaderButton onClick={toggleDropdown}>
+                    <UI.UserIcon />
+                    {user?.fullName}
+                  </UI.HeaderButton>
+
+                  {isDropdownOpen && (
+                    <UI.ProfileDropdown>
+                      <UI.DropdownItem onClick={() => { navigate('/settings'); closeDropdown(); }}>
+                        <UI.SettingsIcon />
+                        Settings
+                      </UI.DropdownItem>
+                      <UI.DropdownItem onClick={() => { logout(); closeDropdown(); }}>
+                        <UI.LogoutIcon />
+                        Logout
+                      </UI.DropdownItem>
+                    </UI.ProfileDropdown>
+                  )}
+                </UI.ProfileWrapper>
+              )}
+            </UI.HeaderRight>
+          </>
         )}
       </UI.HeaderContent>
     </UI.Header>

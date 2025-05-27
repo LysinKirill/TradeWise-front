@@ -5,13 +5,13 @@ import {
   TRequestConfig,
   IAxios,
 } from './types';
+import { getLocalToken } from '@/shared/utils/tokenStorage';
 
 export const DEFAULT_TIMEOUT = 60000;
 
 class Http implements IAxios {
   private readonly http: AxiosInstance;
 
-  // Текущий набор исполняемых запросов
   private readonly requests: Record<string, CancelTokenSource>;
 
   constructor(baseURL: string = '/', headers?: AxiosRequestConfig['headers'], paramsSerializer?: AxiosRequestConfig['paramsSerializer']) {
@@ -29,12 +29,11 @@ class Http implements IAxios {
 
     this.http.interceptors.request.use(
       (config) => {
-        //const token = keycloak.token;
-       // if (token) {
-         // config.headers.Authorization = `Bearer ${token}`;
-       // }
-
-       //WRITE LOGIC FOR ADDING TOKEN, ADD AUTH PROVIDER 
+        const token = getLocalToken();
+        console.log(token);
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
 
         return config;
       },

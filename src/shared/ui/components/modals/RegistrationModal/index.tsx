@@ -9,13 +9,12 @@ import { formFields } from './constants';
 import * as UI from './styles';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import background from '@assets/images/background.png';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/app/providers/AuthProvider';
 import { IUserRegistrationData } from '@/features/auth/types';
+import { toast } from 'react-toastify';
+
 
 export const RegistrationForm = () => {
   const dispatch = useTypedDispatch();
-  const navigate = useNavigate();
   const { isOpen } = useSelector(selectRegistrationModalState);
   const [formData, setFormData] = useState<IUserRegistrationData>({
     email: '',
@@ -25,7 +24,6 @@ export const RegistrationForm = () => {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { login } = useAuth();
 
   if (!isOpen) return null;
 
@@ -90,29 +88,27 @@ export const RegistrationForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate('/dashboard');
-    //if (!validateForm()) return;
-
+    if (!validateForm()) return;
+  
     setIsSubmitting(true);
     try {
-      const userData = await registerUser(formData);
-
-      login({
-        email: userData.email,
-        fullName: userData.fullName
-      });
-      
-      dispatch(closeRegistrationModal());
-      handleReset();
-      navigate('/dashboard');
+      const response = await registerUser(formData); 
+      if (response.status === 200) {
+        dispatch(closeRegistrationModal());
+        handleReset();
+        toast.success('Success! Your account has been created. Please, log in')
+        dispatch(openAuthModal());
+      } 
     } catch (error) {
       console.error('Registration error:', error);
-      // Consider adding error state display here
+      setErrors({
+        general: 'Registration failed. Please try again.'
+      });
     } finally {
       setIsSubmitting(false);
     }
   };
-
+  
   const handleReset = () => {
     setFormData({
       email: '',

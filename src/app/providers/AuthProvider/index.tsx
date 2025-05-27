@@ -1,46 +1,96 @@
-import { createContext, useContext, ReactNode, useState, useEffect } from 'react';
+/* eslint-disable react-refresh/only-export-components */
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { getLocalToken, setLocalToken, removeLocalToken, getRefreshToken, setRefreshToken } from '@shared/utils/tokenStorage';
+import axios from 'axios';
 import { TAuthContextType, TUser } from './types';
+import { decodeJWT, JwtPayload } from '@/shared/utils/jwt';
 
-const AuthContext = createContext<TAuthContextType>({
+const AuthContext = createContext<TAuthContextType | undefined>({
   isAuthenticated: false,
   user: null,
-  login: () => {},
-  logout: () => {},
+  login: () => { },
+  logout: () => { },
+  refreshToken: async () => null,
 });
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<TUser | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    const storedToken = localStorage.getItem('token');
-
-    if (storedUser && storedToken) {
-      setIsAuthenticated(true);
-      setUser(JSON.parse(storedUser));
+  const decodeAndSetUser = useCallback((token: string) => {
+    const decoded = decodeJWT<JwtPayload>(token);
+    if (decoded) {
+      setUser({
+        email: decoded.email,
+        fullName: decoded.fullName
+      });
     }
   }, []);
 
-  const login = (userData: TUser) => {
+  const login = (user: TUser, token: string, ) => {
+    setLocalToken(token);
     setIsAuthenticated(true);
-    setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
-    localStorage.setItem('token', 'your-auth-token-here'); //CHANGE LATER WITH BETTER SOLUTION
+    setRefreshToken(refreshToken);
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    decodeAndSetUser(token);
   };
 
   const logout = () => {
-    setIsAuthenticated(false);
     setUser(null);
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+    removeLocalToken();
+    setIsAuthenticated(false);
+    delete axios.defaults.headers.common['Authorization'];
   };
 
+  const refreshToken = useCallback(async (): Promise<string | null> => {
+    if (isRefreshing) return null;
+    
+    try {
+      setIsRefreshing(true);
+      const refreshToken = getRefreshToken();
+      if (!refreshToken) {
+        logout();
+        return null;
+      }
+
+      const response = await axios.post('/api/v1/refresh', { refreshToken });
+      const newToken = response.data.accessToken;
+      const newRefreshToken = response.data.refreshToken;
+
+      setLocalToken(newToken);
+      setRefreshToken(newRefreshToken);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+      decodeAndSetUser(newToken);
+      
+      return newToken;
+    } catch (error) {
+      console.error('Token refresh failed:', error);
+      logout();
+      return null;
+    } finally {
+      setIsRefreshing(false);
+    }
+  }, [isRefreshing, logout, decodeAndSetUser]);
+
+  useEffect(() => {
+    const token = getLocalToken();
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      setIsAuthenticated(true);
+      decodeAndSetUser(token);
+    }
+  }, [decodeAndSetUser]);
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!isAuthenticated, refreshToken}}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error('useAuth must be used within AuthProvider');
+  return ctx;
+};

@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense, useState } from 'react';
 
 import { Loading } from '../Loading';
 
@@ -10,21 +10,30 @@ import Header from '../Header';
 import { AuthModal } from '@shared/ui/components/Modals/AuthModal';
 import GetStartedModal from '@shared/ui/components/Modals/GetStartedModal';
 import { RegistrationForm } from '@shared/ui/components/Modals/RegistrationModal';
+import MobileBottomNav from '../Navigation/components/MobileBottomNav';
+import { useMediaQuery } from '@/shared/hooks/useMediaQuery';
+import { ToastContainer } from 'react-toastify';
+import { SplashScreen } from '../SplashScreen';
 
 const Layout = () => {
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const [showSplash, setShowSplash] = useState(true);
 
   return (
     <Suspense fallback={<Loading />}>
       <ThemeProvider theme={UI.darkTheme}>
+      <ToastContainer position="top-right" autoClose={5000} theme="dark" />
         <UI.Layout>
+        {showSplash && <SplashScreen onHide={() => setShowSplash(false)} />}
           <GetStartedModal />
           <RegistrationForm />
           <AuthModal />
           <UI.Container>
             <Header />
-            <UI.Wrapper>
+            <UI.Wrapper isMobile={isMobile}>
               <Outlet />
             </UI.Wrapper>
+            {isMobile && <MobileBottomNav />}
           </UI.Container>
         </UI.Layout>
       </ThemeProvider>

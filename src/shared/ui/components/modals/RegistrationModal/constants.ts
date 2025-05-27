@@ -1,4 +1,3 @@
-// src/features/auth/constants/formConfig.ts
 import { TFormFieldConfig } from './types';
 
 export const formFields: TFormFieldConfig[] = [

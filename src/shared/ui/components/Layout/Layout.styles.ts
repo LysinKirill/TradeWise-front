@@ -33,9 +33,15 @@ export const Container = styled.main`
   font-family: 'dinpro', sans-serif;
 `;
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ isMobile: boolean }>`
   min-height: 100vh;
   margin: 0 auto;
+  //padding: 1rem;
+  padding-top: 5rem;
+  
+  ${({ theme }) => theme.isMobile && css`
+    padding-bottom: 80px;
+  `}
 `;
 
 export const Header = styled.header`

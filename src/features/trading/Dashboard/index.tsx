@@ -1,8 +1,57 @@
+import { useState, useEffect } from 'react';
 import { useAuth } from "@app/providers/AuthProvider";
+import { StatsCard } from './components/StatsCard';
+import { PortfolioChart } from './components/PortfolioChart';
+import { TradingTable } from './components/TradingTable';
+import { StrategyTable } from './components/StrategyTable';
 import * as UI from './styles';
+import { Footer } from '@/shared/ui/components/Footer';
+import { useMediaQuery } from '@/shared/hooks/useMediaQuery';
+import { DashboardStats } from './types';
+import { fetchDashboardStats } from '@/shared/api/account-overview';
+import { fetchTradingStrategies } from '@/shared/api/strategies';
+import { TradingStrategy } from '@/shared/types/types';
 
-export const Dashboard = () => {
+const Dashboard = () => {
   const { user } = useAuth();
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [strategies, setStrategies] = useState<TradingStrategy[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [statsResponse, strategiesResponse] = await Promise.all([
+          fetchDashboardStats() as Promise<DashboardStats>,
+          fetchTradingStrategies() as Promise<TradingStrategy[]>
+        ]);
+        
+        setStats(statsResponse);
+        setStrategies(strategiesResponse);
+      } catch (err) {
+        setError('Failed to load dashboard data');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
+
+  const filteredStrategies = strategies.filter(strategy =>
+    strategy.title.toLowerCase().includes(searchQuery.toLowerCase())
+    //strategy.title
+  );
+
+  const portfolioPositions = stats?.portfolioPositions || [];
+
+  if (loading) {
+    return <UI.LoadingContainer>Loading...</UI.LoadingContainer>;
+  }
 
   return (
     <UI.DashboardContainer>
@@ -12,71 +61,59 @@ export const Dashboard = () => {
       </UI.DashboardHeader>
 
       <UI.StatsContainer>
-        <UI.StatCard>
-          <UI.StatLabel>Total balance</UI.StatLabel>
-          <UI.StatValue>$5,739.40</UI.StatValue>
-        </UI.StatCard>
-        <UI.StatCard>
-          <UI.StatLabel>Today's P/L</UI.StatLabel>
-          <UI.StatValue >+$1,129.40</UI.StatValue>
-        </UI.StatCard>
-        <UI.StatCard>
-          <UI.StatLabel>Active strategies</UI.StatLabel>
-          <UI.StatValue>15</UI.StatValue>
-        </UI.StatCard>
+        <StatsCard 
+          title="Total balance" 
+          value={`${stats?.balance?.toLocaleString() ?? 0}`} 
+        />
+        <StatsCard 
+          title="Today's P/L" 
+          value={`${stats?.todayPnl?.toLocaleString() ?? 0}`} 
+        />
+        <StatsCard 
+          title="Strategies" 
+          value={stats?.activeStrategies ?? 0} 
+        />
       </UI.StatsContainer>
 
       <UI.MainContent>
-        <UI.LeftPanel>
-          <UI.SearchInput placeholder="Search for algo by name" />
-          <UI.Section>
-            <UI.SectionTitle>Portfolio distribution</UI.SectionTitle>
-            {/* Add chart component here */}
-          </UI.Section>
-          <UI.Section>
-            <UI.SectionTitle>Strategy</UI.SectionTitle>
-            {/* Add strategy components here */}
-          </UI.Section>
-        </UI.LeftPanel>
+        {!isMobile && (
+          <UI.LeftPanel>
+            <UI.Section>
+              <UI.SectionTitle>Portfolio distribution</UI.SectionTitle>
+              <PortfolioChart data={portfolioPositions} />
+            </UI.Section>
+          </UI.LeftPanel>
+        )}
 
         <UI.RightPanel>
           <UI.Section>
-            <UI.SectionTitle>Long Trade performance</UI.SectionTitle>
-            <UI.Table>
-              <UI.TableHeader>
-                <UI.StyledTableRow>
-                  <UI.TableHeaderCell>Symbol</UI.TableHeaderCell>
-                  <UI.TableHeaderCell>Quantity</UI.TableHeaderCell>
-                  <UI.TableHeaderCell>Price</UI.TableHeaderCell>
-                  <UI.TableHeaderCell>P/L</UI.TableHeaderCell>
-                  <UI.TableHeaderCell>P/L %</UI.TableHeaderCell>
-                  <UI.TableHeaderCell>Time</UI.TableHeaderCell>
-                </UI.StyledTableRow>
-              </UI.TableHeader>
-              <UI.TableBody>
-                {/* Map through trades data */}
-                <UI.StyledTableRow>
-                  <UI.StyledTableCell>BTC/USD</UI.StyledTableCell>
-                  <UI.StyledTableCell>0.5</UI.StyledTableCell>
-                  <UI.StyledTableCell>$30,000</UI.StyledTableCell>
-                  <UI.StyledTableCell >-$1,129.40</UI.StyledTableCell>
-                  <UI.StyledTableCell >-3.76%</UI.StyledTableCell>
-                  <UI.StyledTableCell>2:35 PM</UI.StyledTableCell>
-                </UI.StyledTableRow>
-                {/* Add other rows similarly */}
-              </UI.TableBody>
-            </UI.Table>
+            <UI.SectionTitle>Portfolio positions</UI.SectionTitle>
+            {portfolioPositions.length > 0 ? (
+              <TradingTable data={portfolioPositions} />
+            ) : (
+              <UI.EmptyState>No positions found</UI.EmptyState>
+            )}
+          </UI.Section>
+          
+          <UI.Section>
+            <UI.SectionTitle>Strategies</UI.SectionTitle>
+            <UI.SearchInput
+              placeholder="Search strategies"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            {filteredStrategies.length > 0 ? (
+              <StrategyTable strategies={filteredStrategies} />
+            ) : (
+              <UI.EmptyState>No strategies found</UI.EmptyState>
+            )}
           </UI.Section>
         </UI.RightPanel>
       </UI.MainContent>
 
-      <UI.Footer>
-        <UI.FooterLink>New algo</UI.FooterLink>
-        <UI.FooterLink>Help</UI.FooterLink>
-        <UI.FooterLink>Feedback</UI.FooterLink>
-        <UI.FooterLink>About</UI.FooterLink>
-        <UI.FooterLink>Changelog</UI.FooterLink>
-      </UI.Footer>
+      {!isMobile && <Footer/>}
     </UI.DashboardContainer>
   );
 };
+
+export default Dashboard;

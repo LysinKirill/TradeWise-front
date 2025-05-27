@@ -1,5 +1,6 @@
 import { IUserRegistrationData, IUserAuthData } from "@/features/auth/types";
 import http from "../axios-client";
+import { TokenData } from "@/app/providers/AuthProvider/types";
 
 export const registerUser = async (userData: IUserRegistrationData) => {
     try {
@@ -19,7 +20,7 @@ export const registerUser = async (userData: IUserRegistrationData) => {
 export const authUser = async (userData: IUserAuthData) => {
   try {
     const response = await http.post(
-      `/api/v1/login`, 
+      `/api/auth/v1/login`, 
       userData,   
     );
     
@@ -28,5 +29,18 @@ export const authUser = async (userData: IUserAuthData) => {
     console.error(error);
     
     return error.response;
+  }
+};
+
+export const refreshToken = async (refreshToken: string) => {
+  try {
+    const response = await http.post<TokenData>(
+      `/api/v1/refresh`,
+      { refreshToken }
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 };

@@ -1,15 +1,20 @@
+export type TokenData = {
+  tokenType: string;
+  accessToken: string;
+  expiresIn: number;
+  refreshToken: string;
+};
+
 export type TAuthContextType = {
   isAuthenticated: boolean;
-  user: {
-    email: string;
-    fullName: string;
-  } | null;
-  login: (userData: { email: string; fullName: string }) => void;
+  user: TUser | null;
+  login: (userData: TUser, token: string) => void;
   logout: () => void;
+  //refreshToken: async () => null;
 };
 
 export type TUser = {
   email: string;
   fullName: string;
-  // Add other user properties as needed
+  //TO DO: Add other user properties 
 };
