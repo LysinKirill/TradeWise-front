@@ -1,5 +1,5 @@
 import { colors } from "@/shared/constants/colors";
-import { styled } from "styled-components";
+import { css, styled } from "styled-components";
 
 export const InputGroup = styled.div`
   margin-bottom: 1.5rem;
