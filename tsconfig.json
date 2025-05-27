@@ -13,7 +13,7 @@
     "target": "es5",
     "removeComments": true,
     "noEmit": true,
-    "isolatedModules": true, //change if you make local build 
+    "isolatedModules": false, //change if you make local build 
     "strict": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
@@ -31,8 +31,8 @@
   "include": [
     "jest.config.ts",
     "jest.setup.ts",
-   // "src/**/*.ts",
-   // "src/**/*.tsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
     "*.d.ts",
     "*.spec.tsx",
     "./*.ts",
