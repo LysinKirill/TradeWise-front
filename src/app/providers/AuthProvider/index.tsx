@@ -1,23 +1,26 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { getLocalToken, setLocalToken, removeLocalToken, getRefreshToken, setRefreshToken } from '@shared/utils/tokenStorage';
+import { getLocalToken, setLocalToken, removeLocalToken, getRefreshToken, setRefreshToken, removeRefreshToken } from '@shared/utils/tokenStorage';
 import axios from 'axios';
 import { TAuthContextType, TUser } from './types';
 import { decodeJWT, JwtPayload } from '@/shared/utils/jwt';
+import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext<TAuthContextType | undefined>({
   isAuthenticated: false,
   user: null,
   login: () => { },
   logout: () => { },
-  refreshToken: '',
+  refreshToken: () => Promise.resolve(null),
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<TUser | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [refreshQueue, setRefreshQueue] = useState<(() => void)[]>([]);
+  const navigate = useNavigate();
 
   const decodeAndSetUser = useCallback((token: string) => {
     const decoded = decodeJWT<JwtPayload>(token);
@@ -29,10 +32,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
-  const login = (user: TUser, token: string) => {
+  const login = (user: TUser, token: string, refreshToken: string) => {
     setLocalToken(token);
+    setRefreshToken(refreshToken);
     setIsAuthenticated(true);
-    //setRefreshToken(refreshToken);
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     decodeAndSetUser(token);
   };
@@ -40,22 +43,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     setUser(null);
     removeLocalToken();
+    removeRefreshToken();
     setIsAuthenticated(false);
     delete axios.defaults.headers.common['Authorization'];
+    navigate('/login');
   };
 
-  const refreshToken = useCallback(async (): Promise<string | null> => {
-    if (isRefreshing) return null;
-    
-    try {
-      setIsRefreshing(true);
-      const refreshToken = getRefreshToken();
-      if (!refreshToken) {
-        logout();
-        return null;
-      }
+  const refreshAuthToken = useCallback(async (): Promise<string | null> => {
+    const refreshToken = getRefreshToken();
+    if (!refreshToken) {
+      logout();
+      return null;
+    }
 
-      const response = await axios.post('/api/v1/refresh', { refreshToken });
+    try {
+      const response = await axios.post('/api/auth/v1/refresh', { refreshToken });
       const newToken = response.data.accessToken;
       const newRefreshToken = response.data.refreshToken;
 
@@ -63,28 +65,55 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setRefreshToken(newRefreshToken);
       axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
       decodeAndSetUser(newToken);
-      
+
       return newToken;
     } catch (error) {
       console.error('Token refresh failed:', error);
       logout();
       return null;
+    }
+  }, [logout, decodeAndSetUser]);
+
+  const refreshTokenWrapper = useCallback(async () => {
+    if (isRefreshing) {
+      return new Promise<string | null>((resolve) => {
+        refreshQueue.push(() => resolve(refreshAuthToken()));
+      });
+    }
+
+    setIsRefreshing(true);
+    try {
+      const newToken = await refreshAuthToken();
+      refreshQueue.forEach(cb => cb());
+      setRefreshQueue([]);
+      return newToken;
     } finally {
       setIsRefreshing(false);
     }
-  }, [isRefreshing, logout, decodeAndSetUser]);
+  }, [isRefreshing, refreshQueue, refreshAuthToken]);
 
   useEffect(() => {
-    const token = getLocalToken();
-    if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      setIsAuthenticated(true);
-      decodeAndSetUser(token);
-    }
-  }, [decodeAndSetUser]);
+    const initializeAuth = async () => {
+      const token = getLocalToken();
+      const refreshToken = getRefreshToken();
+
+      if (token && refreshToken) {
+        const decoded = decodeJWT<JwtPayload>(token);
+        if (decoded && decoded.exp * 1000 < Date.now()) {
+          await refreshTokenWrapper();
+        } else {
+          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          setIsAuthenticated(true);
+          decodeAndSetUser(token);
+        }
+      }
+    };
+
+    initializeAuth();
+  }, [decodeAndSetUser, refreshTokenWrapper]);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!isAuthenticated}}>
+    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!isAuthenticated, refreshToken: refreshTokenWrapper }}>
       {children}
     </AuthContext.Provider>
   );

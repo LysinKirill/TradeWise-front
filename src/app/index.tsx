@@ -26,15 +26,17 @@ ReactDOM.render(
     <ErrorBoundary>
       <StyleSheetManager enableVendorPrefixes={isDevelopment()}>
         <AppThemeProvider>
-          <AuthProvider>
-            <BrowserRouter>
+
+          <BrowserRouter>
+            <AuthProvider>
               <Provider store={store}>
                 <DndProvider backend={HTML5Backend}>
                   <Routing />
                 </DndProvider>
               </Provider>
-            </BrowserRouter>
-          </AuthProvider>
+            </AuthProvider>
+          </BrowserRouter>
+
         </AppThemeProvider>
       </StyleSheetManager>
     </ErrorBoundary>

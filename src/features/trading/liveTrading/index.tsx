@@ -9,6 +9,7 @@ import { cancelStrategy, fetchExecutions, fetchTradingStrategies, runStrategy } 
 import { FiXCircle, FiPlay, FiClock, FiZap, FiZapOff } from 'react-icons/fi';
 import { Execution, Strategy } from './types';
 import { mockExecutions } from './constants';
+import { ExecutionDetailsModal } from './executionDetailsModal';
 
 
 const LiveTrading = () => {
@@ -18,11 +19,12 @@ const LiveTrading = () => {
   const [loading, setLoading] = useState(false);
   const [strategies, setStrategies] = useState<Strategy[]>([]);
   const [executions, setExecutions] = useState<Execution[]>([]);
+  const [selectedExecution, setSelectedExecution] = useState<Execution | null>(null);
 
   useEffect(() => {
     const loadInitialData = async () => {
       try {
-        const strategiesData:any = await fetchTradingStrategies();
+        const strategiesData: any = await fetchTradingStrategies();
         setStrategies(strategiesData);
 
         const executionsData = await fetchExecutions();
@@ -81,7 +83,7 @@ const LiveTrading = () => {
         <UI.CardHeader>
           <FiPlay /> Start New Strategy
         </UI.CardHeader>
-        
+
         <UI.InputRow>
           <UI.InputGroup>
             <label>Select Strategy</label>
@@ -119,8 +121,8 @@ const LiveTrading = () => {
             <label>Paper Trading</label>
           </UI.CheckboxGroup>
 
-          <UI.PrimaryButton 
-            onClick={handleRunStrategy} 
+          <UI.PrimaryButton
+            onClick={handleRunStrategy}
             disabled={loading || !selectedStrategyId}
           >
             {loading ? <FiClock /> : <FiZap />}
@@ -151,7 +153,9 @@ const LiveTrading = () => {
             </thead>
             <tbody>
               {executions.map((execution) => (
-                <tr key={execution.id}>
+                <tr key={execution.id}
+                  onClick={() => setSelectedExecution(execution)}
+                  style={{ cursor: 'pointer' }}>
                   <td>{getStrategyName(execution.strategyId)}</td>
                   <td>
                     <UI.StatusIndicator status={execution.status}>
@@ -166,7 +170,7 @@ const LiveTrading = () => {
                   </td>
                   <td>
                     {execution.status === 'Active' || execution.status === 'Pending' && (
-                      <UI.CancelButton 
+                      <UI.CancelButton
                         onClick={() => handleCancelStrategy(execution.id)}
                       >
                         Cancel
@@ -181,6 +185,12 @@ const LiveTrading = () => {
       </UI.HistoryCard>
 
       <Footer />
+      {selectedExecution && (
+        <ExecutionDetailsModal
+          executionId={selectedExecution.id}
+          onClose={() => setSelectedExecution(null)}
+        />
+      )}
     </UI.Container>
   );
 };

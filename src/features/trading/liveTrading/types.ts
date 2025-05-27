@@ -13,3 +13,12 @@ export interface Execution {
   status: string;
   strategyId: string;
 }
+
+export interface ExecutionOverview {
+  strategyId: string;
+  totalInputAmount: number;
+  instruments: string[];
+  sharesOwned: number;
+  isPaperTrade: boolean;
+  status: string;
+}

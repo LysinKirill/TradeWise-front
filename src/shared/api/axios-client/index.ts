@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosResponse, AxiosInstance, AxiosRequestConfig, CancelTokenSource } from 'axios';
 
 import {
@@ -5,7 +6,8 @@ import {
   TRequestConfig,
   IAxios,
 } from './types';
-import { getLocalToken } from '@/shared/utils/tokenStorage';
+import { getLocalToken, getRefreshToken, setLocalToken, setRefreshToken } from '@/shared/utils/tokenStorage';
+import { useAuth } from '@/app/providers/AuthProvider';
 
 export const DEFAULT_TIMEOUT = 60000;
 
@@ -13,6 +15,8 @@ class Http implements IAxios {
   private readonly http: AxiosInstance;
 
   private readonly requests: Record<string, CancelTokenSource>;
+  isRefreshing: any;
+  refreshSubscribers: any;
 
   constructor(baseURL: string = '/', headers?: AxiosRequestConfig['headers'], paramsSerializer?: AxiosRequestConfig['paramsSerializer']) {
     this.http = axios.create({
@@ -27,22 +31,66 @@ class Http implements IAxios {
     });
     this.requests = {};
 
+    this.setupInterceptors();
+  }
+
+  private setupInterceptors() {
     this.http.interceptors.request.use(
       (config) => {
         const token = getLocalToken();
-        console.log(token);
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
-
         return config;
       },
-      (error) => {
+      (error) => Promise.reject(error)
+    );
+
+    this.http.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        const originalRequest = error.config;
+        
+        if (error.response?.status === 401 && !originalRequest._retry) {
+          if (this.isRefreshing) {
+            return new Promise((resolve) => {
+              this.refreshSubscribers.push((token: string) => {
+                originalRequest.headers.Authorization = `Bearer ${token}`;
+                resolve(this.http(originalRequest));
+              });
+            });
+          }
+
+          originalRequest._retry = true;
+          this.isRefreshing = true;
+
+          try {
+            const refreshToken = getRefreshToken();
+            const response = await axios.post('/api/auth/v1/refresh', { refreshToken });
+            const newToken = response.data.accessToken;
+            const newRefreshToken = response.data.refreshToken;
+
+            setLocalToken(newToken);
+            setRefreshToken(newRefreshToken);
+            axios.defaults.headers.common.Authorization = `Bearer ${newToken}`;
+
+            this.refreshSubscribers.forEach((subscriber: any) => subscriber(newToken));
+            this.refreshSubscribers = [];
+
+            return this.http(originalRequest);
+          } catch (refreshError) {
+            useAuth().logout();
+            return Promise.reject(refreshError);
+          } finally {
+            this.isRefreshing = false;
+          }
+        }
+
         return Promise.reject(error);
-      },
+      }
     );
   }
-
+  
   private async request<T>(requestConfig: TRequestConfig): Promise<AxiosResponse<T>> {
     const {
       method,
