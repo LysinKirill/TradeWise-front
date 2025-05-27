@@ -89,3 +89,14 @@ export const getStrategy = async (strategyId: string) => {
   }
 };
 
+export const fetchExecutionOverview = async (executionId: string) => {
+  try {
+
+  const response = await http.get(`/api/v1/strategy/execution-overview?StrategyExecutionId=${executionId}`);
+
+  return response.data;
+
+  } catch (error: any) {
+    throw new Error(error.response?.data?.detail || 'Failed to get execution overview');
+  }
+};

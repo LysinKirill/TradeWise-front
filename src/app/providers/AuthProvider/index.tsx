@@ -30,7 +30,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = (user: TUser, token: string) => {
-    console.log(token);
     setLocalToken(token);
     setIsAuthenticated(true);
     //setRefreshToken(refreshToken);

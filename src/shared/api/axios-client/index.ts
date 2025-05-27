@@ -30,7 +30,6 @@ class Http implements IAxios {
     this.http.interceptors.request.use(
       (config) => {
         const token = getLocalToken();
-        console.log(token);
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
