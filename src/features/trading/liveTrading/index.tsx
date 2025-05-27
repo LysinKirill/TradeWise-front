@@ -42,7 +42,7 @@ const LiveTrading = () => {
     setLoading(true);
 
     try {
-      await runStrategy(selectedStrategyId);
+      await runStrategy(selectedStrategyId, isPaperTrading, amount);
       const updatedExecutions = await fetchExecutions();
       setExecutions(updatedExecutions);
       toast.success('Strategy started successfully');
@@ -132,7 +132,7 @@ const LiveTrading = () => {
           <FiZapOff /> Active Executions
         </UI.CardHeader>
 
-        {mockExecutions.length === 0 ? (
+        {executions.length === 0 ? (
           <UI.EmptyState>
             <FiXCircle />
             No active executions
@@ -148,7 +148,7 @@ const LiveTrading = () => {
               </tr>
             </thead>
             <tbody>
-              {mockExecutions.map((execution) => (
+              {executions.map((execution) => (
                 <tr key={execution.id}>
                   <td>{getStrategyName(execution.strategyId)}</td>
                   <td>
@@ -163,7 +163,7 @@ const LiveTrading = () => {
                     </UI.TimeGroup>
                   </td>
                   <td>
-                    {execution.status === 'Active' && (
+                    {execution.status === 'Active' || execution.status === 'Pending' && (
                       <UI.CancelButton 
                         onClick={() => handleCancelStrategy(execution.id)}
                       >

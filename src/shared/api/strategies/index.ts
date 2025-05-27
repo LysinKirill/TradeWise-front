@@ -40,9 +40,9 @@ export const fetchExecutions = async () => {
   }
 };
 
-export const runStrategy = async (strategyId: string) => {
+export const runStrategy = async (strategyId: string, isPaperTrading: boolean, AllocatedBudget: string) => {
   try {
-    await http.post('/api/v1/strategy/run', { strategyId });
+    await http.post('/api/v1/strategy/run', { strategyId, IsPaperTrade: isPaperTrading, AllocatedBudget });
 
   } catch (error: any) {
     throw new Error(error.response?.data?.detail || 'Failed to run strategy');
@@ -54,6 +54,34 @@ export const cancelStrategy = async (executionId: string) => {
 
     return http.post('/api/v1/strategy/cancel', { strategyExecutionId: executionId });
   } catch (error: any) {
-    throw new Error(error.response?.data?.detail || 'Failed to run strategy');
+    throw new Error(error.response?.data?.detail || 'Failed to cancel strategy');
   }
 };
+
+export const deleteStrategy = async (strategyId: any) => {
+  try {
+    await http.post('/api/v1/strategy/delete',  strategyId );
+
+  } catch (error: any) {
+    throw new Error(error.response?.data?.detail || 'Failed to delete strategy');
+  }
+};
+
+export const editStrategy = async (strategy: any) => {
+  try {
+    await http.post('/api/v1/strategy/edit', { strategy });
+
+  } catch (error: any) {
+    throw new Error(error.response?.data?.detail || 'Failed to edit strategy');
+  }
+};
+
+export const getStrategy = async (strategyId: string) => {
+  try {
+    await http.get(`/api/v1/strategy/get?StrategyId=${strategyId}`);
+
+  } catch (error: any) {
+    throw new Error(error.response?.data?.detail || 'Failed to get strategy');
+  }
+};
+
