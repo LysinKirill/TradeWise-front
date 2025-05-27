@@ -52,7 +52,10 @@ export default defineConfig({
         type: 'module',
       },
       workbox: {
-        globPatterns: ["**/*"],
+        globPatterns: [
+          '**/*.{html,js,css,ts,tsx,json,ico,png,jpg,jpeg,svg,gif,webp,woff2,woff,ttf}'
+        ],
+        navigateFallback: '/index.html'
       },
       includeAssets: ["**/*"],
       manifest: manifest,
