@@ -15,7 +15,11 @@ import { isDevelopment } from "../shared/utils/env";
 import { AppThemeProvider } from "@app/providers/AppThemeProvider";
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { registerSW } from 'virtual:pwa-register';
 
+if ('serviceWorker' in navigator) {
+  registerSW();
+}
 
 ReactDOM.render(
   <StrictMode>
@@ -37,3 +41,4 @@ ReactDOM.render(
   </StrictMode>,
   document.getElementById("root")
 );
+

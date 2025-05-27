@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { getLocalToken, setLocalToken, removeLocalToken, getRefreshToken, setRefreshToken } from '@shared/utils/tokenStorage';
@@ -10,7 +11,7 @@ const AuthContext = createContext<TAuthContextType | undefined>({
   user: null,
   login: () => { },
   logout: () => { },
-  refreshToken: async () => null,
+  refreshToken: '',
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -28,10 +29,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
-  const login = (user: TUser, token: string, ) => {
+  const login = (user: TUser, token: string) => {
     setLocalToken(token);
     setIsAuthenticated(true);
-    setRefreshToken(refreshToken);
+    //setRefreshToken(refreshToken);
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     decodeAndSetUser(token);
   };
@@ -83,7 +84,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [decodeAndSetUser]);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!isAuthenticated, refreshToken}}>
+    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!isAuthenticated}}>
       {children}
     </AuthContext.Provider>
   );

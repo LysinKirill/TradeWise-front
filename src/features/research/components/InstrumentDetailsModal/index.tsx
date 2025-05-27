@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react';
 import { fetchInstrumentStat, fetchCandles } from '@shared/api/stocks';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -23,12 +24,12 @@ export const InstrumentDetailsModal = ({ instrument, onClose }: InstrumentDetail
         const to = new Date().toISOString();
 
         const statsRequests = statTypes.map(type =>
-          fetchInstrumentStat(instrument.id, type, from, to)
+          fetchInstrumentStat(instrument?.id, type, from, to)
         );
 
-        const statsResults = await Promise.all(statsRequests);
+        const statsResults: any = await Promise.all(statsRequests);
 
-        const statsData = statsResults.reduce((acc, result, index) => ({
+        const statsData = statsResults.reduce((acc: any, result: { statValue: any; }, index: number) => ({
           ...acc,
           [statTypes[index]]: result.statValue
         }), {});
@@ -48,7 +49,7 @@ export const InstrumentDetailsModal = ({ instrument, onClose }: InstrumentDetail
         const to = new Date().toISOString();
         const from = new Date(now.setHours(now.getHours() - 40)).toISOString();
 
-        const candleData = await fetchCandles(instrument.id, from, to);
+        const candleData: any = await fetchCandles(instrument.id, from, to);
         setCandles(candleData);
       } catch (error) {
         console.error('Failed to load candles:', error);
@@ -60,7 +61,7 @@ export const InstrumentDetailsModal = ({ instrument, onClose }: InstrumentDetail
 
     loadStats();
     loadCandles();
-  }, [instrument.id]);
+  }, [instrument?.id]);
 
   const renderStatsSection = () => {
     if (loadingStats) return <UI.Loader>Loading indicators...</UI.Loader>;
@@ -128,13 +129,13 @@ export const InstrumentDetailsModal = ({ instrument, onClose }: InstrumentDetail
                   fill: colors.textSecondary,
                   angle: -20,
                   textAnchor: 'end',
-                  dy: 5 
-                }}
+                  dy: 5
+                } as React.SVGProps<SVGTextElement>}
                 axisLine={{ stroke: colors.borderColor }}
                 interval={Math.floor(candles.length / 15)}
                 height={50}
                 padding={{ left: 20, right: 0 }}
-                minTickGap={5} 
+                minTickGap={5}
               />
 
               <YAxis
@@ -187,14 +188,14 @@ export const InstrumentDetailsModal = ({ instrument, onClose }: InstrumentDetail
 
   const renderTabs = () => (
     <UI.TabsContainer>
-      <UI.TabButton 
-        active={activeTab === 'chart'} 
+      <UI.TabButton
+        active={activeTab === 'chart'}
         onClick={() => setActiveTab('chart')}
       >
         Price Chart
       </UI.TabButton>
-      <UI.TabButton 
-        active={activeTab === 'stats'} 
+      <UI.TabButton
+        active={activeTab === 'stats'}
         onClick={() => setActiveTab('stats')}
       >
         Technical Indicators
@@ -203,7 +204,7 @@ export const InstrumentDetailsModal = ({ instrument, onClose }: InstrumentDetail
   );
 
   const renderContent = () => {
-    switch(activeTab) {
+    switch (activeTab) {
       case 'chart':
         return renderChartSection();
       case 'stats':
@@ -217,7 +218,7 @@ export const InstrumentDetailsModal = ({ instrument, onClose }: InstrumentDetail
     <UI.ModalOverlay>
       <UI.ModalContainer>
         <UI.ModalHeader>
-          <UI.ModalTitle>{instrument.name} Details</UI.ModalTitle>
+          <UI.ModalTitle>{instrument?.name} Details</UI.ModalTitle>
           <UI.CloseButton onClick={onClose}>×</UI.CloseButton>
         </UI.ModalHeader>
 

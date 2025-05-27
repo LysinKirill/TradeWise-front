@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as UI from './styles';
 import { CanvasArea } from '../CanvasArea';
 import { ModulesPanel } from '../ModulesPanel';
@@ -14,7 +15,6 @@ export const StrategyBuilder = ({ children }: IStrategyBuilderProps) => {
     strategy,
     updateProperty,
     handleAddNode,
-    handleUpdateNode,
     handleAddConnection,
     handleCommitStrategy,
     handleRemoveConnection,
@@ -61,7 +61,6 @@ export const StrategyBuilder = ({ children }: IStrategyBuilderProps) => {
           <ConnectionsPanel
             nodes={strategy.nodes}
             connections={strategy.connections}
-            presets={CONNECTION_PRESETS}
             onAddConnection={handleAddConnection}
             onRemoveConnection={handleRemoveConnection}
             onUpdateConnection={handleUpdateConnection}

@@ -45,10 +45,19 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      injectRegister: 'auto',
       registerType: "autoUpdate",
-      workbox: {
-        globPatterns: ["**/*.{html,css,js, ts,tsx,ico,png,svg}"],
+      devOptions: {
+        enabled: true,
+        type: 'module',
       },
+      workbox: {
+        globPatterns: [
+          '**/*.{html,js,css,ts,tsx,json,ico,png,jpg,jpeg,svg,gif,webp,woff2,woff,ttf}'
+        ],
+        navigateFallback: '/index.html'
+      },
+      includeAssets: ["**/*"],
       manifest: manifest,
     }),
   ],

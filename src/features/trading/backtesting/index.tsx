@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react';
 import * as UI from './styles';
 import { toast } from 'react-toastify';
@@ -24,10 +26,10 @@ const Backtesting = () => {
   useEffect(() => {
     const loadInitialData = async () => {
       try {
-        const modelsData = await fetchSupportedModels();
+        const modelsData:any = await fetchSupportedModels();
         setModels(modelsData);
-        const backtestsData = await getAllBacktests();
-        setBacktests(backtestsData);
+        const backtestsData:any = await getAllBacktests();
+        setBacktests(backtestsData.backtests);
       } catch (error) {
         toast.error('Failed to load initial data');
       }
@@ -43,7 +45,7 @@ const Backtesting = () => {
 
     setLoading(true);
     try {
-      const newTest = await startBacktest({
+      const newTest:any = await startBacktest({
         modelId: selectedModelId,
         initialBalance: initialBalance,
         from: fromDate.toISOString(),

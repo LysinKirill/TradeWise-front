@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-function-type */
 // src/features/trading/strategies/hooks/useStrategyBuilder.ts
 import { useState, useEffect, useCallback } from 'react';
@@ -9,6 +10,7 @@ const DEBOUNCE_DELAY = 500;
 
 export const useStrategyBuilder = (initialStrategy?: IStrategy) => {
   const [strategy, setStrategy] = useState<IStrategy>(initialStrategy || {
+    id: '',
     name: '',
     description: '',
     nodes: [{
@@ -70,7 +72,7 @@ const transformToApiFormat = useCallback((strategy: IStrategy) => {
     .map(conn => ({
       sourceStageId: validateId(conn.source),
       destinationStageId: validateId(conn.target),
-      transitionConditions: conn.conditions.map(cond => ({
+      transitionConditions: conn.conditions.map((cond: { instrumentId: any; transitionConditionType: any; statType: any; value: any; }) => ({
         instrumentId: cond.instrumentId,
         transitionConditionType: cond.transitionConditionType,
         statType: cond.statType,
@@ -124,7 +126,7 @@ const transformToApiFormat = useCallback((strategy: IStrategy) => {
     debounce(async (currentStrategy: IStrategy) => {
       try {
         setIsValidating(true);
-        const response = await validateStrategy(transformToApiFormat(currentStrategy));
+        const response:any = await validateStrategy(transformToApiFormat(currentStrategy));
         if (response.status !== 200) {
           setValidationError(response.detail);
         }

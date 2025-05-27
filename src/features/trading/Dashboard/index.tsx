@@ -103,7 +103,7 @@ const Dashboard = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
             {filteredStrategies.length > 0 ? (
-              <StrategyTable strategies={filteredStrategies} />
+              <StrategyTable strategies={filteredStrategies} onUpdate={undefined} />
             ) : (
               <UI.EmptyState>No strategies found</UI.EmptyState>
             )}

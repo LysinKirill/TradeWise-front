@@ -1,11 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { StrategyBuilder } from './components/StrategyBuilder';
 import { useStrategyBuilder } from './hooks/useStrategyBuilder';
 import { IStrategy } from './types';
-import { CONNECTION_PRESETS, MODULE_PRESETS } from './constants';
+import { MODULE_PRESETS } from './constants';
 import { CanvasArea } from './components/CanvasArea';
 import { ConnectionsPanel } from './components/ConnectionsPanel';
 import { ModulesPanel } from './components/ModulesPanel';
-import { Footer } from '@/shared/ui/components/Footer';
 import * as UI from './styles';
 import { ValidationModal } from './components/validationModal/ValidationModal';
 import { useEffect, useState } from 'react';
@@ -23,7 +23,7 @@ const Strategies = () => {
     handleRemoveConnection,
     handleRemoveNode,
     initializeStrategy
-  } = useStrategyBuilder();
+  }: any= useStrategyBuilder();
   const [showErrorModal, setShowErrorModal] = useState(false);
   const location = useLocation();
   const [isEditing, setIsEditing] = useState(false);
@@ -62,8 +62,8 @@ const Strategies = () => {
           onNodesChange={handleNodesChange}
         />
         <ConnectionsPanel
+          nodes={nodes}
           connections={connections}
-          presets={CONNECTION_PRESETS}
           onAddConnection={handleConnectionsChange}
           onRemoveConnection={handleRemoveConnection}
         />

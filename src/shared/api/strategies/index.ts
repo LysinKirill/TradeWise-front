@@ -31,7 +31,7 @@ export const createStrategy = async (strategy: any) => {
 
 export const fetchExecutions = async () => {
   try {
-    const response = await http.get('/api/v1/account/executions');
+    const response:any = await http.get('/api/v1/account/executions');
 
     return response.data.executions;
 

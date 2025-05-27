@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.paths.json",
   "compilerOptions": {
+    "types": ["vite-plugin-pwa/client"],
     "allowJs": true,
     "baseUrl": ".",
     "esModuleInterop": true,
@@ -29,10 +30,11 @@
     ],
   },
   "include": [
+    "src/global.d.ts",
     "jest.config.ts",
     "jest.setup.ts",
-   // "src/**/*.ts",
-   // "src/**/*.tsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
     "*.d.ts",
     "*.spec.tsx",
     "./*.ts",

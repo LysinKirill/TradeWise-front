@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect } from 'react';
 import { ResearchTable } from './components/ResearchTable';
 import { fetchSupportedInstruments } from '@/shared/api/stocks';
@@ -14,7 +16,7 @@ export const Research = () => {
   useEffect(() => {
     const loadInstruments = async () => {
       try {
-        const data = await fetchSupportedInstruments();
+        const data:any = await fetchSupportedInstruments();
         setInstruments(data);
         setError('');
       } catch (err) {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import http from "../axios-client";
 
 export const fetchSupportedInstruments = async () => {
@@ -37,7 +38,7 @@ export const fetchCandles = async (
   to: string
 ) => {
   try {
-  const response = await http.post('/api/v1/invest/get-candles-by-instrument', {
+  const response:any = await http.post('/api/v1/invest/get-candles-by-instrument', {
     instrumentId,
     from,
     to
