@@ -39,7 +39,7 @@ export const ModulesPanel = ({
   }, []);
 
   if (loading) return <UI.EmptyState>Loading models...</UI.EmptyState>;
-  if (error) return <UI.EmptyState>Error: {error}</UI.EmptyState>;
+  
 
   return (
     <UI.Container>
@@ -52,6 +52,7 @@ export const ModulesPanel = ({
         onDragLeave={() => setIsDeleting(false)}
         onDrop={handleDrop}
       >
+        {models.length === 0 &&  <UI.EmptyState>No connections created yet</UI.EmptyState>}
         {isDeleting ? (
           <UI.DeleteZone>Drop here to delete</UI.DeleteZone>
         ) : (
