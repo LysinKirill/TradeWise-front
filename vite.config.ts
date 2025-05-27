@@ -52,8 +52,9 @@ export default defineConfig({
         type: 'module',
       },
       workbox: {
-        globPatterns: ["**/*.{html,css,js,ts,tsx,ico,png,svg}"],
+        globPatterns: ["**/*"],
       },
+      includeAssets: ["**/*"],
       manifest: manifest,
     }),
   ],
