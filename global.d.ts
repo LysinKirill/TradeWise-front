@@ -5,3 +5,4 @@ declare module '*.mp4';
 
 declare module '*.pdf';
 
+/// <reference types="vite-plugin-pwa/client" />
