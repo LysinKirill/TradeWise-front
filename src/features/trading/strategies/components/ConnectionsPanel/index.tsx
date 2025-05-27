@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
 import * as UI from './styles';
 import { IConnectionsPanelProps } from '../../types';
@@ -7,9 +8,9 @@ import { ConnectionModal } from '../ConnectionModal';
 export const ConnectionsPanel = ({ 
   nodes,
   connections = [], 
-  onAddConnection,
-  onUpdateConnection,
-  onRemoveConnection
+  onAddConnection = () => {},
+  onUpdateConnection = () => {},
+  onRemoveConnection = () => {}
 }: IConnectionsPanelProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingConnection, setEditingConnection] = useState<string | null>(null);

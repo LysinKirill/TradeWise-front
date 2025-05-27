@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useCallback, useRef, useState } from 'react';
+import { DragEvent, useCallback, useRef, useState } from 'react';
 import * as UI from './styles';
 import { StrategyNode } from '../StrategyNode';
 import { ConnectionLine } from '../ConnectionLine';
@@ -8,6 +8,7 @@ import { IStrategyNode, IStrategyConnection, NodeType } from '../../types';
 import { MODULE_PRESETS } from '../../constants';
 import { ConnectionModal } from '../ConnectionModal';
 import { CanvasAreaProps } from './types';
+import { Condition } from '../ConnectionModal/types';
 
 export const CanvasArea = ({
   stages,
@@ -16,6 +17,7 @@ export const CanvasArea = ({
   onNodesChange,
   onConnectionsChange
 }: CanvasAreaProps) => {
+  const dragOffset = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const [editingConnection, setEditingConnection] = useState<IStrategyConnection | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -59,7 +61,6 @@ export const CanvasArea = ({
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
-    //if (e.dataTransfer.types.includes('nodeId')) return;
     if (!canvasRef.current || !draggingNode) return;
 
     const nodeId = e.dataTransfer.getData('nodeId');
@@ -217,7 +218,7 @@ export const CanvasArea = ({
   const handleSaveConnection = (updated: {
     source: string;
     target: string;
-    conditions: ICondition[];
+    conditions: Condition[];
   }) => {
     setIsConnecting(true);
     
@@ -240,7 +241,7 @@ export const CanvasArea = ({
         const newConnection: IStrategyConnection = {
           id: `${updated.source}-${updated.target}-${Date.now()}`,
           ...updated,
-          conditions: updated.conditions
+          conditions: updated.conditions,
         };
         onConnectionsChange([...connectionsSafe, newConnection]);
       }
@@ -293,7 +294,7 @@ export const CanvasArea = ({
               onNodesChange(nodesSafe.filter(n => n.id !== id));
               onConnectionsChange(connectionsSafe.filter(c => c.source !== id && c.target !== id));
             }}
-           onDragStart={(nodeId) => handleDragStart(nodeId)}
+            onDragStart={(nodeId: string, e: DragEvent<Element>) => handleDragStart(nodeId, e)}
           />
         ))}
 

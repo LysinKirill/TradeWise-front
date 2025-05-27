@@ -1,8 +1,8 @@
-import { IPresetCardProps } from '../../types';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as UI from './styles';
 import modelIcon from '@assets/icons/modulePreset.png';
 
-export const PresetCard = ({ preset, onClick, onDragStart, onDoubleClick }: IPresetCardProps) => {
+export const PresetCard = ({ preset, onClick, onDoubleClick }: any) => {
 
   const stringifyValue = (value: unknown) => {
     if (typeof value === 'object') return JSON.stringify(value);

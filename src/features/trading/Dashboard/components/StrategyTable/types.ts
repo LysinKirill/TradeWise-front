@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IStrategyData {
   id: string;
   title: string;
@@ -11,4 +12,5 @@ export interface IStrategyData {
 
 export interface IStrategyTableProps {
   strategies: IStrategyData[];
+  onUpdate: any;
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react';
 import { Execution } from '@/features/trading/liveTrading/types';
 import { fetchExecutions, fetchTradingStrategies } from '@/shared/api/strategies';
@@ -23,7 +24,7 @@ export const StrategyDetailsModal = ({
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [strategiesResponse, executionsResponse] = await Promise.all([
+        const [strategiesResponse, executionsResponse]:any = await Promise.all([
           fetchTradingStrategies(),
           fetchExecutions()
         ]);

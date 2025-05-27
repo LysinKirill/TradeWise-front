@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react';
 import * as UI from './styles';
 import { toast } from 'react-toastify';
@@ -20,7 +22,7 @@ const LiveTrading = () => {
   useEffect(() => {
     const loadInitialData = async () => {
       try {
-        const strategiesData = await fetchTradingStrategies();
+        const strategiesData:any = await fetchTradingStrategies();
         setStrategies(strategiesData);
 
         const executionsData = await fetchExecutions();

@@ -20,7 +20,6 @@ export const ResearchTable = ({ data, onRowClick }: ResearchTableProps) => (
           <UI.StyledTableRow 
             key={item.id} 
             onClick={() => onRowClick(item)}
-            $hover
           >
             <UI.StyledTableCell>{item.figi}</UI.StyledTableCell>
             <UI.StyledTableCell>{item.name}</UI.StyledTableCell>

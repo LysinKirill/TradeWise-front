@@ -26,7 +26,6 @@ export const TradingTable = ({ data }: { data: IPortfolioData[] }) => {
             <UI.StyledTableRow 
               key={index}
               onClick={() => handleRowClick(position)}
-              clickable
             >
               <UI.StyledTableCell>{position.ticker}</UI.StyledTableCell>
               <UI.StyledTableCell>{position.quantity}</UI.StyledTableCell>

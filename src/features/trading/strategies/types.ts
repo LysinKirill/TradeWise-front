@@ -1,4 +1,5 @@
-//export type NodeType = 'start' | 'finish' | 'model' | 'condition';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export type NodeType = 'start' | 'finish' | 'model' | 'condition';
 export type StageType = 'input' | 'processing' | 'output';
 
 export enum IConditionType {
@@ -31,7 +32,7 @@ export interface IStrategyNode {
   };
   preset?: string;
   color?: string;
-  stage: StageType;
+  stage: string;
   modelId?: string;
 }
 
@@ -39,13 +40,7 @@ export interface IStrategyConnection {
   id: string;
   source: string;
   target: string;
-  conditions: Array<{
-    instrumentId: string;
-    transitionConditionType: string;
-    type: number;
-    statType: number;
-    value: number;
-  }>;
+  conditions: any;
 }
 
 export interface IStrategy {
@@ -107,19 +102,19 @@ export interface IStrategyNodeProps {
   onRemove?: (nodeId: string) => void;
   onStartConnect?: (sourceId: string) => void;
   onCompleteConnect?: (targetId: string) => void;
-  onDragStart?: (nodeId: string,) => void;
+  onDragStart: (nodeId: string, e: React.DragEvent) => void;
 }
 
 export interface IConnectionsPanelProps {
   nodes: IStrategyNode[];
   connections: IStrategyConnection[];
-  onAddConnection: (connection: IStrategyConnection) => void;
-  onUpdateConnection: (id: string, connection: IStrategyConnection) => void;
-  onRemoveConnection: (id: string) => void;
+  onAddConnection?: (connection: IStrategyConnection) => void;
+  onUpdateConnection?: (id: string, connection: IStrategyConnection) => void;
+  onRemoveConnection?: (id: string) => void;
 }
 
 export interface IConnectionCardProps {
-  preset?: IConnectionPreset;
+  presets?: IConnectionPreset;
   connection?: IStrategyConnection;
   onClick?: () => void;
   onRemove?: () => void;
@@ -128,8 +123,8 @@ export interface IConnectionCardProps {
 
 export interface IModulesPanelProps {
   presets?: IModulePreset[];
-  onAddNode: (preset: IModulePreset) => void;
-  onRemoveNode: (nodeId: string) => void;
+  onAddNode: (preset: any) => void;
+  onRemoveNode?: (nodeId: string) => void;
 }
 
 export interface IStrategyOverviewProps {

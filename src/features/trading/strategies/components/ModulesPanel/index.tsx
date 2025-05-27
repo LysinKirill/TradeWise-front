@@ -5,21 +5,18 @@ import { IModulePreset, IModulesPanelProps } from '../../types';
 import { useEffect, useState } from 'react';
 import { fetchSupportedModels } from '@/shared/api/models';
 
-export const ModulesPanel = ({ onAddNode, onRemoveNode }: IModulesPanelProps) => {
+export const ModulesPanel = ({ 
+  onAddNode, 
+  onRemoveNode 
+}: IModulesPanelProps) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [models, setModels] = useState<IModulePreset[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-    setIsDeleting(true);
-  };
-
   const handleDrop = (e: React.DragEvent) => {
     const nodeId = e.dataTransfer.getData('nodeId');
-    if (nodeId) {
+    if (nodeId && onRemoveNode) { 
       onRemoveNode(nodeId);
       setIsDeleting(false);
     }
@@ -30,13 +27,9 @@ export const ModulesPanel = ({ onAddNode, onRemoveNode }: IModulesPanelProps) =>
     const loadModels = async () => {
       try {
         const data = await fetchSupportedModels();
-        if (data.length === 0 || !data) {
-          setModels(MODULE_PRESETS);
-        } else {
-          setModels(data);
-        }
+        setModels(data?.length ? data : MODULE_PRESETS);
       } catch (error) {
-        setError(error.message);
+        setError(error instanceof Error ? error.message : 'Unknown error');
       } finally {
         setLoading(false);
       }
@@ -46,6 +39,7 @@ export const ModulesPanel = ({ onAddNode, onRemoveNode }: IModulesPanelProps) =>
   }, []);
 
   if (loading) return <UI.EmptyState>Loading models...</UI.EmptyState>;
+  if (error) return <UI.EmptyState>Error: {error}</UI.EmptyState>;
 
   return (
     <UI.Container>
@@ -57,29 +51,19 @@ export const ModulesPanel = ({ onAddNode, onRemoveNode }: IModulesPanelProps) =>
         }}
         onDragLeave={() => setIsDeleting(false)}
         onDrop={handleDrop}
-
       >
         {isDeleting ? (
           <UI.DeleteZone>Drop here to delete</UI.DeleteZone>
         ) : (
           models.map(preset => (
-              <PresetCard
-                key={preset.id}
-                preset={preset}
-                onDoubleClick={() => onAddNode(preset)}
-              />
-            
+            <PresetCard
+              key={preset.id}
+              preset={preset}
+              onDoubleClick={() => onAddNode(preset)}
+            />
           ))
         )}
       </UI.PresetsGrid>
-      {/*<UI.DeleteZone
-        onDragOver={handleDragOver}
-        onDragLeave={() => setIsDeleting(false)}
-        onDrop={handleDrop}
-        $isActive={isDeleting}
-      >
-        {isDeleting ? 'Drop to delete' : 'Drag hehe to delete node'}
-      </UI.DeleteZone>*/}
     </UI.Container>
   );
-}
+};

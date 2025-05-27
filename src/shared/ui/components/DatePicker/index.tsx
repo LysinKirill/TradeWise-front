@@ -1,6 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import DatePicker from 'react-datepicker';
 import { FiCalendar } from 'react-icons/fi';
 import * as UI from './styles';
+import type { ReactDatePickerCustomHeaderProps } from 'react-datepicker';
+import { MiddlewareReturn } from '@floating-ui/core';
+import { MiddlewareState } from '@floating-ui/dom';
 
 interface CustomDatePickerProps {
   selected: Date | null;
@@ -15,6 +19,23 @@ export const CustomDatePicker = ({
   label,
   minDate
 }: CustomDatePickerProps) => {
+  const renderCustomHeader = ({
+    monthDate,
+    decreaseMonth,
+    increaseMonth,
+  }: ReactDatePickerCustomHeaderProps) => (
+    <div className="custom-header">
+      <button type="button" onClick={decreaseMonth}>&lt;</button>
+      <div className="month-title">
+        {monthDate.toLocaleString("en-US", {
+          month: "long",
+          year: "numeric",
+        })}
+      </div>
+      <button type="button" onClick={increaseMonth}>&gt;</button>
+    </div>
+  );
+
   return (
     <UI.InputGroup>
       <label>{label}</label>
@@ -29,32 +50,27 @@ export const CustomDatePicker = ({
             popperPlacement="bottom-start"
             monthsShown={1}
             minDate={minDate}
-            popperModifiers={{
-              offset: {
-                enabled: true,
-                offset: "5px, 10px"
+            popperModifiers={[
+              {
+                name: 'offset',
+                options: {
+                  offset: [5, 10],
+                },
+                fn: function (state: MiddlewareState): MiddlewareReturn | Promise<MiddlewareReturn> {
+                  throw new Error('Function not implemented.');
+                }
               },
-              preventOverflow: {
-                enabled: true,
-                boundariesElement: "viewport"
-              }
-            }}
-            renderCustomHeader={({
-              monthDate,
-              decreaseMonth,
-              increaseMonth,
-            }) => (
-              <div className="custom-header">
-                <button onClick={decreaseMonth}>&lt;</button>
-                <div className="month-title">
-                  {monthDate.toLocaleString("en-US", {
-                    month: "long",
-                    year: "numeric",
-                  })}
-                </div>
-                <button onClick={increaseMonth}>&gt;</button>
-              </div>
-            )}
+              {
+                name: 'preventOverflow',
+                options: {
+                  boundary: 'clippingParents',
+                },
+                fn: function (state: MiddlewareState): MiddlewareReturn | Promise<MiddlewareReturn> {
+                  throw new Error('Function not implemented.');
+                }
+              },
+            ]}
+            renderCustomHeader={renderCustomHeader}
           />
         </UI.DatePickerWrapper>
       </UI.DateInputWrapper>

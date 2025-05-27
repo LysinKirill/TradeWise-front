@@ -12,7 +12,7 @@ export const StrategyNode = ({
   const dragStartHandler = (e: React.DragEvent) => {
     e.dataTransfer.setData('nodeId', node.id);
     e.dataTransfer.effectAllowed = 'move';
-    onDragStart?.(node.id);
+    onDragStart?.(node.id, e);
     //const ghost = document.createElement('div');
     //ghost.style.position = 'absolute';
     //ghost.style.opacity = '0';

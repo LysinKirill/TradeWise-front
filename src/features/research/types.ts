@@ -1,3 +1,6 @@
+import { Instrument } from "../trading/strategies/components/ConnectionModal/types";
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IResearchData {
   id: string;
   figi: string;
@@ -10,8 +13,8 @@ export interface IResearchData {
 }
 
 export type ResearchTableProps = {
-  data: IResearchData[];
-  onRowClick: (instrument: IResearchData) => void;
+  data: Instrument[];
+  onRowClick: (instrument: Instrument) => void;
 };
 
 export type Candle = {
@@ -47,6 +50,6 @@ export type StatData = {
 };
 
 export type InstrumentDetailsModalProps = {
-  instrument: IResearchData;
+  instrument?: any;
   onClose: () => void;
 };

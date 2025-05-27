@@ -7,7 +7,6 @@ import { deleteStrategy, getStrategy } from '@/shared/api/strategies';
 import { toast } from 'react-toastify';
 import { StrategyDetailsModal } from '../StrategyDetailsModal';
 import { ConfirmationModal } from '@/shared/ui/components/ComfirmationModal';
-import { useNavigate } from 'react-router-dom';
 import EditStrategyModal from '@/shared/ui/components/EditStrategyModal';
 
 export const StrategyTable = ({ strategies, onUpdate }: IStrategyTableProps) => {
@@ -59,7 +58,6 @@ export const StrategyTable = ({ strategies, onUpdate }: IStrategyTableProps) => 
             <UI.StyledTableRow
               key={strategy.id}
               onClick={() => setSelectedStrategy(strategy.id)}
-              clickable
             >
               <UI.StyledTableCell>{strategy.title}</UI.StyledTableCell>
               <UI.StyledTableCell>

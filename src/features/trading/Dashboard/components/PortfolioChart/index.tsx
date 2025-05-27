@@ -11,7 +11,7 @@ const calculatePortfolioData = (portfolioPositions: any[]) => {
   }));
 };
 
-export const PortfolioChart = ({ data }) => {
+export const PortfolioChart = ({ data }:any) => {
   const chartData = calculatePortfolioData(data);
 
   return (

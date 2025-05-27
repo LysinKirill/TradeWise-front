@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react';
 import * as UI from './styles';
 import { fetchSupportedInstruments } from '@/shared/api/stocks';
 import { StatTypeOptions, TransitionConditionOptions } from './constants';
 import { Condition, ConnectionModalProps, Instrument } from './types';
-import { toast } from 'react-toastify';
+import { IStrategyNode } from '../../types';
 
 export const ConnectionModal = ({
   nodes,
@@ -22,7 +23,7 @@ export const ConnectionModal = ({
   useEffect(() => {
     const loadInstruments = async () => {
       try {
-        const data = await fetchSupportedInstruments();
+        const data:any = await fetchSupportedInstruments();
         setInstruments(data || []);
       } catch (error) {
         console.error('Failed to load instruments:', error);
@@ -70,7 +71,7 @@ export const ConnectionModal = ({
               onChange={(e) => setSource(e.target.value)}
             >
               <option value="">Select Source</option>
-              {nodes.map(node => (
+              {nodes.map((node: IStrategyNode) => (
                 <option key={node.id} value={node.id}>
                   {node.name || node.type || node.id}
                 </option>
@@ -85,7 +86,7 @@ export const ConnectionModal = ({
               onChange={(e) => setTarget(e.target.value)}
             >
               <option value="">Select Target</option>
-              {nodes.map(node => (
+              {nodes.map((node: IStrategyNode) => (
                 <option key={node.id} value={node.id}>
                   {node.name || node.id}
                 </option>

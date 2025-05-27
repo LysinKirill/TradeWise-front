@@ -13,7 +13,8 @@ export const MODULE_PRESETS: IModulePreset[] = [
   {
     id: 'model-1',
     name: 'Moving Average Model',
-    type: 'technical',
+    type: 'model',
+    modelId: '',
     parameters: { 
       windowSize: 14,
       maType: 'EMA'
@@ -25,7 +26,8 @@ export const MODULE_PRESETS: IModulePreset[] = [
   {
     id: 'model-2',
     name: 'Bollinger Bands',
-    type: 'technical',
+    type: 'model',
+    modelId: '',
     parameters: { 
       period: 20,
       deviation: 2,
@@ -38,7 +40,8 @@ export const MODULE_PRESETS: IModulePreset[] = [
   {
     id: 'model-3',
     name: 'RSI Indicator',
-    type: 'oscillator',
+    type: 'model',
+    modelId: '',
     parameters: {
       period: 14,
       overbought: 70,
@@ -51,7 +54,8 @@ export const MODULE_PRESETS: IModulePreset[] = [
   {
     id: 'model-4',
     name: 'MACD Cross',
-    type: 'momentum',
+    type: 'model',
+    modelId: '',
     parameters: {
       fastPeriod: 12,
       slowPeriod: 26,
@@ -64,7 +68,8 @@ export const MODULE_PRESETS: IModulePreset[] = [
   {
     id: 'order-1',
     name: 'Market Buy Order',
-    type: 'execution',
+    type: 'model',
+    modelId: '',
     parameters: { 
       orderType: 'market',
       quantity: 100
@@ -76,7 +81,8 @@ export const MODULE_PRESETS: IModulePreset[] = [
   {
     id: 'order-2',
     name: 'Limit Sell Order',
-    type: 'execution',
+    modelId: '',
+    type: 'model',
     parameters: {
       orderType: 'limit',
       limitPrice: 150.50,
@@ -89,7 +95,8 @@ export const MODULE_PRESETS: IModulePreset[] = [
   {
     id: 'risk-1',
     name: 'Stop-Loss Strategy',
-    type: 'risk-management',
+    modelId: '1',
+    type: 'model',
     parameters: {
       stopPercent: 5,
       trailing: true
@@ -101,14 +108,15 @@ export const MODULE_PRESETS: IModulePreset[] = [
   {
     id: 'model-5',
     name: 'Fibonacci Retracement',
-    type: 'technical',
+    modelId: '1',
+    type: 'model',
     parameters: {
       swingHigh: 200,
       swingLow: 180,
       levels: [23.6, 38.2, 50, 61.8]
     },
     icon: '📐',
-    color: colors.gold,
+    color: colors.white,
     createdAt: '2024-04-10T09:45:00Z'
   }
 ];
@@ -181,7 +189,7 @@ export const NODE_TYPES = {
   }
 };
 
-export const DEFAULT_CONNECTION: IConnection = {
+export const DEFAULT_CONNECTION = {
   id: 'new-connection',
   source: '',
   target: '',

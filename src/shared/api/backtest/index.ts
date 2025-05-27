@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import http from "../axios-client";
 
 export const startBacktest = async (params: { modelId: string; initialBalance: string, from: string, to: string }) => {
@@ -14,7 +15,7 @@ export const getAllBacktests = async () => {
   try {
     const response = await http.post('/api/v1/backtest/all-backtests');
 
-    return response.data.backtests;
+    return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.detail || 'Failed to get all backtests');
   }

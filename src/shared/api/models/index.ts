@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import http from "../axios-client";
 
 export const fetchSupportedModels = async () => {
   try {
-    const response = await http.get('/api/v1/invest/get-supported-models');
+    const response:any = await http.get('/api/v1/invest/get-supported-models');
 
     return response.data.models.map((model: any) => ({
       id: model.id.toString(),
