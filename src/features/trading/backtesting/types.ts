@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface BacktestInfo {
+  modelInfo: any;
   backtestId: string;
   startedAt: string;
   finishedAt: string;
