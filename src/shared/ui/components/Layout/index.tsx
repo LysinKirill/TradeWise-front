@@ -14,10 +14,12 @@ import MobileBottomNav from '../Navigation/components/MobileBottomNav';
 import { useMediaQuery } from '@/shared/hooks/useMediaQuery';
 import { ToastContainer } from 'react-toastify';
 import { SplashScreen } from '../SplashScreen';
+import { useAuth } from '@/app/providers/AuthProvider';
 
 const Layout = () => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [showSplash, setShowSplash] = useState(true);
+  const { isAuthenticated } = useAuth();
 
   return (
     <Suspense fallback={<Loading />}>
@@ -33,7 +35,7 @@ const Layout = () => {
             <UI.Wrapper isMobile={isMobile}>
               <Outlet />
             </UI.Wrapper>
-            {isMobile && <MobileBottomNav />}
+            {isMobile && isAuthenticated && <MobileBottomNav />}
           </UI.Container>
         </UI.Layout>
       </ThemeProvider>

@@ -19,7 +19,7 @@ const Header = () => {
     <UI.Header>
       <UI.HeaderContent>
         {isMobile ?
-          <UI.Logo onClick={() => { navigate('/')}}>
+          isAuthenticated && <UI.Logo onClick={() => { navigate('/')}}>
             TradeWise
           </UI.Logo> :
           <UI.Logo>
