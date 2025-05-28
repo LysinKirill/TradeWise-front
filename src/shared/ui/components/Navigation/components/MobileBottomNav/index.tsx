@@ -23,6 +23,18 @@ const MobileBottomNav = () => (
           <span>Research</span>
         </NavLink>
       </UI.BottomNavItem>
+      <UI.BottomNavItem>
+        <NavLink to={ROUTES.LIVETRADING}>
+          <UI.StrategiesIcon />
+          <span>Live Trading</span>
+        </NavLink>
+      </UI.BottomNavItem>
+      <UI.BottomNavItem>
+        <NavLink to={ROUTES.BACKTESTING}>
+          <UI.StrategiesIcon />
+          <span>Backtesting</span>
+        </NavLink>
+      </UI.BottomNavItem>
     </UI.BottomNavList>
   </UI.BottomNavContainer>
 );

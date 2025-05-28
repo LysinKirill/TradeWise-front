@@ -1,12 +1,17 @@
-// src/pages/Settings/style.ts
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { colors } from '@constants/colors';
 
 export const Container = styled.div`
   color: #fff;
   min-height: 100vh;
-  background: ${colors.backgroundBlack};
   padding: 4vh 2vw;
+
+  ${({ theme }) => theme.isMobile && css`
+    
+    box-shadow: none;
+    border-radius: 8px;
+    overflow-x: auto;
+  `}
 `;
 
 export const ContentContainer = styled.div`

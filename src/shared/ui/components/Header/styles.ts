@@ -84,7 +84,8 @@ export const HeaderRight = styled.div`
   gap: 0.5rem;
 
   ${({ theme }) => theme.isMobile && css`
-    gap: 0.8rem;
+    gap: 3.8rem;
+    margin-left: 45vw;
   `}
 `;
 

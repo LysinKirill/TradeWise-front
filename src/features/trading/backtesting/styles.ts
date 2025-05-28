@@ -220,6 +220,7 @@ export const ResponsiveTable = styled.table`
   @media (max-width: 768px) {
     th, td {
       padding: 0.8rem;
+      overflow-x: auto;
     }
   }
 `;

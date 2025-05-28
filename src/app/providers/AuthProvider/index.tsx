@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
@@ -6,6 +8,7 @@ import axios from 'axios';
 import { TAuthContextType, TUser } from './types';
 import { decodeJWT, JwtPayload } from '@/shared/utils/jwt';
 import { useNavigate } from 'react-router-dom';
+import http from '@/shared/api/axios-client';
 
 const AuthContext = createContext<TAuthContextType | undefined>({
   isAuthenticated: false,
@@ -20,7 +23,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [refreshQueue, setRefreshQueue] = useState<(() => void)[]>([]);
+  const [hasApiKey, setHasApiKey] = useState(false);
   const navigate = useNavigate();
+
+  const checkApiKey = useCallback(async () => {
+    try {
+      const response:any = await http.get('/api/v1/invest/check-api-key');
+      setHasApiKey(response.data.hasApiKey);
+    } catch (error) {
+      setHasApiKey(false);
+    }
+  }, []);
 
   const decodeAndSetUser = useCallback((token: string) => {
     const decoded = decodeJWT<JwtPayload>(token);
@@ -32,12 +45,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
-  const login = (user: TUser, token: string, refreshToken: string) => {
+  const login = async (user: TUser, token: string, refreshToken: string) => {
     setLocalToken(token);
     setRefreshToken(refreshToken);
     setIsAuthenticated(true);
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     decodeAndSetUser(token);
+    await checkApiKey();
+  };
+
+  const updateApiKeyStatus = (status: boolean) => {
+    setHasApiKey(status);
   };
 
   const logout = () => {
@@ -110,7 +128,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     initializeAuth();
-  }, [decodeAndSetUser, refreshTokenWrapper]);
+  }, [decodeAndSetUser]);
 
   return (
     <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!isAuthenticated, refreshToken: refreshTokenWrapper }}>
