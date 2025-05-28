@@ -301,6 +301,7 @@ export const TableWrapper = styled.div`
     width: calc(100% + 2rem);
     box-shadow: none;
     border-radius: 8px;
+    overflow-x: auto;
   `}
 `;
 

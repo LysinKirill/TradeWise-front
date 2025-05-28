@@ -1,4 +1,3 @@
-// components/SplashScreen.tsx
 import { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 
@@ -26,7 +25,7 @@ const SplashContainer = styled.div<{ $isHiding: boolean }>`
   align-items: center;
   z-index: 10000;
   opacity: 1;
-  pointer-events: none; // Отключаем взаимодействие
+  pointer-events: none; 
   animation: ${({ $isHiding }) => $isHiding ? fadeOut : 'none'} 0.5s forwards;
 `;
 
@@ -67,7 +66,6 @@ export const SplashScreen = ({ onHide }: { onHide: () => void }) => {
   useEffect(() => {
     const hideTimer = setTimeout(() => {
       setIsHiding(true);
-      // После завершения анимации уведомляем родительский компонент
       setTimeout(onHide, 500);
     }, 2000);
 

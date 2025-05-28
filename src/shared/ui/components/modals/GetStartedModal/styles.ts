@@ -66,7 +66,7 @@ export const ModalContent = styled.div`
     max-width: none;
     border-radius: 24px 24px 0 0;
     padding: 2rem 1.5rem;
-    min-height: 50vh;
+    min-height: 80vh;
   `}
 `;
 
@@ -81,7 +81,7 @@ export const CloseButton = styled.button`
   color: white;
 
   ${({ theme }) => theme.isMobile && css`
-    top: 15px;
+    top: 22vh;
     right: 15px;
     font-size: 2em;
   `}
@@ -117,8 +117,8 @@ export const ButtonGroup = styled.div`
   gap: 5vw;
 
   ${({ theme }) => theme.isMobile && css`
-    flex-direction: column;
-    gap: 1rem;
+    flex-direction: row;
+    gap: 3rem;
     max-width: 100%;
   `}
 `;
@@ -144,6 +144,7 @@ export const PrimaryButton = styled.button`
 
   ${({ theme }) => theme.isMobile && css`
     width: 100%;
+    min-width: 40vw;
     padding: 1rem;
     font-size: 1.1rem;
     

@@ -277,7 +277,8 @@ export const ResponsiveTable = styled.table`
 
   @media (max-width: 768px) {
     th, td {
-      padding: 0.8rem;
+      padding: 0.4rem;
+      overflow-x: auto;
     }
   }
 `;

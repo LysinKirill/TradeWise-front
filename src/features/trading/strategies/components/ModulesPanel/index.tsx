@@ -52,7 +52,7 @@ export const ModulesPanel = ({
         onDragLeave={() => setIsDeleting(false)}
         onDrop={handleDrop}
       >
-        {models.length === 0 &&  <UI.EmptyState>No connections created yet</UI.EmptyState>}
+        {models.length === 0 &&  <UI.EmptyState>No modules fetchedt</UI.EmptyState>}
         {isDeleting ? (
           <UI.DeleteZone>Drop here to delete</UI.DeleteZone>
         ) : (

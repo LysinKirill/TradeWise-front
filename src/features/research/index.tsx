@@ -36,8 +36,6 @@ export const Research = () => {
   return (
     <UI.PageResearch>
       
-      {error && <UI.ErrorMessage>{error}</UI.ErrorMessage>}
-      
       <UI.ResearchSection>
         {loading ? (
           <UI.Loader>Loading instruments...</UI.Loader>
@@ -48,6 +46,7 @@ export const Research = () => {
           />
         )}
       </UI.ResearchSection>
+      {error && <UI.ErrorMessage>{error}</UI.ErrorMessage>}
 
       {selectedInstrument && (
         <InstrumentDetailsModal

@@ -19,7 +19,7 @@ const Header = () => {
     <UI.Header>
       <UI.HeaderContent>
         {isMobile ?
-          <UI.Logo>
+          isAuthenticated && <UI.Logo onClick={() => { navigate('/')}}>
             TradeWise
           </UI.Logo> :
           <UI.Logo>
@@ -33,7 +33,7 @@ const Header = () => {
             {!isMobile && <Navigation isAuthenticated={isAuthenticated} />}
 
             <UI.HeaderRight>
-              {!isMobile && (
+              {(
                 <UI.ProfileWrapper
                   onMouseEnter={() => setIsDropdownOpen(true)}
                   onMouseLeave={() => setIsDropdownOpen(false)}>

@@ -24,7 +24,7 @@ export const updatePassword = async ({ password }: { password: string }) => {
 
 export const verifyEmail = async ({ code }: { code: string }) => {
   try {
-    const res = await http.post('/api/v1/account/verify-email', { code });
+    const res = await http.post('/api/v1/confirmEmail', { code });
     return res.data;
   } catch (error) {
     console.error(error);
