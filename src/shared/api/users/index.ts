@@ -35,7 +35,7 @@ export const authUser = async (userData: IUserAuthData) => {
 export const refreshToken = async (refreshToken: string) => {
   try {
     const response = await http.post<TokenData>(
-      `/api/v1/refresh`,
+      `/api/auth/v1/refresh`,
       { refreshToken }
     );
     return response.data;

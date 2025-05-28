@@ -182,7 +182,7 @@ const Backtesting = () => {
                 .filter(b => ['Pending', 'Running'].includes(b.status))
                 .map((test) => (
                   <tr key={test.backtestId}>
-                    <td>{getModelName(test.modelId)}</td> 
+                    <td>{test.modelInfo.name}</td> 
                     <td>
                       <UI.StatusIndicator status={test.status}>
                         {test.status}
