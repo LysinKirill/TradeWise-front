@@ -5,20 +5,25 @@ import * as UI from './styles';
 import type { ReactDatePickerCustomHeaderProps } from 'react-datepicker';
 import { MiddlewareReturn } from '@floating-ui/core';
 import { MiddlewareState } from '@floating-ui/dom';
+import { useEffect, useState } from 'react';
 
 interface CustomDatePickerProps {
   selected: Date | null;
   onChange: (date: Date | null) => void;
   label: string;
   minDate?: Date;
+  maxDate?: Date;
 }
 
 export const CustomDatePicker = ({
   selected,
   onChange,
   label,
-  minDate
+  minDate,
+  maxDate = new Date() // Устанавливаем сегодняшнюю дату по умолчанию
 }: CustomDatePickerProps) => {
+  const [internalMaxDate, setInternalMaxDate] = useState<Date>(maxDate);
+
   const renderCustomHeader = ({
     monthDate,
     decreaseMonth,
@@ -36,6 +41,20 @@ export const CustomDatePicker = ({
     </div>
   );
 
+  // Обновляем максимальную дату при изменении пропса
+  useEffect(() => {
+    setInternalMaxDate(maxDate);
+  }, [maxDate]);
+
+  const handleDateChange = (date: Date | null) => {
+    if (date && date > internalMaxDate) {
+      // Если выбрана дата больше максимальной - устанавливаем максимальную
+      onChange(internalMaxDate);
+    } else {
+      onChange(date);
+    }
+  };
+
   return (
     <UI.InputGroup>
       <label>{label}</label>
@@ -44,12 +63,13 @@ export const CustomDatePicker = ({
         <UI.DatePickerWrapper>
           <DatePicker
             selected={selected}
-            onChange={onChange}
+            onChange={handleDateChange}
             dateFormat="MMMM d, yyyy"
             className="custom-date-input"
             popperPlacement="bottom-start"
             monthsShown={1}
             minDate={minDate}
+            maxDate={internalMaxDate}
             popperModifiers={[
               {
                 name: 'offset',
@@ -71,6 +91,7 @@ export const CustomDatePicker = ({
               },
             ]}
             renderCustomHeader={renderCustomHeader}
+            filterDate={(date) => date <= internalMaxDate}
           />
         </UI.DatePickerWrapper>
       </UI.DateInputWrapper>
