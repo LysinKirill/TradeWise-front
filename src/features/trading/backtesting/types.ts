@@ -10,6 +10,7 @@ export interface BacktestInfo {
   initialBalance: number;
   finalBalance: number;
   createdAt: string;
+  modelId: string,
 }
 
 export interface Model {
