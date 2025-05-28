@@ -90,7 +90,6 @@ const Backtesting = () => {
       day: 'numeric'
     });
   };
-  console.log(backtests);
 
   return (
     <UI.Container>
@@ -183,7 +182,7 @@ const Backtesting = () => {
                 .filter(b => ['Pending', 'Running'].includes(b.status))
                 .map((test) => (
                   <tr key={test.backtestId}>
-                    <td>{getModelName(test.backtestId)}</td>
+                    <td>{getModelName(test.modelId)}</td> 
                     <td>
                       <UI.StatusIndicator status={test.status}>
                         {test.status}
@@ -235,13 +234,13 @@ const Backtesting = () => {
                 .filter(b => ['Completed', 'Failed', 'Cancelled'].includes(b.status))
                 .map((test) => (
                   <tr key={test.backtestId}>
-                    <td>{getModelName(test.backtestId)}</td>
+                    <td>{getModelName(test.modelId)}</td>
                     <td>{test.profit.toFixed(2)}</td>
                     <td>{test.tradesCount}</td>
                     <td>
                       {test.status === 'Completed' ? (
                         <span style={{ color: '#4CAF50' }}>
-                          +{(test.finalBalance / test.initialBalance * 100 - 100).toFixed(2)}%
+                         +{(test.profit / test.initialBalance * 100).toFixed(2)}%
                         </span>
                       ) : test.status}
                     </td>
