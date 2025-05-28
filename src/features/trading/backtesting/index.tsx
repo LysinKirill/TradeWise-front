@@ -234,7 +234,7 @@ const Backtesting = () => {
                 .filter(b => ['Completed', 'Failed', 'Cancelled'].includes(b.status))
                 .map((test) => (
                   <tr key={test.backtestId}>
-                    <td>{getModelName(test.modelId)}</td>
+                    <td>{test.modelInfo.name}</td>
                     <td>{test.profit.toFixed(2)}</td>
                     <td>{test.tradesCount}</td>
                     <td>
