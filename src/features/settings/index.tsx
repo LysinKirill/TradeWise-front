@@ -2,11 +2,13 @@ import { useState } from 'react';
 import * as UI from './styles';
 import { linkInvestApiKey, updatePassword, verifyEmail } from '@/shared/api/settings';
 import { toast } from 'react-toastify';
+import { useInvestApi } from '@/app/providers/ApiKeyProvider';
 
 export default function Settings() {
   const [investApiKey, setInvestApiKey] = useState('');
   const [password, setPassword] = useState('');
   const [code, setCode] = useState('');
+  const { linkApiKey } = useInvestApi();
 
   const handleLinkInvestApiKey = async () => {
     if (!investApiKey.trim()) {
@@ -16,6 +18,7 @@ export default function Settings() {
 
     const response = await linkInvestApiKey({ investApiKey });
     if (response?.status === 200) {
+      linkApiKey();
       toast.success('API key linked successfully!');
       setInvestApiKey('');
     } else {

@@ -24,9 +24,9 @@ export const getAllBacktests = async () => {
 export const cancelBacktest = async (backtestExecutionId: string) => {
   try {
     const response = await http.post('/api/v1/backtest/cancel', {
-      
-        "backtestExecutionId": backtestExecutionId
-      
+      request: {
+        "BacktestExecutionId": backtestExecutionId.toString()
+      }
     });
 
     return response;

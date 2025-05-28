@@ -88,7 +88,7 @@ export const ConnectionModal = ({
               <option value="">Select Target</option>
               {nodes.map((node: IStrategyNode) => (
                 <option key={node.id} value={node.id}>
-                  {node.name || node.id}
+                  {node.name || node.type || node.id}
                 </option>
               ))}
             </select>
