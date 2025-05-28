@@ -26,14 +26,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [hasApiKey, setHasApiKey] = useState(false);
   const navigate = useNavigate();
 
-  const checkApiKey = useCallback(async () => {
-    try {
-      const response:any = await http.get('/api/v1/invest/check-api-key');
-      setHasApiKey(response.data.hasApiKey);
-    } catch (error) {
-      setHasApiKey(false);
-    }
-  }, []);
+ 
 
   const decodeAndSetUser = useCallback((token: string) => {
     const decoded = decodeJWT<JwtPayload>(token);
@@ -51,7 +44,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsAuthenticated(true);
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     decodeAndSetUser(token);
-    await checkApiKey();
   };
 
   const updateApiKeyStatus = (status: boolean) => {

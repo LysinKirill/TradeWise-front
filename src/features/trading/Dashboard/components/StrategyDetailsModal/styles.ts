@@ -247,3 +247,15 @@ export const StatusIndicator = styled.span<{ status: string }>`
             status === 'canceled' ? '#9E9E9E' :
               '#673AB7'};
 `;
+
+export const EmptyState = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  width: 100%;
+  color: ${colors.textSecondary};
+  font-size: 1rem;
+  border: 1px dashed ${colors.borderColor};
+  border-radius: 8px;
+`;

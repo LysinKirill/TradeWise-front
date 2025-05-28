@@ -16,6 +16,7 @@ import { AppThemeProvider } from "@app/providers/AppThemeProvider";
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { registerSW } from 'virtual:pwa-register';
+import { InvestApiProvider } from "./providers/ApiKeyProvider";
 
 if ('serviceWorker' in navigator) {
   registerSW();
@@ -26,17 +27,19 @@ ReactDOM.render(
     <ErrorBoundary>
       <StyleSheetManager enableVendorPrefixes={isDevelopment()}>
         <AppThemeProvider>
-
           <BrowserRouter>
+          
             <AuthProvider>
+            <InvestApiProvider>
               <Provider store={store}>
                 <DndProvider backend={HTML5Backend}>
                   <Routing />
                 </DndProvider>
               </Provider>
+              </InvestApiProvider>
             </AuthProvider>
+            
           </BrowserRouter>
-
         </AppThemeProvider>
       </StyleSheetManager>
     </ErrorBoundary>

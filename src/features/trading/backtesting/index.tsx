@@ -141,6 +141,7 @@ const Backtesting = () => {
             onChange={setToDate}
             label="To Date"
             minDate={fromDate || undefined}
+            maxDate={new Date()}
           />
 
         </UI.InputRow>
@@ -177,6 +178,7 @@ const Backtesting = () => {
               </tr>
             </thead>
             <tbody>
+           
               {backtests
                 .filter(b => ['Pending', 'Running'].includes(b.status))
                 .map((test) => (
@@ -225,6 +227,7 @@ const Backtesting = () => {
                 <th>Trades</th>
                 <th>Result</th>
                 <th>Period</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
@@ -233,7 +236,7 @@ const Backtesting = () => {
                 .map((test) => (
                   <tr key={test.backtestId}>
                     <td>{getModelName(test.backtestId)}</td>
-                    <td>${test.profit.toFixed(2)}</td>
+                    <td>{test.profit.toFixed(2)}</td>
                     <td>{test.tradesCount}</td>
                     <td>
                       {test.status === 'Completed' ? (
@@ -244,6 +247,11 @@ const Backtesting = () => {
                     </td>
                     <td>
                       {formatDate(test.testPeriodStart)} - {formatDate(test.testPeriodEnd)}
+                    </td>
+                    <td>
+                      <UI.StatusIndicator status={test.status}>
+                        {test.status}
+                      </UI.StatusIndicator>
                     </td>
                   </tr>
                 ))}

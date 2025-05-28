@@ -245,9 +245,40 @@ export const ActionRow = styled.div`
   margin-top: 1rem;
 `;
 
+export const TableContainer = styled.div`
+  max-height: 400px;
+  overflow-y: auto;
+  border-radius: 8px;
+  margin-top: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: ${colors.darkHover};
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${colors.darkPurple};
+    border-radius: 4px;
+    &:hover {
+      background: ${colors.darkPurple};
+    }
+  }
+
+  ${({ theme }) => theme.isMobile && css`
+    max-height: 300px;
+  `}
+`;
+
 export const ResponsiveTable = styled.table`
   width: 100%;
   border-collapse: collapse;
+  position: relative;
   
   th, td {
     padding: 1rem;
@@ -257,18 +288,23 @@ export const ResponsiveTable = styled.table`
 
   th {
     background: linear-gradient(
-    135deg,
-    ${chartColors.primary} 0%,
-    ${chartColors.secondary} 50%,
-    ${chartColors.tertiary} 90%
-  );
+      135deg,
+      ${chartColors.primary} 0%,
+      ${chartColors.secondary} 50%,
+      ${chartColors.tertiary} 90%
+    );
     color: ${colors.textSecondary};
     font-weight: 500;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    box-shadow: 0 2px 2px -1px rgba(0,0,0,0.1);
     border-radius: 8px 8px 0px 0px;
   }
 
   td {
     border-bottom: 1px solid ${colors.borderColor};
+    background: ${colors.backgroundDark};
   }
 
   tr:last-child td {
@@ -277,8 +313,8 @@ export const ResponsiveTable = styled.table`
 
   @media (max-width: 768px) {
     th, td {
-      padding: 0.4rem;
-      overflow-x: auto;
+      padding: 0.8rem;
+      min-width: 120px;
     }
   }
 `;

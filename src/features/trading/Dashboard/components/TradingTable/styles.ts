@@ -4,6 +4,7 @@ import { TableCell as MuiTableCell, TableRow as MuiTableRow } from "@mui/materia
 
 export const TableWrapper = styled.div`
   overflow-x: auto;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   margin: 2rem 0;
   border-radius: 8px;
@@ -23,6 +24,8 @@ export const Table = styled.table`
   background: ${colors.backgroundDark};
   min-width: 300px;
   border-radius: 16px;
+  overflow-y: auto;
+  max-height: 50px;
 
   ${({ theme }) => theme.isMobile && css`
     padding: 0;
@@ -106,6 +109,7 @@ export const TableBody = styled.tbody`
   & > tr:last-child > td {
     border-bottom: none !important;
   }
+  
 
   ${({ theme }) => theme.isMobile && css`
     > tr > td {

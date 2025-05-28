@@ -95,7 +95,7 @@ export const StrategyDetailsModal = ({
                     {executions.map((execution) => (
                       <UI.TableRow key={execution.id}>
                         <UI.TableCell>
-                          <UI.StatusIndicator status={execution.status} />
+                          <UI.StatusIndicator status={execution.status}>{execution.status}</UI.StatusIndicator>
                         </UI.TableCell>
                         <UI.TableCell>
                           {new Date(execution.createdAt).toLocaleString()}
@@ -113,7 +113,7 @@ export const StrategyDetailsModal = ({
                   </UI.TableBody>
                 </UI.ExecutionTable>
               </UI.ExecutionSection>
-
+              {executions.length === 0 &&  <UI.EmptyState>No executions found</UI.EmptyState>}
               <UI.ActionButtonGroup>
                 <UI.EditButton onClick={() => onEdit(strategyId)}>
                   Edit Configuration

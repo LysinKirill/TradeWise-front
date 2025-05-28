@@ -142,6 +142,7 @@ const LiveTrading = () => {
             No active executions
           </UI.EmptyState>
         ) : (
+          <UI.TableContainer>
           <UI.ResponsiveTable>
             <thead>
               <tr>
@@ -181,6 +182,7 @@ const LiveTrading = () => {
               ))}
             </tbody>
           </UI.ResponsiveTable>
+          </UI.TableContainer>
         )}
       </UI.HistoryCard>
 
